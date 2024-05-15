@@ -1,0 +1,52 @@
+diff --git a/node_modules/expo-quick-actions/build/hooks.js b/node_modules/expo-quick-actions/build/hooks.js
+index 689ed90..a72f1e3 100644
+--- a/node_modules/expo-quick-actions/build/hooks.js
++++ b/node_modules/expo-quick-actions/build/hooks.js
+@@ -1,5 +1,17 @@
+ import React from "react";
+ import * as QuickActions from "./index";
++
++let _initialAction = QuickActions.initial;
++
++function getInitialAction() {
++  if (!_initialAction) {
++    return null;
++  }
++  let initialAction = _initialAction;
++  _initialAction = null;
++  return initialAction;
++}
++
+ /**
+  * Handle quick actions with a callback function. This prevents the entire component from re-rendering when the action changes. Use `useQuickAction` if you want to re-render the component.
+  *
+@@ -8,8 +20,9 @@ import * as QuickActions from "./index";
+ export function useQuickActionCallback(callback) {
+     React.useEffect(() => {
+         let isMounted = true;
+-        if (QuickActions.initial) {
+-            callback(QuickActions.initial);
++        const initialAction = getInitialAction();
++        if (initialAction) {
++            callback(initialAction);
+         }
+         const sub = QuickActions.addListener((event) => {
+             if (isMounted) {
+@@ -20,7 +33,7 @@ export function useQuickActionCallback(callback) {
+             isMounted = false;
+             sub.remove();
+         };
+-    }, [QuickActions.initial, callback]);
++    }, [callback]);
+ }
+ /**
+  * A hook to get the most recent quick action to launch the app. Use `useQuickActionCallback` if you want to handle the action in a callback without re-rendering the component.
+@@ -28,7 +41,7 @@ export function useQuickActionCallback(callback) {
+  * @returns the most recent quick action to launch the app or null if there is none.
+  */
+ export function useQuickAction() {
+-    const [action, setAction] = React.useState(QuickActions.initial ?? null);
++    const [action, setAction] = React.useState(getInitialAction() ?? null);
+     React.useEffect(() => {
+         let isMounted = true;
+         const sub = QuickActions.addListener((event) => {

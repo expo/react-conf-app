@@ -1,0 +1,73 @@
+diff --git a/node_modules/react-native-bootsplash/dist/commonjs/generate.js b/node_modules/react-native-bootsplash/dist/commonjs/generate.js
+index 219be98..012c291 100644
+--- a/node_modules/react-native-bootsplash/dist/commonjs/generate.js
++++ b/node_modules/react-native-bootsplash/dist/commonjs/generate.js
+@@ -966,10 +966,11 @@ const withAppDelegate = config => Expo.withAppDelegate(config, config => {
+     offset: 0,
+     anchor: /@end/,
+     newSrc: (0, _tsDedent.dedent)`
+-          - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initProps:(NSDictionary *)initProps {
+-            UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
++          - (void)customizeRootView:(RCTRootView *)rootView {
++            // Expected to be called twice from expo-updates setup:
++            // 1. when expo-updates creates the deferred root view.
++            // 2. when expo-updates finishing its setup and re-create the real root view.
+             [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
+-            return rootView;
+           }
+         `
+   });
+diff --git a/node_modules/react-native-bootsplash/ios/RNBootSplash.mm b/node_modules/react-native-bootsplash/ios/RNBootSplash.mm
+index 56a8a61..218acaa 100755
+--- a/node_modules/react-native-bootsplash/ios/RNBootSplash.mm
++++ b/node_modules/react-native-bootsplash/ios/RNBootSplash.mm
+@@ -77,9 +77,9 @@ + (void)initWithStoryboard:(NSString * _Nonnull)storyboardName
+     return;
+   }
+ 
+-  static dispatch_once_t onceToken;
+-
+-  dispatch_once(&onceToken, ^(void) {
++//  static dispatch_once_t onceToken;
++//
++//  dispatch_once(&onceToken, ^(void) {
+     [NSTimer scheduledTimerWithTimeInterval:0.35
+                                     repeats:NO
+                                       block:^(NSTimer * _Nonnull timer) {
+@@ -96,7 +96,7 @@ + (void)initWithStoryboard:(NSString * _Nonnull)storyboardName
+     if (rootView != nil && [rootView isKindOfClass:[RCTSurfaceHostingProxyRootView class]]) {
+       _rootView = (RCTSurfaceHostingProxyRootView *)rootView;
+ #else
+-    if (rootView != nil && [rootView isKindOfClass:[RCTRootView class]]) {
++    if (rootView != nil) {
+       _rootView = (RCTRootView *)rootView;
+ #endif
+       UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
+@@ -124,7 +124,7 @@ + (void)initWithStoryboard:(NSString * _Nonnull)storyboardName
+                                                    name:RCTJavaScriptDidFailToLoadNotification
+                                                  object:nil];
+     }
+-  });
++//  });
+ }
+ 
+ + (void)onJavaScriptDidLoad {
+diff --git a/node_modules/react-native-bootsplash/src/generate.ts b/node_modules/react-native-bootsplash/src/generate.ts
+index 95a0f4b..7d74725 100644
+--- a/node_modules/react-native-bootsplash/src/generate.ts
++++ b/node_modules/react-native-bootsplash/src/generate.ts
+@@ -1323,10 +1323,11 @@ const withAppDelegate: ExpoPlugin = (config) =>
+       offset: 0,
+       anchor: /@end/,
+       newSrc: dedent`
+-          - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge moduleName:(NSString *)moduleName initProps:(NSDictionary *)initProps {
+-            UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
++          - (void)customizeRootView:(RCTRootView *)rootView {
++            // Expected to be called twice from expo-updates setup:
++            // 1. when expo-updates creates the deferred root view.
++            // 2. when expo-updates finishing its setup and re-create the real root view.
+             [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
+-            return rootView;
+           }
+         `,
+     });
