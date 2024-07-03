@@ -45,7 +45,7 @@ export default {
   expo: {
     name: getName(),
     slug: "react-conf-app",
-    version: "1.0.3",
+    version: "1.1.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "automatic",
