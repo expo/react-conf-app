@@ -1,7 +1,13 @@
-on: [pull_request]
+on:
+  pull_request:
+    types: [labeled]
+
 jobs:
   preview:
     runs-on: ubuntu-latest
+
+    if: contains(github.event.pull_request.labels.*.name, 'preview')
+
     steps:
       - name: 🏗 Setup repo
         uses: actions/checkout@v3
