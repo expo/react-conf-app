@@ -6,6 +6,7 @@ import { theme } from "../theme";
 import { ExpoImageDemo } from "@/components/ExpoImageDemo";
 import ChangeAppIcon from "@/components/ChangeAppIcon";
 import { ScrollView } from "react-native-gesture-handler";
+import { ReactCompilerDemo } from "@/components/ReactCompilerDemo";
 
 export default function SecretModal() {
   const { width } = useWindowDimensions();
@@ -44,6 +45,7 @@ export default function SecretModal() {
           little example of native image transitions.
         </ThemedText>
         <ExpoImageDemo />
+        <ReactCompilerDemo />
       </ThemedView>
     </ScrollView>
   );

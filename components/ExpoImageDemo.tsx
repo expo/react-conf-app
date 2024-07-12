@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   section: {
     padding: theme.space24,
-    marginBottom: 200,
+    marginBottom: theme.space24,
   },
   centered: {
     textAlign: "center",
