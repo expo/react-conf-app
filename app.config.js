@@ -51,6 +51,7 @@ export default {
     userInterfaceStyle: "automatic",
     scheme: "reactconfapp",
     assetBundlePatterns: ["**/*"],
+    newArchEnabled: true,
     ios: {
       supportsTablet: true,
       bundleIdentifier: getAppId(),
@@ -78,17 +79,6 @@ export default {
     },
     owner: EAS_APP_OWNER,
     plugins: [
-      [
-        "expo-build-properties",
-        {
-          ios: {
-            newArchEnabled: IS_NEW_ARCH_ENABLED,
-          },
-          android: {
-            newArchEnabled: IS_NEW_ARCH_ENABLED,
-          },
-        },
-      ],
       [
         "expo-quick-actions",
         {
