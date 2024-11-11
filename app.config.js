@@ -10,10 +10,6 @@ const EAS_UPDATE_URL =
 const EAS_PROJECT_ID = "66251e1b-0290-4ef8-87a4-e533cac914dd";
 const EAS_APP_OWNER = "expo";
 
-// If you change this value, run `npx expo prebuild --clean` afterwards if you
-// are building the project locally.
-const IS_NEW_ARCH_ENABLED = true;
-
 const IS_DEV = process.env.APP_VARIANT === "development";
 const IS_PREVIEW = process.env.APP_VARIANT === "preview";
 
@@ -136,6 +132,9 @@ export default {
     },
     runtimeVersion: {
       policy: "appVersion",
+    },
+    experiments: {
+      reactCompiler: true,
     },
   },
 };
