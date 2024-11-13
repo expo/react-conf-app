@@ -893,10 +893,10 @@
   dependencies:
     uuid "^8.0.0"
 
-"@expo/cli@0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.21.0.tgz#b3f809a277172010e3746b5fb04de9b8b38a24bb"
-  integrity sha512-tMQKAssZaRHjoXQmnyqOl0HeAd0T/kIEEfjvEa1D5ME+hAQgexn05wTXCh/SmwNE8Vz++zQi5Upl+sqzBqJZJw==
+"@expo/cli@0.21.1":
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/@expo/cli/-/cli-0.21.1.tgz#1d31c72fc66f5a46ef187dcfa7077b5eb5bc751e"
+  integrity sha512-PCWiE4Upf0ylvNwqPGrRnqov4SW7VCS2X0PrxhDv/n/3xnG2nPGQx0Whq/tLSCz7BpOuADK6PcTNRswuhpHNcA==
   dependencies:
     "@0no-co/graphql.web" "^1.0.8"
     "@babel/runtime" "^7.20.0"
@@ -1143,7 +1143,31 @@
     json5 "^2.2.3"
     write-file-atomic "^2.3.0"
 
-"@expo/metro-config@0.19.1", "@expo/metro-config@~0.19.0":
+"@expo/metro-config@0.19.2":
+  version "0.19.2"
+  resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.19.2.tgz#de827beef2e0b67a01b20c4ad57e2b45a99b90e6"
+  integrity sha512-n9Q+ERhj0nUciKnDgiCWuys6cMLH2KI0Ppw0SLbkHiqLIK60Y2KiGuyKnj5Rna2x4m83hrGZmAEf/+PpvQd9lA==
+  dependencies:
+    "@babel/core" "^7.20.0"
+    "@babel/generator" "^7.20.5"
+    "@babel/parser" "^7.20.0"
+    "@babel/types" "^7.20.0"
+    "@expo/config" "~10.0.0"
+    "@expo/env" "~0.4.0"
+    "@expo/json-file" "~9.0.0"
+    "@expo/spawn-async" "^1.7.2"
+    chalk "^4.1.0"
+    debug "^4.3.2"
+    fs-extra "^9.1.0"
+    getenv "^1.0.0"
+    glob "^10.4.2"
+    jsc-safe-url "^0.2.4"
+    lightningcss "~1.27.0"
+    minimatch "^3.0.4"
+    postcss "~8.4.32"
+    resolve-from "^5.0.0"
+
+"@expo/metro-config@~0.19.0":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@expo/metro-config/-/metro-config-0.19.1.tgz#40818d51374d1dc2520b320fe4aefd49999bf54e"
   integrity sha512-PK5Tb/KY/0oyJu8Ro1TrMSfpxw6ZNLwazXBfUgpGqiyCDgZSEd92s897er9b7rg8465UyvkdA4m5vL4nzF5z6Q==
@@ -4387,10 +4411,10 @@ expo-manifests@~0.15.0:
     "@expo/config" "~10.0.0"
     expo-json-utils "~0.14.0"
 
-expo-modules-autolinking@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-2.0.0.tgz#addd7dc1f9182d205041003b8727aec9c036ed57"
-  integrity sha512-H4jDJxbw2QLjY8uE2vrFDqopCW9hAFFGAQnvh5/Dc6tsYZBIgNUyXb+edrsoV+NOeDviDNJhda9Wy3z6Ya5vvA==
+expo-modules-autolinking@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-2.0.1.tgz#2125b6bd0306292a7a41717f966e95a9d536b0bd"
+  integrity sha512-Lfr9X9X/fhc5RL49oKOwaoXorgkLWFy9992xP0Oxb+UAZTVnAsNfs4N0gxcy3isXyx6qfJGXConhYelhRKHSPQ==
   dependencies:
     "@expo/spawn-async" "^1.7.2"
     chalk "^4.1.0"
@@ -4496,17 +4520,17 @@ expo-web-browser@~14.0.0:
   resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-14.0.0.tgz#1ec80e147c209414bd65a6912f88cc50c8845b4e"
   integrity sha512-98ytb8NpH9hDB9jqTAjjZ/XKmwwyMdjdTmhvAEabOPgJcyJd9zU/qnn/2E1kNFPb+gohuosEw5PQUvdeIMw1Tw==
 
-expo@~52.0.3:
-  version "52.0.3"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.3.tgz#9fdb39addd67641d36723167052083b50eb482b5"
-  integrity sha512-AF6fMK6+lqWgwf81NDFfuAgVNAerR1V5oUSYyOTY7uClBsPzQM6jJnPWbEicbhde2q+HOI0k0KBFgptzyYA5Ag==
+expo@~52.0.4:
+  version "52.0.4"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.4.tgz#081d08fd2952fd8fbf39eabb278142931a025ac5"
+  integrity sha512-skG7/wd/kcTo3uhJFkCuWwn8Ymrz5DE5RO7vds69LL344lXLBdRegu38qC1Vb18ws+ZN3WgL1rxZ6GLtoVMtDA==
   dependencies:
     "@babel/runtime" "^7.20.0"
-    "@expo/cli" "0.21.0"
+    "@expo/cli" "0.21.1"
     "@expo/config" "10.0.3"
     "@expo/config-plugins" "9.0.9"
     "@expo/fingerprint" "0.11.2"
-    "@expo/metro-config" "0.19.1"
+    "@expo/metro-config" "0.19.2"
     "@expo/vector-icons" "^14.0.0"
     babel-preset-expo "~12.0.0"
     expo-asset "~11.0.1"
@@ -4514,7 +4538,7 @@ expo@~52.0.3:
     expo-file-system "~18.0.2"
     expo-font "~13.0.1"
     expo-keep-awake "~14.0.1"
-    expo-modules-autolinking "2.0.0"
+    expo-modules-autolinking "2.0.1"
     expo-modules-core "2.0.1"
     fbemitter "^3.0.0"
     web-streams-polyfill "^3.3.2"

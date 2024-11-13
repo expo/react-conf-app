@@ -48,11 +48,6 @@ export default {
     scheme: "reactconfapp",
     assetBundlePatterns: ["**/*"],
     newArchEnabled: true,
-    splash: {
-      image: "./assets/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#051726",
-    },
     ios: {
       supportsTablet: true,
       bundleIdentifier: getAppId(),
