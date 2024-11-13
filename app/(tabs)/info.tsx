@@ -11,7 +11,8 @@ import { PoweredByExpo } from "@/components/PoweredByExpo";
 import { ThemedView, useThemeColor } from "@/components/Themed";
 import { VenueInfo } from "@/components/VenueInfo";
 import { theme } from "@/theme";
-import { ScrollView } from "react-native-gesture-handler";
+import { Pressable, ScrollView } from "react-native-gesture-handler";
+import { Link } from "expo-router";
 
 export default function Info() {
   const backgroundColor = useThemeColor({
@@ -29,7 +30,11 @@ export default function Info() {
         <DiscordInfo />
         <SponsorsInfo />
         <OrganizersInfo />
-        <BuildDetails />
+        <Link asChild href="/secretModal">
+          <Pressable>
+            <BuildDetails />
+          </Pressable>
+        </Link>
         <PoweredByExpo />
       </ScrollView>
     </ThemedView>
