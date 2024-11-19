@@ -46,6 +46,7 @@ export function Bookmark({ session }: { session: Session }) {
           },
         },
         trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.DATE,
           date: fiveMinutesTillSession,
         },
       });
