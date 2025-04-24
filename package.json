@@ -52,7 +52,7 @@
     "react": "19.0.0",
     "react-compiler-runtime": "^19.0.0-beta-a7bf2bd-20241110",
     "react-native": "0.79.1",
-    "react-native-bootsplash": "^6.3.5",
+    "react-native-bootsplash": "^6.3.6",
     "react-native-dynamic-app-icon": "^1.1.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
