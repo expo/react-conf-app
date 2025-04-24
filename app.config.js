@@ -75,6 +75,9 @@ export default {
     },
     owner: EAS_APP_OWNER,
     plugins: [
+      "expo-asset",
+      "expo-build-properties",
+      "expo-web-browser",
       [
         "expo-quick-actions",
         {
