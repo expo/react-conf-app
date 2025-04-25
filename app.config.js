@@ -64,6 +64,7 @@ export default {
       },
       userInterfaceStyle: "automatic",
       package: getAppId(),
+      edgeToEdgeEnabled: true,
     },
     web: {
       favicon: "./assets/favicon.png",
