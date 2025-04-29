@@ -7503,10 +7503,10 @@ react-is@^19.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.1.0.tgz#805bce321546b7e14c084989c77022351bbdd11b"
   integrity sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==
 
-react-native-bootsplash@^6.3.6:
-  version "6.3.6"
-  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-6.3.6.tgz#d6f7c48b3757370ecac70db23bdd80d479ebd427"
-  integrity sha512-xTptowrjH4SDtxzDA1ShpkDUZfVseBD6d7yQt4qm6oejY2zDHoJbiIl9SzXR2tmErJP0pfhrXE20Ta5+ZUz2/A==
+react-native-bootsplash@^6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-6.3.7.tgz#9c8e74aed0764931b74e5c62d114c74071b7fbfa"
+  integrity sha512-CqCaaUM8JzAGM5pV23cbKmxCeprUnzRwihxmWg0VCNYBrkQZhOTDnJpahGclXziVC4cMnX5S1LKyoeIWtmMhHw==
   dependencies:
     "@expo/config-plugins" "^8.0.0 || ^9.0.0"
     "@react-native-community/cli-config-android" "^18.0.0"
