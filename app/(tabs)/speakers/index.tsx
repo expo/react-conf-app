@@ -1,5 +1,5 @@
 import React from "react";
-import { Keyboard, Platform, StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 
 import { NotFound } from "@/components/NotFound";
 
@@ -9,17 +9,11 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { FlatList } from "react-native-gesture-handler";
 import { useLocalSearchParams } from "expo-router";
-import useScrollToTopWithOffset from "@/utils/useScrollToTopWithOffset";
+import { useScrollToTop } from "@react-navigation/native";
 
 export default function Speakers() {
   const ref = React.useRef(null);
-  useScrollToTopWithOffset(
-    ref,
-    Platform.select({
-      ios: -90,
-      default: 0,
-    }),
-  );
+  useScrollToTop(ref);
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
 
   const params = useLocalSearchParams<{ q?: string }>();

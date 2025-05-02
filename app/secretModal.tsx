@@ -41,8 +41,8 @@ export default function SecretModal() {
           fontSize={18}
           style={styles.description}
         >
-          We'll use this place for more demos in the future. For now, here's a
-          little example of native image transitions.
+          We&apos;ll use this place for more demos in the future. For now,
+          here&apos;s a little example of native image transitions.
         </ThemedText>
         <ExpoImageDemo />
         <ReactCompilerDemo />
