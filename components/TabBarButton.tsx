@@ -46,6 +46,7 @@ export function TabBarButton({
         onPress?.(e);
       }}
       onPressIn={() => {
+        // eslint-disable-next-line react-compiler/react-compiler
         scale.value = withSpring(0.92);
       }}
       onPressOut={() => {
