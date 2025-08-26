@@ -68,7 +68,7 @@
     "eslint-config-expo": "~10.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-react-compiler": "^19.1.0-rc.1",
+    "eslint-plugin-react-compiler": "^19.1.0-rc.2",
     "eslint-plugin-react-native": "^5.0.0",
     "patch-package": "^8.0.0",
     "prettier": "^3.2.5",

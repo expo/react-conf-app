@@ -80,7 +80,6 @@ export function Bookmark({ session }: { session: Session }) {
         handlePress();
       }}
       onPressIn={() => {
-        // eslint-disable-next-line react-compiler/react-compiler
         scale.value = withTiming(0.8);
       }}
       onPressOut={() => {
