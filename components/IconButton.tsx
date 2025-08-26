@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import { ThemedView, useThemeColor } from "./Themed";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 import { theme } from "@/theme";
 
@@ -25,7 +25,7 @@ export function IconButton({
   const shadow = useThemeColor({ light: theme.dropShadow, dark: undefined });
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <Pressable onPress={onPress}>
       <ThemedView
         style={[
           styles.button,
@@ -37,7 +37,7 @@ export function IconButton({
       >
         {children}
       </ThemedView>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

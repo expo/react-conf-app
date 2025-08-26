@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 
@@ -47,7 +47,7 @@ export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
       }}
       asChild
     >
-      <TouchableOpacity activeOpacity={0.8}>
+      <Pressable>
         <ThemedView
           lightColor={
             isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
@@ -77,7 +77,7 @@ export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
             {talk.title}
           </ThemedText>
         </ThemedView>
-      </TouchableOpacity>
+      </Pressable>
     </Link>
   );
 }

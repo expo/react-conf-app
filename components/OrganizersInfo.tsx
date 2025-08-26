@@ -1,7 +1,7 @@
 import { Image, ImageSource } from "expo-image";
 import { StyleSheet, View } from "react-native";
 import openWebBrowserAsync from "@/utils/openWebBrowserAsync";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 import { InfoSection } from "./InfoSection";
 import { ThemedText, ThemedView } from "./Themed";
@@ -46,16 +46,13 @@ const Organizer = ({
         darkColor="rgba(255,255,255, 0.9)"
         style={styles.imageContainer}
       >
-        <TouchableOpacity
-          onPress={() => openWebBrowserAsync(organizer.url)}
-          activeOpacity={0.6}
-        >
+        <Pressable onPress={() => openWebBrowserAsync(organizer.url)}>
           <Image
             source={organizer.image}
             style={styles.image}
             contentFit="contain"
           />
-        </TouchableOpacity>
+        </Pressable>
       </ThemedView>
       <ThemedText style={styles.organizerText} fontSize={18}>
         {organizer.description}

@@ -9,7 +9,7 @@ import { Session, Speaker } from "../types";
 import { formatSessionTime } from "../utils/formatDate";
 
 import { useReactConfStore } from "@/store/reactConfStore";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 type Props = {
   session: Session;
@@ -30,7 +30,7 @@ export function TalkCard({ session, isDayOne }: Props) {
       }}
       asChild
     >
-      <TouchableOpacity activeOpacity={0.8}>
+      <Pressable>
         <ThemedView
           lightColor={theme.colorWhite}
           darkColor={theme.colorBlack}
@@ -73,7 +73,7 @@ export function TalkCard({ session, isDayOne }: Props) {
             ))}
           </ThemedView>
         </ThemedView>
-      </TouchableOpacity>
+      </Pressable>
     </Link>
   );
 }

@@ -1,7 +1,7 @@
 import FontAwesome6 from "@expo/vector-icons/build/FontAwesome6";
 import { Image } from "expo-image";
 import { StyleSheet, View, useWindowDimensions } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 import * as Linking from "expo-linking";
 import { InfoSection } from "./InfoSection";
 import { ThemedText, useThemeColor } from "./Themed";
@@ -44,14 +44,10 @@ export function VenueInfo() {
           </ThemedText>
         </View>
       </View>
-      <TouchableOpacity
-        style={styles.venueAddress}
-        onPress={onOpenVenue}
-        activeOpacity={0.8}
-      >
+      <Pressable style={styles.venueAddress} onPress={onOpenVenue}>
         <FontAwesome6 name="location-dot" size={24} color={iconColor} />
         <ThemedText style={styles.address}>{venueAddress}</ThemedText>
-      </TouchableOpacity>
+      </Pressable>
     </InfoSection>
   );
 }

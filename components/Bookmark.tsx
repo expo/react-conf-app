@@ -6,7 +6,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 import * as Notifications from "expo-notifications";
 
 import { useBookmarkStore } from "@/store/bookmarkStore";
@@ -15,8 +15,7 @@ import { registerForPushNotificationsAsync } from "@/utils/registerForPushNotifi
 import { isPast, subMinutes } from "date-fns";
 import { Session } from "@/types";
 
-const AnimatedTouchableOpacity =
-  Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export function Bookmark({ session }: { session: Session }) {
   const toggleBookmarked = useBookmarkStore((state) => state.toggleBookmarked);
@@ -72,7 +71,7 @@ export function Bookmark({ session }: { session: Session }) {
   };
 
   return (
-    <AnimatedTouchableOpacity
+    <AnimatedPressable
       hitSlop={20}
       onPress={() => {
         if (Platform.OS !== "web" && !currentBookmark) {
@@ -82,7 +81,7 @@ export function Bookmark({ session }: { session: Session }) {
       }}
       onPressIn={() => {
         // eslint-disable-next-line react-compiler/react-compiler
-        scale.value = currentBookmark ? withTiming(0.8) : withTiming(1.6);
+        scale.value = withTiming(0.8);
       }}
       onPressOut={() => {
         scale.value = withTiming(1);
@@ -94,6 +93,6 @@ export function Bookmark({ session }: { session: Session }) {
         size={24}
         color={currentBookmark ? theme.colorWhite : `rgba(255, 255, 255, 0.5)`}
       />
-    </AnimatedTouchableOpacity>
+    </AnimatedPressable>
   );
 }

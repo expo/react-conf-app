@@ -1,8 +1,7 @@
-import AntDesign from "@expo/vector-icons/build/AntDesign";
 import Entypo from "@expo/vector-icons/build/Entypo";
 import { useRouter } from "expo-router";
-import { Platform, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 
 import { useThemeColor } from "./Themed";
 
@@ -15,13 +14,9 @@ export function BackButton() {
     dark: theme.colorWhite,
   });
   return (
-    <TouchableOpacity onPress={router.back} hitSlop={40} style={styles.button}>
-      {Platform.OS === "ios" ? (
-        <AntDesign name="closecircle" size={24} color={color} />
-      ) : (
-        <Entypo name="chevron-left" size={24} color={color} />
-      )}
-    </TouchableOpacity>
+    <Pressable onPress={router.back} hitSlop={40} style={styles.button}>
+      <Entypo name="chevron-left" size={24} color={color} />
+    </Pressable>
   );
 }
 

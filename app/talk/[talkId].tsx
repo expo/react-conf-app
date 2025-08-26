@@ -12,7 +12,7 @@ import Animated, {
   SharedValue,
 } from "react-native-reanimated";
 import { BlurView } from "expo-blur";
-import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
+import { Pressable, ScrollView } from "react-native-gesture-handler";
 
 import { NotFound } from "@/components/NotFound";
 import { SpeakerImage } from "@/components/SpeakerImage";
@@ -151,9 +151,9 @@ export default function TalkDetail() {
                   }}
                   asChild
                 >
-                  <TouchableOpacity activeOpacity={0.8}>
+                  <Pressable>
                     <SpeakerDetails speaker={speaker} />
-                  </TouchableOpacity>
+                  </Pressable>
                 </Link>
               ))}
               <Section

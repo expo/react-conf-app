@@ -1,7 +1,7 @@
 import { Image, ImageSource, ImageStyle } from "expo-image";
 import { StyleSheet, View, ViewStyle } from "react-native";
 import openWebBrowserAsync from "@/utils/openWebBrowserAsync";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 import { InfoSection } from "./InfoSection";
 import { ThemedText, ThemedView } from "./Themed";
@@ -116,8 +116,7 @@ const SponsorImage = ({
       darkColor="rgba(255,255,255, 0.9)"
       style={[style, styles.imageContainer]}
     >
-      <TouchableOpacity
-        activeOpacity={0.6}
+      <Pressable
         onPress={() => openWebBrowserAsync(sponsor.url)}
         style={styles.imageContent}
       >
@@ -126,7 +125,7 @@ const SponsorImage = ({
           style={[styles.image, imageStyle]}
           contentFit="contain"
         />
-      </TouchableOpacity>
+      </Pressable>
     </ThemedView>
   );
 };
