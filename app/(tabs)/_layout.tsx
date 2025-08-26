@@ -40,15 +40,9 @@ export default function TabLayout() {
         name="index"
         options={{
           headerShown: false,
-          tabBarButton: (props) => (
-            <TabBarButton
-              {...props}
-              activeTintColor={tabBarActiveTintColor}
-              inactiveTintColor={tabBarInactiveTintColor}
-              icon={({ color }) => (
-                <Feather size={24} name="calendar" color={color} />
-              )}
-            />
+          tabBarButton: (props) => <TabBarButton {...props} />,
+          tabBarIcon: ({ color }) => (
+            <Feather size={24} name="calendar" color={color} />
           ),
         }}
       />
@@ -63,14 +57,8 @@ export default function TabLayout() {
               Bookmarked sessions
             </ThemedText>
           ),
-          tabBarButton: (props) => (
-            <TabBarButton
-              {...props}
-              activeTintColor={tabBarActiveTintColor}
-              inactiveTintColor={tabBarInactiveTintColor}
-              icon={({ color }) => <BookmarkIcon color={color} />}
-            />
-          ),
+          tabBarButton: (props) => <TabBarButton {...props} />,
+          tabBarIcon: ({ color }) => <BookmarkIcon color={color} />,
         }}
       />
       <Tabs.Screen
@@ -85,15 +73,9 @@ export default function TabLayout() {
               Speakers
             </ThemedText>
           ),
-          tabBarButton: (props) => (
-            <TabBarButton
-              {...props}
-              activeTintColor={tabBarActiveTintColor}
-              inactiveTintColor={tabBarInactiveTintColor}
-              icon={({ color }) => (
-                <Ionicons name="people" size={24} color={color} />
-              )}
-            />
+          tabBarButton: (props) => <TabBarButton {...props} />,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="people" size={24} color={color} />
           ),
         }}
       />
@@ -108,15 +90,9 @@ export default function TabLayout() {
               Info
             </ThemedText>
           ),
-          tabBarButton: (props) => (
-            <TabBarButton
-              {...props}
-              activeTintColor={tabBarActiveTintColor}
-              inactiveTintColor={tabBarInactiveTintColor}
-              icon={({ color }) => (
-                <Octicons size={24} name="info" color={color} />
-              )}
-            />
+          tabBarButton: (props) => <TabBarButton {...props} />,
+          tabBarIcon: ({ color }) => (
+            <Octicons size={24} name="info" color={color} />
           ),
         }}
       />
