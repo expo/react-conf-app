@@ -5,7 +5,7 @@ import { SpeakerImage } from "./SpeakerImage";
 import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 import { theme } from "../theme";
 import { Speaker } from "../types";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 type Props = {
   speaker: Speaker;
@@ -24,7 +24,7 @@ export function SpeakerCard({ speaker }: Props) {
       }}
       asChild
     >
-      <TouchableOpacity activeOpacity={0.8}>
+      <Pressable>
         <ThemedView
           style={[styles.speakerCard, shadow]}
           darkColor="rgba(255,255,255,0.15)"
@@ -46,7 +46,7 @@ export function SpeakerCard({ speaker }: Props) {
             </View>
           </View>
         </ThemedView>
-      </TouchableOpacity>
+      </Pressable>
     </Link>
   );
 }

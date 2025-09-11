@@ -29,6 +29,8 @@ Notifications.setNotificationHandler({
     shouldShowAlert: true,
     shouldPlaySound: false,
     shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
   }),
 });
 
@@ -72,9 +74,9 @@ export default function Layout() {
         Notifications.DEFAULT_ACTION_IDENTIFIER
     ) {
       try {
-        const url =
-          lastNotificationResponse.notification.request.content.data.url;
-        if (pathName !== url) {
+        const url = lastNotificationResponse.notification.request.content.data
+          .url as string;
+        if (url && pathName !== url) {
           router.push(url);
         }
       } catch {}

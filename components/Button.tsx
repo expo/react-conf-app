@@ -1,5 +1,5 @@
 import { StyleSheet, ActivityIndicator } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 import { ThemedText, useThemeColor } from "./Themed";
 
@@ -19,11 +19,7 @@ export function Button({
   const shadow = useThemeColor({ light: theme.dropShadow, dark: undefined });
 
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.button, shadow]}
-      activeOpacity={0.8}
-    >
+    <Pressable onPress={onPress} style={[styles.button, shadow]}>
       {isLoading ? (
         <ActivityIndicator color={theme.colorWhite} />
       ) : (
@@ -35,7 +31,7 @@ export function Button({
           {title}
         </ThemedText>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

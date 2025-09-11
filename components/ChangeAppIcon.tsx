@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { View, StyleSheet, Platform } from "react-native";
 import AppIcon from "react-native-dynamic-app-icon";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 import { ThemedText, ThemedView } from "../components/Themed";
 import { theme } from "../theme";
@@ -29,15 +29,14 @@ export default function ChangeAppIcon() {
       </ThemedText>
       <View style={styles.icons}>
         {[defaultIcon, desertIcon].map((icon, index) => (
-          <TouchableOpacity
-            activeOpacity={0.8}
+          <Pressable
             key={index}
             onPress={() => {
               AppIcon.setAppIcon(String(index));
             }}
           >
             <Image source={icon} style={styles.icon} />
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
     </ThemedView>

@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { theme } from "@/theme";
 import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 import { useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Pressable } from "react-native-gesture-handler";
 
 const effects = [
   {
@@ -85,7 +85,7 @@ export function ExpoImageDemo() {
           }
         />
         {effects.map((effect) => (
-          <TouchableOpacity
+          <Pressable
             style={styles.option}
             onPress={() => {
               setImageEffect(effect);
@@ -103,7 +103,7 @@ export function ExpoImageDemo() {
             <ThemedText fontWeight={effect === imageEffect ? "bold" : "medium"}>
               {effect.name || "None"}
             </ThemedText>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </ThemedView>
     </>

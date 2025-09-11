@@ -12,7 +12,7 @@ import Animated, {
   interpolate,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList, Pressable } from "react-native-gesture-handler";
 
 import { ActivityCard } from "@/components/ActivityCard";
 import { NotFound } from "@/components/NotFound";
@@ -220,7 +220,7 @@ const SectionListButton = ({
   const opacity = { opacity: isBold ? 1 : 0.5 };
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+    <Pressable onPress={onPress}>
       <ThemedText
         fontWeight="bold"
         lightColor={theme.colorBlack}
@@ -233,7 +233,7 @@ const SectionListButton = ({
           <ThemedText fontWeight="medium"> {subtitle} </ThemedText>
         ) : null}
       </ThemedText>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

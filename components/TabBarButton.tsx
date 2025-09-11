@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
 } from "react-native";
+import { PropsWithChildren } from "react";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -15,22 +16,14 @@ import Animated, {
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface TabBarButtonProps {
-  icon: React.FC<{ color: string }>;
   onPress?: (e: GestureResponderEvent) => void;
   accessibilityState?: AccessibilityState;
-  activeTintColor: string;
-  inactiveTintColor: string;
 }
 
 export function TabBarButton({
-  icon,
   onPress,
-  accessibilityState,
-  activeTintColor,
-  inactiveTintColor,
-}: TabBarButtonProps) {
-  const focused = accessibilityState?.selected;
-  const color = focused ? activeTintColor : inactiveTintColor;
+  children,
+}: PropsWithChildren<TabBarButtonProps>) {
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -46,7 +39,6 @@ export function TabBarButton({
         onPress?.(e);
       }}
       onPressIn={() => {
-        // eslint-disable-next-line react-compiler/react-compiler
         scale.value = withSpring(0.92);
       }}
       onPressOut={() => {
@@ -54,7 +46,7 @@ export function TabBarButton({
       }}
       style={[styles.pressable, animatedStyle]}
     >
-      {icon({ color })}
+      {children}
     </AnimatedPressable>
   );
 }
