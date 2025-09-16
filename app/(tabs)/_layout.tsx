@@ -52,6 +52,7 @@ export default function TabLayout() {
       labelVisibilityMode="labeled"
       iconColor={tabBarInactiveTintColor}
       indicatorColor={tabBarActiveTintColor + "30"}
+      disableTransparentOnScrollEdge={true} // Used to prevent transparent background on iOS 18 and older
     >
       <NativeTabs.Trigger name="index">
         {Platform.select({
