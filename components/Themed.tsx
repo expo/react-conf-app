@@ -5,6 +5,9 @@ import Animated from "react-native-reanimated";
 import { theme } from "../theme";
 
 type ThemeProps = {
+  color?: { light: string; dark: string };
+
+  // TODO (Kadi): Remove these props
   lightColor?: string;
   darkColor?: string;
 };
@@ -12,7 +15,7 @@ type ThemeProps = {
 export type TextProps = ThemeProps & {
   marginBottom?: number;
   fontSize?: TextStyle["fontSize"];
-  fontWeight?: "light" | "medium" | "bold";
+  fontWeight?: "light" | "medium" | "semiBold" | "bold";
   italic?: boolean;
   animated?: boolean;
 } & Text["props"];
@@ -34,15 +37,17 @@ export function ThemedText(props: TextProps) {
     fontWeight,
     italic,
     animated,
+    color: themeColor,
     ...otherProps
   } = props;
-  const color = useThemeColor({
-    light: lightColor || theme.colorBlack,
-    dark: darkColor || theme.colorWhite,
-  });
+
+  const color = useThemeColor(themeColor ?? theme.color.text);
+
   const fontFamily = (() => {
     if (fontWeight === "light") {
       return italic ? theme.fontFamilyLightItalic : theme.fontFamilyLight;
+    } else if (fontWeight === "semiBold") {
+      return italic ? theme.fontFamilySemiBoldItalic : theme.fontFamilySemiBold;
     } else if (fontWeight === "bold") {
       return italic ? theme.fontFamilyBoldItalic : theme.fontFamilyBold;
     } else {
@@ -68,11 +73,8 @@ export function ThemedText(props: TextProps) {
 }
 
 export function ThemedView(props: ViewProps) {
-  const { style, lightColor, darkColor, animated, ...otherProps } = props;
-  const backgroundColor = useThemeColor({
-    light: lightColor || "transparent",
-    dark: darkColor || "transparent",
-  });
+  const { style, animated, ...otherProps } = props;
+  const backgroundColor = useThemeColor(props.color ?? theme.color.background);
 
   if (animated) {
     return (

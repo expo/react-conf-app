@@ -15,32 +15,46 @@ export function ActivityCard({ session }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText fontSize={16} fontWeight="medium">
+    <View style={styles.container}>
+      <ThemedText
+        fontSize={14}
+        fontWeight="medium"
+        color={theme.color.textSecondary}
+      >
         {formatSessionTime(session, shouldUseLocalTz)}
       </ThemedText>
-      <View style={styles.row}>
-        <ThemedText fontSize={20} fontWeight="bold">
-          {session.title}
-        </ThemedText>
-        <ThemedText fontSize={14} fontWeight="light">
-          {session.room}
-        </ThemedText>
-      </View>
-    </ThemedView>
+      <ThemedView
+        style={styles.content}
+        color={theme.color.backgroundSecondary}
+      >
+        <View style={styles.row}>
+          <ThemedText fontSize={18} fontWeight="semiBold">
+            {session.title}
+          </ThemedText>
+          <ThemedText fontSize={14} fontWeight="light">
+            {session.room}
+          </ThemedText>
+        </View>
+      </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space16,
+    marginHorizontal: theme.space24,
     marginBottom: theme.space16,
-    paddingHorizontal: theme.space12,
-    paddingVertical: theme.space8,
     borderRadius: theme.borderRadius10,
+    gap: theme.space8,
+  },
+  content: {
+    padding: theme.space24,
+    justifyContent: "center",
+    borderRadius: theme.borderRadius12,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
 });

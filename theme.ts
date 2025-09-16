@@ -13,6 +13,16 @@ export const theme = {
   colorThemeLightGrey: "#FCFBFE",
   colorThemeGrey: "#F5F4F3",
 
+  color: {
+    text: { light: "#121212", dark: "#FFFFFF" },
+    textSecondary: { light: "#808080", dark: "#808080" },
+    background: { light: "#FFFFFF", dark: "#000000" },
+    backgroundSecondary: {
+      light: "rgba(18,18,18, 0.04)",
+      dark: "rgba(255,255,255, 0.08)",
+    },
+  },
+
   darkActiveContent: "rgba(255,255,255, 0.3)",
 
   lightActiveContent: "rgba(0,0,0, 0.1)",
@@ -32,11 +42,14 @@ export const theme = {
   fontFamilyLightItalic: "FreightSansProLight-Italic",
   fontFamily: "FreightSansProBook-Regular",
   fontFamilyItalic: "FreightSansProBook-Italic",
+  fontFamilySemiBold: "FreightSansProSemiBold-Regular",
+  fontFamilySemiBoldItalic: "FreightSansProSemiBold-Italic",
   fontFamilyBold: "FreightSansProBold-Regular",
   fontFamilyBoldItalic: "FreightSansProBold-Italic",
 
   borderRadius6: 6,
   borderRadius10: 10,
+  borderRadius12: 12,
   borderRadius20: 20,
 
   dropShadow: {
