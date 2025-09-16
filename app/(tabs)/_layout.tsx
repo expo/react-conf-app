@@ -1,4 +1,4 @@
-import Feather from "@expo/vector-icons/build/Feather";
+import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import Octicons from "@expo/vector-icons/build/Octicons";
 import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
@@ -10,13 +10,21 @@ import {
   VectorIcon,
 } from "expo-router/unstable-native-tabs";
 import React from "react";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { ColorValue, ImageSourcePropType, Platform } from "react-native";
 
-import { TabBarButton } from "@/components/TabBarButton";
-import { ThemedText, useThemeColor } from "@/components/Themed";
+import { useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
 import { useBookmarkStore } from "@/store/bookmarkStore";
-import { Platform } from "react-native";
+
+// Todo (betomoedano): In the future we can remove this type. Learn more: https://exponent-internal.slack.com/archives/C0447EFTS74/p1758042759724779?thread_ts=1758039375.241799&cid=C0447EFTS74
+type VectorIconFamily = {
+  getImageSource: (
+    name: string,
+    size: number,
+    // eslint-disable-next-line prettier/prettier
+    color: ColorValue
+  ) => Promise<ImageSourcePropType>;
+};
 
 export default function TabLayout() {
   const tabBarBackgroundColor = useThemeColor({
@@ -41,12 +49,22 @@ export default function TabLayout() {
     <NativeTabs
       tintColor={tabBarActiveTintColor}
       backgroundColor={tabBarBackgroundColor}
+      labelVisibilityMode="labeled"
+      iconColor={tabBarInactiveTintColor}
+      indicatorColor={tabBarActiveTintColor + "30"}
     >
       <NativeTabs.Trigger name="index">
         {Platform.select({
           ios: <Icon sf={"calendar"} />,
           android: (
-            <Icon src={<VectorIcon family={Feather} name="calendar" />} />
+            <Icon
+              src={
+                <VectorIcon
+                  family={Feather as VectorIconFamily}
+                  name="calendar"
+                />
+              }
+            />
           ),
         })}
         <Label>Calendar</Label>
@@ -57,7 +75,10 @@ export default function TabLayout() {
           android: (
             <Icon
               src={
-                <VectorIcon family={MaterialCommunityIcons} name={"bookmark"} />
+                <VectorIcon
+                  family={MaterialCommunityIcons as VectorIconFamily}
+                  name={"bookmark"}
+                />
               }
             />
           ),
@@ -69,7 +90,14 @@ export default function TabLayout() {
         {Platform.select({
           ios: <Icon sf={"person.2"} />,
           android: (
-            <Icon src={<VectorIcon family={Ionicons} name={"people"} />} />
+            <Icon
+              src={
+                <VectorIcon
+                  family={Ionicons as VectorIconFamily}
+                  name={"people"}
+                />
+              }
+            />
           ),
         })}
         <Label>Speakers</Label>
@@ -78,21 +106,17 @@ export default function TabLayout() {
         {Platform.select({
           ios: <Icon sf={"info"} />,
           android: (
-            <Icon src={<VectorIcon family={Octicons} name={"info"} />} />
+            <Icon
+              src={
+                <VectorIcon
+                  family={Octicons as VectorIconFamily}
+                  name={"info"}
+                />
+              }
+            />
           ),
         })}
       </NativeTabs.Trigger>
     </NativeTabs>
   );
 }
-
-const BookmarkIcon = ({ color }: { color: string }) => {
-  const bookmarks = useBookmarkStore((state) => state.bookmarks);
-  return (
-    <MaterialCommunityIcons
-      name={bookmarks.length ? "bookmark-check" : "bookmark"}
-      size={24}
-      color={color}
-    />
-  );
-};
