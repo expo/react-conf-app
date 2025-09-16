@@ -2,14 +2,14 @@ import { Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
 import { Bookmark } from "./Bookmark";
-import { SpeakerImage } from "./SpeakerImage";
 import { ThemedText, ThemedView } from "./Themed";
 import { theme } from "../theme";
-import { Session, Speaker } from "../types";
+import { Session } from "../types";
 import { formatSessionTime } from "../utils/formatDate";
 
 import { useReactConfStore } from "@/store/reactConfStore";
 import { Pressable } from "react-native-gesture-handler";
+import { SpeakerDetails } from "./SpeakerDetails";
 
 type Props = {
   session: Session;
@@ -62,30 +62,6 @@ export function TalkCard({ session, isDayOne }: Props) {
   );
 }
 
-function SpeakerDetails({ speaker }: { speaker: Speaker }) {
-  return (
-    <View style={styles.speaker}>
-      <SpeakerImage
-        profilePicture={speaker.profilePicture}
-        animated
-        size="small"
-      />
-      <View style={styles.speakerDetails}>
-        <ThemedText fontSize={16} fontWeight="semiBold">
-          {speaker.fullName}
-        </ThemedText>
-        <ThemedText
-          fontSize={16}
-          fontWeight="medium"
-          color={theme.color.textSecondary}
-        >
-          {speaker.tagLine}
-        </ThemedText>
-      </View>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: theme.space24,
@@ -96,14 +72,6 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius10,
     padding: theme.space24,
     gap: theme.space24,
-  },
-  speaker: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  speakerDetails: {
-    flex: 1,
-    justifyContent: "center",
   },
   titleAndBookmark: {
     flexDirection: "row",

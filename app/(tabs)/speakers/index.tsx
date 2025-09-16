@@ -1,15 +1,15 @@
 import React from "react";
-import { Keyboard, StyleSheet, View } from "react-native";
+import { Keyboard, Pressable, StyleSheet } from "react-native";
 
 import { NotFound } from "@/components/NotFound";
 
-import { SpeakerCard } from "@/components/SpeakerCard";
 import { ThemedText, ThemedView } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { FlatList } from "react-native-gesture-handler";
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import { useScrollToTop } from "@react-navigation/native";
+import { SpeakerDetails } from "@/components/SpeakerDetails";
 
 export default function Speakers() {
   const ref = React.useRef(null);
@@ -46,9 +46,23 @@ export default function Speakers() {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         ItemSeparatorComponent={() => (
-          <View style={{ height: theme.space16 }} />
+          <ThemedView style={{ height: 1 }} color={theme.color.border} />
         )}
-        renderItem={({ item }) => <SpeakerCard speaker={item} key={item.id} />}
+        renderItem={({ item }) => (
+          <Link
+            push
+            key={item.id}
+            href={{
+              pathname: "/speaker/[speaker]",
+              params: { speaker: item.id },
+            }}
+            asChild
+          >
+            <Pressable style={styles.speakerContainer}>
+              <SpeakerDetails speaker={item} key={item.id} />
+            </Pressable>
+          </Link>
+        )}
         data={filteredSpeakers}
         ListEmptyComponent={
           <ThemedView style={styles.noResultsContainer}>
@@ -68,9 +82,12 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingTop: theme.space16,
+    paddingHorizontal: theme.space24,
   },
   noResultsContainer: {
     paddingHorizontal: theme.space24,
+  },
+  speakerContainer: {
+    paddingVertical: theme.space16,
   },
 });

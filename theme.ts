@@ -23,6 +23,7 @@ export const theme = {
       light: "rgba(18,18,18, 0.04)",
       dark: "rgba(255,255,255, 0.08)",
     },
+    border: { light: "#D9D9D0", dark: "#363A3F" },
   },
 
   darkActiveContent: "rgba(255,255,255, 0.3)",
