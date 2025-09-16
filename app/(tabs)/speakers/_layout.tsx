@@ -4,12 +4,9 @@ import { Stack, useRouter } from "expo-router";
 
 export default function Layout() {
   const router = useRouter();
-  const tabBarBackgroundColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkestBlue,
-  });
+  const tabBarBackgroundColor = useThemeColor(theme.color.background);
   const tabBarTintColor = useThemeColor({
-    light: theme.colorReactDarkBlue,
+    light: theme.colorBlack,
     dark: theme.colorWhite,
   });
 

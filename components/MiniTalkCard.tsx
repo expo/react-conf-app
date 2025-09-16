@@ -13,10 +13,7 @@ import { Bookmark } from "./Bookmark";
 export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
-  const iconColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkBlue,
-  });
+  const iconColor = useThemeColor(theme.color.background);
 
   const { talk, isDayOne } = (() => {
     const dayOneTalk = dayOne.find(

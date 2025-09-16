@@ -42,11 +42,7 @@ export function OfflineBanner() {
 
   return (
     <Animated.View style={animatedStyle}>
-      <ThemedView
-        lightColor={theme.colorWhite}
-        darkColor={theme.colorDarkBlue}
-        style={styles.container}
-      >
+      <ThemedView color={theme.color.background} style={styles.container}>
         <ThemedView
           lightColor={theme.colorThemeGrey}
           darkColor="#000"

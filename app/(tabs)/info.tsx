@@ -15,10 +15,7 @@ import { Pressable, ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 
 export default function Info() {
-  const backgroundColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkBlue,
-  });
+  const backgroundColor = useThemeColor(theme.color.background);
   const ref = React.useRef(null);
   useScrollToTop(ref);
 

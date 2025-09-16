@@ -11,13 +11,10 @@ import { theme } from "@/theme";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 
 export default function TabLayout() {
-  const tabBarBackgroundColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkestBlue,
-  });
+  const tabBarBackgroundColor = useThemeColor(theme.color.background);
 
   const tabBarActiveTintColor = useThemeColor({
-    light: theme.colorReactDarkBlue,
+    light: theme.colorBlack,
     dark: theme.colorWhite,
   });
 

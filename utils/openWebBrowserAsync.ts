@@ -11,12 +11,12 @@ export default function openBrowserAsync(url: string) {
     ...(colorScheme === "dark"
       ? {
           // Optional: we could match this to theme
-          toolbarColor: theme.colorDarkestBlue,
+          toolbarColor: theme.colorBlack,
           controlsColor: "#fff",
         }
       : {
           // Optional: we could match this to theme
-          controlsColor: theme.colorReactDarkBlue,
+          controlsColor: theme.colorBlack,
         }),
   });
 }

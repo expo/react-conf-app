@@ -13,11 +13,7 @@ export default function SecretModal() {
 
   return (
     <ScrollView>
-      <ThemedView
-        style={styles.container}
-        darkColor={theme.colorDarkBlue}
-        lightColor={theme.colorWhite}
-      >
+      <ThemedView style={styles.container} color={theme.color.background}>
         {Platform.OS === "ios" ? (
           <LottieView
             autoPlay

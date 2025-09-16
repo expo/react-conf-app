@@ -87,17 +87,10 @@ export default function TalkDetail() {
   }, [navigation, talk]);
 
   const insets = useSafeAreaInsets();
-  const iconColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkBlue,
-  });
+  const iconColor = useThemeColor(theme.color.background);
 
   return (
-    <ThemedView
-      style={styles.container}
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
-    >
+    <ThemedView style={styles.container} color={theme.color.background}>
       {talk ? (
         <>
           <AnimatedScrollView
@@ -136,11 +129,7 @@ export default function TalkDetail() {
                 </ThemedText>
               </View>
             </ThemedView>
-            <ThemedView
-              darkColor={theme.colorDarkBlue}
-              lightColor={theme.colorWhite}
-              style={styles.content}
-            >
+            <ThemedView color={theme.color.background} style={styles.content}>
               {talk.speakers.map((speaker) => (
                 <Link
                   push
@@ -203,8 +192,7 @@ function HeaderBackgroundAndroid({
   return (
     <ThemedView
       animated
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
+      color={theme.color.background}
       style={[
         animatedStyle,
         {

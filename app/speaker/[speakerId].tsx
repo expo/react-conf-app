@@ -27,11 +27,7 @@ export default function SpeakerDetail() {
   }, [speaker, navigation]);
 
   return (
-    <ThemedView
-      style={styles.container}
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
-    >
+    <ThemedView style={styles.container} color={theme.color.background}>
       {speaker ? (
         <ScrollView
           style={styles.container}

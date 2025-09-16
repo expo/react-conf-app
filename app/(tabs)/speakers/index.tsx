@@ -36,11 +36,7 @@ export default function Speakers() {
   };
 
   return (
-    <ThemedView
-      style={styles.container}
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
-    >
+    <ThemedView style={styles.container} color={theme.color.background}>
       <FlatList
         scrollToOverflowEnabled
         contentInsetAdjustmentBehavior="automatic"

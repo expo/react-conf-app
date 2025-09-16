@@ -26,11 +26,7 @@ export default function Bookmarks() {
   );
 
   return (
-    <ThemedView
-      style={styles.container}
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
-    >
+    <ThemedView style={styles.container} color={theme.color.background}>
       {dayOneFiltered.length || dayTwoFiltered.length ? (
         <FlatList
           ref={scrollRef}

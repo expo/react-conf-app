@@ -70,8 +70,7 @@ export function ReactConfHeader({ scrollOffset }: ReactConfHeaderProps) {
   return (
     <ThemedView
       style={[styles.header, headerStyle]}
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
+      color={theme.color.background}
       animated
     >
       <AnimatedImage

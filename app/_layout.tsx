@@ -42,15 +42,14 @@ export default function Layout() {
 
   const { refreshData, lastRefreshed } = useReactConfStore();
 
-  const tabBarBackgroundColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkestBlue,
-  });
+  const tabBarBackgroundColor = useThemeColor(theme.color.background);
 
   // Keep the root view background color in sync with the current theme
   useEffect(() => {
     setBackgroundColorAsync(
-      colorScheme === "dark" ? theme.colorDarkestBlue : theme.colorWhite,
+      colorScheme === "dark"
+        ? theme.color.background.dark
+        : theme.color.background.light,
     );
   }, [colorScheme]);
 
@@ -168,7 +167,7 @@ export default function Layout() {
                   ),
                   ...(colorScheme === "dark"
                     ? {
-                        headerStyle: { backgroundColor: theme.colorDarkBlue },
+                        headerStyle: { backgroundColor: theme.colorBlack },
                         headerTitleStyle: { color: "white" },
                       }
                     : {}),

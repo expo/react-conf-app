@@ -15,11 +15,7 @@ export function NotFound({ message }: { message: string }) {
     dark: theme.colorWhite,
   });
   return (
-    <ThemedView
-      style={styles.container}
-      lightColor={theme.colorWhite}
-      darkColor={theme.colorDarkestBlue}
-    >
+    <ThemedView style={styles.container} color={theme.color.background}>
       <ThemedText fontWeight="bold" fontSize={24} style={styles.heading}>
         {message}
       </ThemedText>

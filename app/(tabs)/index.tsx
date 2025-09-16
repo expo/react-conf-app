@@ -60,10 +60,7 @@ export default function Schedule() {
     ),
   }));
 
-  const sectionListBackgroundColor = useThemeColor({
-    light: theme.colorWhite,
-    dark: theme.colorDarkestBlue,
-  });
+  const sectionListBackgroundColor = useThemeColor(theme.color.background);
 
   useFocusEffect(() => {
     refreshSchedule({ ttlMs: 60_000 });
@@ -111,8 +108,7 @@ export default function Schedule() {
   return (
     <ThemedView
       style={[styles.container, { paddingTop: insets.top }]}
-      darkColor={theme.colorDarkBlue}
-      lightColor={theme.colorWhite}
+      color={theme.color.background}
     >
       <ThemedView style={[styles.container, paddingTopStyle]} animated>
         <AnimatedFlatList
@@ -137,8 +133,7 @@ export default function Schedule() {
                       : theme.colorLightGreen,
                   },
                 ]}
-                lightColor={theme.colorWhite}
-                darkColor={theme.colorDarkBlue}
+                color={theme.color.background}
               >
                 <SectionListButton
                   title="Day 1"
@@ -168,8 +163,7 @@ export default function Schedule() {
                         : theme.colorLightGreen,
                     },
                   ]}
-                  lightColor={theme.colorWhite}
-                  darkColor={theme.colorDarkBlue}
+                  color={theme.color.background}
                 >
                   <SectionListButton
                     title="Day 1"

@@ -2,9 +2,7 @@ import { Platform } from "react-native";
 
 export const theme = {
   colorWhite: "#FFFFFF",
-  colorBlack: "#051726",
-  colorDarkBlue: "#051726",
-  colorDarkestBlue: "#091725",
+  colorBlack: "#000000",
   colorLightGreen: "#9BDFB1",
   colorDarkGreen: "#1AC9A2",
   colorGrey: "#adb5bd",
