@@ -55,7 +55,7 @@ export default function TabLayout() {
     >
       <NativeTabs.Trigger name="index">
         {Platform.select({
-          ios: <Icon sf={"calendar"} />,
+          ios: <Icon sf={"calendar"} selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
@@ -71,7 +71,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="bookmarks">
         {Platform.select({
-          ios: <Icon sf={"bookmark"} />,
+          ios: <Icon sf={"bookmark"} selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
@@ -88,7 +88,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="speakers" role="search">
         {Platform.select({
-          ios: <Icon sf={"person.2"} />,
+          ios: <Icon sf={"person.2"} selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
@@ -104,7 +104,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="info">
         {Platform.select({
-          ios: <Icon sf={"info"} />,
+          ios: <Icon sf={"info"} selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
