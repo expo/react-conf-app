@@ -23,10 +23,7 @@ export function ActivityCard({ session }: Props) {
       >
         {formatSessionTime(session, shouldUseLocalTz)}
       </ThemedText>
-      <ThemedView
-        style={styles.content}
-        color={theme.color.backgroundSecondary}
-      >
+      <ThemedView style={styles.content} color={theme.color.backgroundTertiary}>
         <View style={styles.row}>
           <ThemedText fontSize={18} fontWeight="semiBold">
             {session.title}

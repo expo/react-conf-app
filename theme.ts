@@ -18,6 +18,10 @@ export const theme = {
     textSecondary: { light: "#808080", dark: "#808080" },
     background: { light: "#FFFFFF", dark: "#000000" },
     backgroundSecondary: {
+      light: "rgba(18,18,18, 0.06)",
+      dark: "rgba(255,255,255, 0.14)",
+    },
+    backgroundTertiary: {
       light: "rgba(18,18,18, 0.04)",
       dark: "rgba(255,255,255, 0.08)",
     },

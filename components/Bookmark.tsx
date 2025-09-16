@@ -88,9 +88,9 @@ export function Bookmark({ session }: { session: Session }) {
       style={animatedStyle}
     >
       <MaterialCommunityIcons
-        name={currentBookmark ? "bookmark-check" : "bookmark"}
+        name={currentBookmark ? "bookmark" : "bookmark-outline"}
         size={24}
-        color={currentBookmark ? theme.colorWhite : `rgba(255, 255, 255, 0.5)`}
+        color={currentBookmark ? theme.colorReactLightBlue : theme.colorGrey}
       />
     </AnimatedPressable>
   );

@@ -11,12 +11,14 @@ export function SpeakerImage({
   animated,
 }: {
   profilePicture?: string | null;
-  size?: "medium" | "large" | "xlarge";
+  size?: "small" | "medium" | "large" | "xlarge";
   style?: ViewStyle;
   animated?: boolean;
 }) {
   const imageSize = (() => {
     switch (size) {
+      case "small":
+        return styles.imageSizeSmall;
       case "large":
         return styles.imageSizeLarge;
       case "xlarge":
@@ -71,13 +73,17 @@ export function SpeakerImage({
 const styles = StyleSheet.create({
   imageContainer: {
     marginRight: theme.space12,
-    borderRadius: theme.borderRadius10,
+    borderRadius: 100,
     overflow: "hidden",
   },
   profileImage: {
     width: 50,
     height: 70,
     ...StyleSheet.absoluteFillObject,
+  },
+  imageSizeSmall: {
+    width: 32,
+    height: 32,
   },
   imageSizeMedium: {
     width: 60,

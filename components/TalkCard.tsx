@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 
 import { Bookmark } from "./Bookmark";
 import { SpeakerImage } from "./SpeakerImage";
-import { ThemedText, ThemedView, useThemeColor } from "./Themed";
+import { ThemedText, ThemedView } from "./Themed";
 import { theme } from "../theme";
 import { Session, Speaker } from "../types";
 import { formatSessionTime } from "../utils/formatDate";
@@ -19,8 +19,6 @@ type Props = {
 export function TalkCard({ session, isDayOne }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
 
-  const shadow = useThemeColor({ light: theme.dropShadow, dark: undefined });
-
   return (
     <Link
       push
@@ -31,43 +29,29 @@ export function TalkCard({ session, isDayOne }: Props) {
       asChild
     >
       <Pressable>
-        <ThemedView
-          lightColor={theme.colorWhite}
-          darkColor={theme.colorBlack}
-          style={[styles.container, shadow]}
-        >
-          <ThemedView
-            lightColor={
-              isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
-            }
-            darkColor={
-              isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
-            }
-            style={styles.heading}
+        <ThemedView style={styles.container}>
+          <ThemedText
+            fontSize={14}
+            fontWeight="medium"
+            color={theme.color.textSecondary}
+            marginBottom={theme.space8}
           >
-            <View style={styles.timeAndBookmark}>
-              <ThemedText fontSize={18} fontWeight="medium">
-                {formatSessionTime(session, shouldUseLocalTz)}
+            {formatSessionTime(session, shouldUseLocalTz)}
+          </ThemedText>
+          <ThemedView
+            color={theme.color.backgroundSecondary}
+            style={styles.content}
+          >
+            <View style={styles.titleAndBookmark}>
+              <ThemedText
+                fontSize={18}
+                fontWeight="semiBold"
+                style={{ flex: 1 }}
+              >
+                {session.title}
               </ThemedText>
               <Bookmark session={session} />
             </View>
-            <ThemedText
-              fontSize={20}
-              fontWeight="bold"
-              marginBottom={theme.space12}
-            >
-              {session.title}
-            </ThemedText>
-          </ThemedView>
-          <ThemedView
-            style={styles.content}
-            lightColor={
-              isDayOne ? "rgba(88,196,220, 0.15)" : "rgba(155,223,177, 0.15)"
-            }
-            darkColor={
-              isDayOne ? "rgba(88,196,220, 0.15)" : "rgba(155,223,177, 0.15)"
-            }
-          >
             {session.speakers.map((speaker) => (
               <SpeakerDetails speaker={speaker} key={speaker.id} />
             ))}
@@ -81,12 +65,20 @@ export function TalkCard({ session, isDayOne }: Props) {
 function SpeakerDetails({ speaker }: { speaker: Speaker }) {
   return (
     <View style={styles.speaker}>
-      <SpeakerImage profilePicture={speaker.profilePicture} animated />
+      <SpeakerImage
+        profilePicture={speaker.profilePicture}
+        animated
+        size="small"
+      />
       <View style={styles.speakerDetails}>
-        <ThemedText fontSize={18} fontWeight="bold">
+        <ThemedText fontSize={16} fontWeight="semiBold">
           {speaker.fullName}
         </ThemedText>
-        <ThemedText fontSize={16} fontWeight="medium">
+        <ThemedText
+          fontSize={16}
+          fontWeight="medium"
+          color={theme.color.textSecondary}
+        >
           {speaker.tagLine}
         </ThemedText>
       </View>
@@ -96,31 +88,24 @@ function SpeakerDetails({ speaker }: { speaker: Speaker }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space16,
+    marginHorizontal: theme.space24,
     marginBottom: theme.space16,
     borderRadius: theme.borderRadius10,
   },
-  heading: {
-    borderTopRightRadius: theme.borderRadius10,
-    borderTopLeftRadius: theme.borderRadius10,
-    paddingHorizontal: theme.space12,
-    paddingTop: theme.space12,
+  content: {
+    borderRadius: theme.borderRadius10,
+    padding: theme.space24,
+    gap: theme.space24,
   },
   speaker: {
     flexDirection: "row",
-    marginBottom: theme.space12,
+    alignItems: "center",
   },
   speakerDetails: {
     flex: 1,
     justifyContent: "center",
   },
-  content: {
-    paddingTop: theme.space12,
-    paddingHorizontal: theme.space12,
-    borderBottomRightRadius: theme.borderRadius10,
-    borderBottomLeftRadius: theme.borderRadius10,
-  },
-  timeAndBookmark: {
+  titleAndBookmark: {
     flexDirection: "row",
     justifyContent: "space-between",
   },
