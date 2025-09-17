@@ -8,14 +8,16 @@ export function InfoSection({
   title,
   children,
 }: {
-  title: string;
+  title?: string;
   children: React.ReactElement | React.ReactElement[];
 }) {
   return (
     <View style={styles.infoContainer}>
-      <ThemedText fontSize={38} style={styles.heading}>
-        {title}
-      </ThemedText>
+      {title && (
+        <ThemedText fontSize={38} style={styles.heading}>
+          {title}
+        </ThemedText>
+      )}
       <ThemedView
         style={styles.container}
         lightColor={theme.colorThemeGrey}

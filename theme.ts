@@ -16,12 +16,16 @@ export const theme = {
     textSecondary: { light: "#808080", dark: "#808080" },
     background: { light: "#FFFFFF", dark: "#000000" },
     backgroundSecondary: {
-      light: "rgba(18,18,18, 0.06)",
-      dark: "rgba(255,255,255, 0.14)",
+      light: "#f1f1f1",
+      dark: "#242424",
     },
     backgroundTertiary: {
-      light: "rgba(18,18,18, 0.04)",
-      dark: "rgba(255,255,255, 0.08)",
+      light: "#f5f5f5",
+      dark: "#141414",
+    },
+    backgroundElement: {
+      light: "#F1F1F1",
+      dark: "#141414",
     },
     border: { light: "#D9D9D0", dark: "#363A3F" },
   },
