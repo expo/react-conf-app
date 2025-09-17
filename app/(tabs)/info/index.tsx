@@ -21,7 +21,11 @@ export default function Info() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor }]}>
-      <ScrollView style={styles.scrollView} ref={ref}>
+      <ScrollView
+        style={styles.scrollView}
+        ref={ref}
+        contentInsetAdjustmentBehavior="automatic"
+      >
         <VenueInfo />
         <LiveStreamInfo />
         <DiscordInfo />

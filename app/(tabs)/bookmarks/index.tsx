@@ -29,6 +29,7 @@ export default function Bookmarks() {
     <ThemedView style={styles.container} color={theme.color.background}>
       {dayOneFiltered.length || dayTwoFiltered.length ? (
         <FlatList
+          contentInsetAdjustmentBehavior="automatic"
           ref={scrollRef}
           contentContainerStyle={styles.flatListContainer}
           data={[
