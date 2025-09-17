@@ -1,8 +1,8 @@
-# Conference App for React Conf 2024
+# Conference App for React Conf 2025
 
-This is the source code for the React Conf 2024 app. Download it from stores: [Google Play](https://play.google.com/store/apps/details?id=com.reactconf.app), [App Store](https://apps.apple.com/gb/app/react-conf/id6499559897).
+This is the source code for the React Conf 2025 app. Download it from stores: [Google Play](https://play.google.com/store/apps/details?id=com.reactconf.app), [App Store](https://apps.apple.com/gb/app/react-conf/id6499559897).
 
-To run the app locally, clone the repo and install dependencies with `yarn` (**yarn.lock** was generated with Yarn v1). Next, either [compile and run it locally](#compile-and-run-locally) or [build and run it with EAS](#build-and-run-with-eas).
+To run the app locally, clone the repo and install dependencies with [Bun](https://bun.sh/) `bun install`. Next, either [compile and run it locally](#compile-and-run-locally) or [build and run it with EAS](#build-and-run-with-eas).
 
 ## Compile and run locally
 
