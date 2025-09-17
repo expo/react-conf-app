@@ -1,7 +1,8 @@
 import { Button } from "./Button";
-import { InfoSection } from "./InfoSection";
-import { ThemedText } from "./Themed";
+import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 import * as Linking from "expo-linking";
+import { StyleSheet } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import { theme } from "@/theme";
 
@@ -10,13 +11,30 @@ export function DiscordInfo() {
     Linking.openURL("https://discord.gg/reactconf");
   };
 
+  const iconColor = useThemeColor(theme.color.textSecondary);
   return (
-    <InfoSection title="Discord Server">
-      <ThemedText style={{ marginBottom: theme.space24 }}>
-        Chat with other folks at the conference on the React Conf 2024 Discord
-        server. Coordinate around ridesharing and external activities.
+    <ThemedView style={styles.container} color={theme.color.backgroundElement}>
+      <MaterialIcons name="discord" size={42} color={iconColor} />
+      <ThemedText style={styles.text} color={theme.color.textSecondary}>
+        Chat with other folks at the conference via the dedicated Discord
+        server. Fun activities? Ridesharing?
       </ThemedText>
       <Button onPress={handlePress} title="Join us on Discord" />
-    </InfoSection>
+    </ThemedView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: theme.space24,
+    marginBottom: theme.space16,
+    borderRadius: theme.borderRadius12,
+    padding: theme.space24,
+    alignItems: "center",
+    gap: theme.space16,
+  },
+  text: {
+    textAlign: "center",
+    marginBottom: theme.space8,
+  },
+});
