@@ -2,7 +2,7 @@ import { Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
 import { Bookmark } from "./Bookmark";
-import { ThemedText, ThemedView } from "./Themed";
+import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 import { theme } from "../theme";
 import { Session } from "../types";
 import { formatSessionTime } from "../utils/formatDate";
@@ -14,10 +14,12 @@ import { SpeakerDetails } from "./SpeakerDetails";
 type Props = {
   session: Session;
   isDayOne: boolean;
+  isBookmarked?: boolean;
 };
 
-export function TalkCard({ session, isDayOne }: Props) {
+export function TalkCard({ session, isDayOne, isBookmarked = false }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
+  const borderColor = useThemeColor(theme.color.border);
 
   return (
     <Link
@@ -30,14 +32,16 @@ export function TalkCard({ session, isDayOne }: Props) {
     >
       <Pressable>
         <ThemedView style={styles.container}>
-          <ThemedText
-            fontSize={14}
-            fontWeight="medium"
-            color={theme.color.textSecondary}
-            marginBottom={theme.space8}
-          >
-            {formatSessionTime(session, shouldUseLocalTz)}
-          </ThemedText>
+          {!isBookmarked && (
+            <ThemedText
+              fontSize={14}
+              fontWeight="medium"
+              color={theme.color.textSecondary}
+              marginBottom={theme.space8}
+            >
+              {formatSessionTime(session, shouldUseLocalTz)}
+            </ThemedText>
+          )}
           <ThemedView
             color={theme.color.backgroundSecondary}
             style={styles.content}
@@ -52,6 +56,16 @@ export function TalkCard({ session, isDayOne }: Props) {
               </ThemedText>
               <Bookmark session={session} />
             </View>
+            {isBookmarked && (
+              <View style={[styles.time, { borderColor }]}>
+                <ThemedText fontSize={14} fontWeight="medium">
+                  {formatSessionTime(session, shouldUseLocalTz)}
+                </ThemedText>
+                <ThemedText fontSize={14} fontWeight="medium">
+                  {isDayOne ? "Day 1" : "Day 2"}
+                </ThemedText>
+              </View>
+            )}
             {session.speakers.map((speaker) => (
               <SpeakerDetails speaker={speaker} key={speaker.id} />
             ))}
@@ -76,5 +90,12 @@ const styles = StyleSheet.create({
   titleAndBookmark: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  time: {
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    paddingVertical: theme.space16,
+    justifyContent: "space-between",
+    flexDirection: "row",
   },
 });

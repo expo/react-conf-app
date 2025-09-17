@@ -40,6 +40,7 @@ export default function Bookmarks() {
               key={item.talk.id}
               session={item.talk}
               isDayOne={item.isDayOne}
+              isBookmarked={true}
             />
           )}
         />
