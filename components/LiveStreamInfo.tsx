@@ -31,7 +31,13 @@ export function LiveStreamInfo() {
           Live Stream
         </ThemedText>
       </View>
-      <ThemedText style={{ marginBottom: theme.space24, color: borderColor }}>
+      <ThemedText
+        style={{
+          marginBottom: theme.space24,
+          textAlign: "center",
+          color: borderColor,
+        }}
+      >
         Join React Conf from anywhere with our free live stream access. Watch
         all the talks remotely.
       </ThemedText>
