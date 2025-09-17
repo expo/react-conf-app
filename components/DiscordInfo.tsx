@@ -11,7 +11,11 @@ export function DiscordInfo() {
     Linking.openURL("https://discord.gg/reactconf");
   };
 
-  const iconColor = useThemeColor(theme.color.textSecondary);
+  const iconColor = useThemeColor({
+    light: theme.color.textSecondary.light,
+    dark: theme.colorWhite,
+  });
+
   return (
     <ThemedView style={styles.container} color={theme.color.backgroundElement}>
       <MaterialIcons name="discord" size={42} color={iconColor} />

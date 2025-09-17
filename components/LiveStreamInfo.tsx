@@ -10,26 +10,28 @@ export function LiveStreamInfo() {
     openWebBrowserAsync("https://conf.react.dev/#newsletter");
   };
 
-  const borderColor = useThemeColor(theme.color.textSecondary);
+  const borderColor = useThemeColor({
+    light: theme.color.textSecondary.light,
+    dark: theme.colorWhite,
+  });
   return (
     <ThemedView style={styles.container} color={theme.color.backgroundElement}>
       <View style={[styles.liveStreamContainer, { borderColor }]}>
-        <ThemedView
-          style={styles.liveStreamDot}
-          color={theme.color.textSecondary}
+        <View
+          style={[styles.liveStreamDot, { backgroundColor: borderColor }]}
         />
         <ThemedText
           fontWeight="semiBold"
           fontSize={14}
-          color={theme.color.textSecondary}
+          color={{
+            light: theme.color.textSecondary.light,
+            dark: theme.colorWhite,
+          }}
         >
           Live Stream
         </ThemedText>
       </View>
-      <ThemedText
-        style={{ marginBottom: theme.space24 }}
-        color={theme.color.textSecondary}
-      >
+      <ThemedText style={{ marginBottom: theme.space24, color: borderColor }}>
         Join React Conf from anywhere with our free live stream access. Watch
         all the talks remotely.
       </ThemedText>

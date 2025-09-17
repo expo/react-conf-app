@@ -18,13 +18,21 @@ export function Button({
     light: theme.colorBlack,
     dark: theme.colorWhite,
   });
+  const textColor = useThemeColor({
+    light: theme.colorWhite,
+    dark: theme.colorBlack,
+  });
 
   return (
     <Pressable onPress={onPress} style={[styles.button, { backgroundColor }]}>
       {isLoading ? (
         <ActivityIndicator color={theme.colorWhite} />
       ) : (
-        <ThemedText fontSize={16} fontWeight="semiBold" style={styles.text}>
+        <ThemedText
+          fontSize={16}
+          fontWeight="semiBold"
+          style={[styles.text, { color: textColor }]}
+        >
           {title}
         </ThemedText>
       )}
