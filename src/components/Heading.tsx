@@ -10,7 +10,7 @@ export function Heading() {
     <View style={styles.heading}>
       <Image
         style={styles.image}
-        source={require("../assets/images/desert.png")}
+        source={require("@/assets/images/desert.png")}
       />
       <View>
         <ThemedText

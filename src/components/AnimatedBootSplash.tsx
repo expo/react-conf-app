@@ -12,7 +12,7 @@ import { ReactNode, useState } from "react";
 
 const MAX_SCALE = 10;
 
-const manifest: Manifest = require("../assets/bootsplash/manifest.json");
+const manifest: Manifest = require("@/assets/bootsplash/manifest.json");
 
 const styles = StyleSheet.create({
   mask: {
@@ -54,8 +54,8 @@ export const AnimatedBootSplash = ({
     manifest,
     ready,
 
-    logo: require("../assets/bootsplash/logo.png"),
-    brand: require("../assets/bootsplash/brand.png"),
+    logo: require("@/assets/bootsplash/logo.png"),
+    brand: require("@/assets/bootsplash/brand.png"),
 
     statusBarTranslucent: true,
     navigationBarTranslucent: false,

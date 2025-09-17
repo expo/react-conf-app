@@ -8,4 +8,14 @@ module.exports = defineConfig([
   expoConfig,
   eslintPluginPrettierRecommended,
   reactCompiler.configs.recommended,
+  {
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true,
+          project: "./tsconfig.json",
+        },
+      },
+    },
+  },
 ]);

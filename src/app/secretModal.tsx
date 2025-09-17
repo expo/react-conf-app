@@ -1,7 +1,7 @@
 import LottieView from "lottie-react-native";
 import { Platform, StyleSheet, useWindowDimensions } from "react-native";
 
-import { ThemedText, ThemedView } from "../components/Themed";
+import { ThemedText, ThemedView } from "@/components/Themed";
 import { theme } from "../theme";
 import { ExpoImageDemo } from "@/components/ExpoImageDemo";
 import ChangeAppIcon from "@/components/ChangeAppIcon";
@@ -19,7 +19,7 @@ export default function SecretModal() {
             autoPlay
             loop={false}
             style={[styles.animation, { width }]}
-            source={require("../assets/lottie/tada.json")}
+            source={require("@/assets/lottie/tada.json")}
           />
         ) : null}
         <ThemedText

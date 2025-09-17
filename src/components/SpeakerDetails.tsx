@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { SpeakerImage } from "./SpeakerImage";
 import { ThemedText } from "./Themed";
 import { theme } from "../theme";
-import { Speaker } from "../types";
+import { Speaker } from "@/types";
 
 export function SpeakerDetails({ speaker }: { speaker: Speaker }) {
   return (

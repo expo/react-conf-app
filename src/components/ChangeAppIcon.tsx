@@ -3,11 +3,11 @@ import { View, StyleSheet, Platform } from "react-native";
 import AppIcon from "react-native-dynamic-app-icon";
 import { Pressable } from "react-native-gesture-handler";
 
-import { ThemedText, ThemedView } from "../components/Themed";
+import { ThemedText, ThemedView } from "@/components/Themed";
 import { theme } from "../theme";
 
-const defaultIcon = require("../assets/icon.png");
-const desertIcon = require("../assets/icons/icon-desert.png");
+const defaultIcon = require("@/assets/icon.png");
+const desertIcon = require("@/assets/icons/icon-desert.png");
 
 export default function ChangeAppIcon() {
   if (Platform.OS === "android") {

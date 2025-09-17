@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { Bookmark } from "./Bookmark";
 import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 import { theme } from "../theme";
-import { Session } from "../types";
+import { Session } from "@/types";
 import { formatSessionTime } from "../utils/formatDate";
 
 import { useReactConfStore } from "@/store/reactConfStore";

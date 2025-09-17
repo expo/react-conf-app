@@ -9,12 +9,12 @@ const effects = [
   {
     name: "None - image 1",
     effect: null,
-    image: require("../assets/images/react-blue.png"),
+    image: require("@/assets/images/react-blue.png"),
   },
   {
     name: "Cross Dissolve - image 2",
     effect: "cross-dissolve",
-    image: require("../assets/images/react-green.png"),
+    image: require("@/assets/images/react-green.png"),
   },
   {
     name: Platform.select({
@@ -25,7 +25,7 @@ const effects = [
       ios: "flip-from-right",
       default: "cross-dissolve",
     }),
-    image: require("../assets/images/react-dark-blue.png"),
+    image: require("@/assets/images/react-dark-blue.png"),
   },
   {
     name: Platform.select({
@@ -36,7 +36,7 @@ const effects = [
       ios: "curl-down",
       default: "cross-dissolve",
     }),
-    image: require("../assets/images/react-orange.png"),
+    image: require("@/assets/images/react-orange.png"),
   },
 ];
 

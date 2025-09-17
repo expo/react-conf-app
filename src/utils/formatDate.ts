@@ -1,7 +1,7 @@
 import { formatDate } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
-import { Session } from "../types";
+import { Session } from "@/types";
 
 const timeFormat = "h:mm aaa";
 const dateTimeFormat = `${timeFormat}, LLL d`;

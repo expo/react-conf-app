@@ -56,7 +56,7 @@ export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
         >
           <Image
             tintColor={iconColor}
-            source={require("../assets/images/react-logo.png")}
+            source={require("@/assets/images/react-logo.png")}
             style={styles.reactLogo}
           />
           <View style={styles.heading}>

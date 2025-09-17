@@ -76,7 +76,7 @@ export function ReactConfHeader({ scrollOffset }: ReactConfHeaderProps) {
       <AnimatedImage
         priority="high"
         tintColor={tintColor}
-        source={require("../assets/images/react-logo.png")}
+        source={require("@/assets/images/react-logo.png")}
         style={[styles.reactImage, animatedLogoStyle]}
       />
       <View>

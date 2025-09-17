@@ -86,7 +86,7 @@ function Socials({ speaker }: { speaker: Speaker }) {
             case "Twitter": {
               return (
                 <Image
-                  source={require("../../assets/images/x.svg")}
+                  source={require("@/assets/images/x.svg")}
                   style={styles.icon}
                   tintColor={iconColor}
                 />
@@ -95,7 +95,7 @@ function Socials({ speaker }: { speaker: Speaker }) {
             case "LinkedIn": {
               return (
                 <Image
-                  source={require("../../assets/images/linkedin.svg")}
+                  source={require("@/assets/images/linkedin.svg")}
                   style={styles.icon}
                   tintColor={iconColor}
                 />
