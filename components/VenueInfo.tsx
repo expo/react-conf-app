@@ -77,7 +77,9 @@ export function VenueInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: theme.space24,
+    paddingHorizontal: theme.space24,
+    paddingTop: theme.space24,
+    paddingBottom: theme.space16,
     marginBottom: BOTTOM_OFFSET,
   },
   imageContainer: {

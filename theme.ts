@@ -54,10 +54,12 @@ export const theme = {
   fontFamilyBold: "FreightSansProBold-Regular",
   fontFamilyBoldItalic: "FreightSansProBold-Italic",
 
+  borderRadius4: 4,
   borderRadius6: 6,
   borderRadius10: 10,
   borderRadius12: 12,
   borderRadius20: 20,
+  borderRadius34: 34,
 
   dropShadow: {
     ...Platform.select({

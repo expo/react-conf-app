@@ -5,8 +5,6 @@ import { ThemedText, useThemeColor } from "./Themed";
 
 import { theme } from "@/theme";
 
-const buttonTextSize = 22;
-
 export function Button({
   title,
   onPress,
@@ -16,18 +14,17 @@ export function Button({
   onPress: () => void;
   isLoading?: boolean;
 }) {
-  const shadow = useThemeColor({ light: theme.dropShadow, dark: undefined });
+  const backgroundColor = useThemeColor({
+    light: theme.colorBlack,
+    dark: theme.colorWhite,
+  });
 
   return (
-    <Pressable onPress={onPress} style={[styles.button, shadow]}>
+    <Pressable onPress={onPress} style={[styles.button, { backgroundColor }]}>
       {isLoading ? (
         <ActivityIndicator color={theme.colorWhite} />
       ) : (
-        <ThemedText
-          fontSize={buttonTextSize}
-          fontWeight="medium"
-          style={styles.text}
-        >
+        <ThemedText fontSize={16} fontWeight="semiBold" style={styles.text}>
           {title}
         </ThemedText>
       )}
@@ -38,13 +35,12 @@ export function Button({
 const styles = StyleSheet.create({
   text: {
     color: theme.colorWhite,
-    lineHeight: buttonTextSize,
   },
   button: {
+    width: "100%",
     paddingVertical: theme.space8,
     paddingHorizontal: theme.space24,
-    borderRadius: theme.borderRadius6,
-    backgroundColor: theme.colorReactDarkBlue,
+    borderRadius: theme.borderRadius34,
     minWidth: 150,
     minHeight: 40,
     alignItems: "center",
