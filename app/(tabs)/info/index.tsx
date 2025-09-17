@@ -4,8 +4,6 @@ import { StyleSheet } from "react-native";
 
 import { BuildDetails } from "@/components/BuildDetails";
 import { LiveStreamInfo } from "@/components/LiveStreamInfo";
-import { OrganizersInfo } from "@/components/OrganizersInfo";
-import { SponsorsInfo } from "@/components/SponsorsInfo";
 import { DiscordInfo } from "@/components/DiscordInfo";
 import { PoweredByExpo } from "@/components/PoweredByExpo";
 import { ThemedView, useThemeColor } from "@/components/Themed";
@@ -29,8 +27,6 @@ export default function Info() {
         <VenueInfo />
         <LiveStreamInfo />
         <DiscordInfo />
-        <SponsorsInfo />
-        <OrganizersInfo />
         <Link asChild href="/secretModal">
           <Pressable>
             <BuildDetails />
