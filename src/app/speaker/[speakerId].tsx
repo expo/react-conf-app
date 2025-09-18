@@ -1,8 +1,7 @@
 import Feather from "@expo/vector-icons/build/Feather";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { Image } from "expo-image";
-import { useNavigation, useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import { useLocalSearchParams, Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import openWebBrowserAsync from "@/utils/openWebBrowserAsync";
 import { ScrollView } from "react-native-gesture-handler";
@@ -20,56 +19,54 @@ export default function SpeakerDetail() {
   const params = useLocalSearchParams();
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
   const speaker = speakers.find((speaker) => speaker.id === params.speakerId);
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    navigation.setOptions({ title: speaker?.fullName });
-  }, [speaker, navigation]);
 
   return (
-    <ThemedView style={styles.container} color={theme.color.background}>
-      {speaker ? (
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.centered}>
-            <SpeakerImage
-              style={styles.speakerImage}
-              profilePicture={speaker.profilePicture}
-              size="xlarge"
-            />
-            {speaker.tagLine ? (
+    <>
+      <Stack.Screen options={{ title: speaker?.fullName }} />
+      <ThemedView style={styles.container} color={theme.color.background}>
+        {speaker ? (
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+          >
+            <View style={styles.centered}>
+              <SpeakerImage
+                style={styles.speakerImage}
+                profilePicture={speaker.profilePicture}
+                size="xlarge"
+              />
+              {speaker.tagLine ? (
+                <ThemedText
+                  fontSize={theme.fontSize18}
+                  fontWeight="medium"
+                  style={styles.tagLine}
+                  italic
+                >
+                  {speaker.tagLine}
+                </ThemedText>
+              ) : null}
+            </View>
+            {speaker.links.length ? <Socials speaker={speaker} /> : null}
+            {speaker.bio ? (
               <ThemedText
                 fontSize={theme.fontSize18}
-                fontWeight="medium"
-                style={styles.tagLine}
-                italic
+                style={{
+                  marginBottom: theme.space24,
+                  lineHeight: theme.fontSize18 * 1.5,
+                }}
               >
-                {speaker.tagLine}
+                {speaker.bio}
               </ThemedText>
             ) : null}
-          </View>
-          {speaker.links.length ? <Socials speaker={speaker} /> : null}
-          {speaker.bio ? (
-            <ThemedText
-              fontSize={theme.fontSize18}
-              style={{
-                marginBottom: theme.space24,
-                lineHeight: theme.fontSize18 * 1.5,
-              }}
-            >
-              {speaker.bio}
-            </ThemedText>
-          ) : null}
-          {speaker.sessions.map((sessionId) => (
-            <MiniTalkCard sessionId={sessionId} key={sessionId} />
-          ))}
-        </ScrollView>
-      ) : (
-        <NotFound message="Speaker not found" />
-      )}
-    </ThemedView>
+            {speaker.sessions.map((sessionId) => (
+              <MiniTalkCard sessionId={sessionId} key={sessionId} />
+            ))}
+          </ScrollView>
+        ) : (
+          <NotFound message="Speaker not found" />
+        )}
+      </ThemedView>
+    </>
   );
 }
 

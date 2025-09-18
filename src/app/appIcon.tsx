@@ -1,5 +1,5 @@
 import { Platform, Pressable, StyleSheet, View } from "react-native";
-import { getAppIcon, setAppIcon } from "expo-dynamic-app-icon";
+import { getAppIcon, setAppIcon } from "@mozzius/expo-dynamic-app-icon";
 
 import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { theme } from "../theme";
