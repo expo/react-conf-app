@@ -1,6 +1,6 @@
 import { useScrollToTop } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 import { BuildDetails } from "@/components/BuildDetails";
 import { LiveStreamInfo } from "@/components/LiveStreamInfo";
@@ -23,6 +23,9 @@ export default function Info() {
         style={styles.scrollView}
         ref={ref}
         contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={{
+          paddingBottom: Platform.select({ android: 100, default: 0 }),
+        }}
       >
         <VenueInfo />
         <LiveStreamInfo />

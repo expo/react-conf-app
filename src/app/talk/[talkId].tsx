@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
-import { Link, useLocalSearchParams, useNavigation } from "expo-router";
-import React, { useEffect } from "react";
-import { Platform, StyleSheet, View, useColorScheme } from "react-native";
+import { Link, Stack, useLocalSearchParams } from "expo-router";
+import React from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
@@ -11,7 +11,6 @@ import Animated, {
   Extrapolation,
   SharedValue,
 } from "react-native-reanimated";
-import { BlurView } from "expo-blur";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 
 import { NotFound } from "@/components/NotFound";
@@ -43,7 +42,6 @@ const findTalk = (
 };
 
 export default function TalkDetail() {
-  const navigation = useNavigation();
   const params = useLocalSearchParams();
   const talkId = params.talkId || undefined;
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
@@ -80,98 +78,98 @@ export default function TalkDetail() {
 
   const { talk, isDayOne } = findTalk(talkId, { dayOne, dayTwo });
 
-  useEffect(() => {
-    if (talk) {
-      navigation.setOptions({ headerRight: () => <Bookmark session={talk} /> });
-    }
-  }, [navigation, talk]);
-
   const insets = useSafeAreaInsets();
   const iconColor = useThemeColor(theme.color.background);
 
   return (
-    <ThemedView style={styles.container} color={theme.color.background}>
-      {talk ? (
-        <>
-          <AnimatedScrollView
-            style={styles.container}
-            onScroll={scrollHandler}
-            scrollEventThrottle={8}
-            contentContainerStyle={[
-              styles.contentContainer,
-              {
-                paddingBottom: insets.bottom + theme.space24,
-              },
-            ]}
-          >
-            <ThemedView
-              animated
-              lightColor={
-                isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
-              }
-              darkColor={
-                isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
-              }
-              style={[styles.header, headerStyle]}
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (talk ? <Bookmark session={talk} /> : null),
+        }}
+      />
+      <ThemedView style={styles.container} color={theme.color.background}>
+        {talk ? (
+          <>
+            <AnimatedScrollView
+              style={styles.container}
+              contentInsetAdjustmentBehavior="automatic"
+              onScroll={scrollHandler}
+              scrollEventThrottle={8}
+              contentContainerStyle={[
+                styles.contentContainer,
+                {
+                  paddingBottom: insets.bottom + theme.space24,
+                },
+              ]}
             >
-              <Image
-                tintColor={iconColor}
-                source={require("@/assets/images/react-logo.png")}
-                style={styles.reactLogo}
-              />
-              <View style={styles.centered}>
-                <ThemedText
-                  fontWeight="bold"
-                  fontSize={32}
-                  style={styles.talkTitle}
-                >
-                  {talk?.title}
-                </ThemedText>
-              </View>
-            </ThemedView>
-            <ThemedView color={theme.color.background} style={styles.content}>
-              {talk.speakers.map((speaker) => (
-                <Link
-                  push
-                  key={speaker.id}
-                  href={{
-                    pathname: "/speaker/[speaker]",
-                    params: { speaker: speaker.id },
-                  }}
-                  asChild
-                >
-                  <Pressable>
-                    <SpeakerDetails speaker={speaker} />
-                  </Pressable>
-                </Link>
-              ))}
-              <Section
-                title="Date"
-                value={
-                  isDayOne
-                    ? "May 15, 2024 (Conference Day 1)"
-                    : "May 15, 2024 (Conference Day 2)"
+              <ThemedView
+                animated
+                lightColor={
+                  isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
                 }
-              />
-              <Section
-                title="Time"
-                value={formatSessionTime(talk, shouldUseLocalTz)}
-              />
-              <Section title="Venue" value={talk.room} />
-              <Section title="Description" value={talk.description} />
-            </ThemedView>
-          </AnimatedScrollView>
+                darkColor={
+                  isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
+                }
+                style={[styles.header, headerStyle]}
+              >
+                <Image
+                  tintColor={iconColor}
+                  source={require("@/assets/images/react-logo.png")}
+                  style={styles.reactLogo}
+                />
+                <View style={styles.centered}>
+                  <ThemedText
+                    fontWeight="bold"
+                    fontSize={32}
+                    style={styles.talkTitle}
+                  >
+                    {talk?.title}
+                  </ThemedText>
+                </View>
+              </ThemedView>
+              <ThemedView color={theme.color.background} style={styles.content}>
+                {talk.speakers.map((speaker) => (
+                  <Link
+                    push
+                    key={speaker.id}
+                    href={{
+                      pathname: "/speaker/[speaker]",
+                      params: { speaker: speaker.id },
+                    }}
+                    asChild
+                  >
+                    <Pressable>
+                      <SpeakerDetails speaker={speaker} />
+                    </Pressable>
+                  </Link>
+                ))}
+                <Section
+                  title="Date"
+                  value={
+                    isDayOne
+                      ? "May 15, 2024 (Conference Day 1)"
+                      : "May 15, 2024 (Conference Day 2)"
+                  }
+                />
+                <Section
+                  title="Time"
+                  value={formatSessionTime(talk, shouldUseLocalTz)}
+                />
+                <Section title="Venue" value={talk.room} />
+                <Section title="Description" value={talk.description} />
+              </ThemedView>
+            </AnimatedScrollView>
 
-          {Platform.OS === "android" ? (
-            <HeaderBackgroundAndroid scrollTranslationY={translationY} />
-          ) : (
-            <HeaderBackgroundIOS scrollTranslationY={translationY} />
-          )}
-        </>
-      ) : (
-        <NotFound message="Talk not found" />
-      )}
-    </ThemedView>
+            {Platform.OS === "android" ? (
+              <HeaderBackgroundAndroid scrollTranslationY={translationY} />
+            ) : null}
+          </>
+        ) : (
+          <NotFound message="Talk not found" />
+        )}
+      </ThemedView>
+    </>
   );
 }
 
@@ -205,48 +203,6 @@ function HeaderBackgroundAndroid({
         },
       ]}
     />
-  );
-}
-
-function HeaderBackgroundIOS({
-  scrollTranslationY,
-}: {
-  scrollTranslationY: SharedValue<number>;
-}) {
-  const headerHeight = useHeaderHeight();
-  const colorScheme = useColorScheme();
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(
-      scrollTranslationY.value,
-      [0, 150],
-      [0, 1],
-      Extrapolation.CLAMP,
-    ),
-  }));
-
-  return (
-    <Animated.View
-      style={[
-        animatedStyle,
-        {
-          position: "absolute",
-          elevation: 4,
-          top: 0,
-          left: 0,
-          right: 0,
-        },
-      ]}
-    >
-      <BlurView
-        intensity={40}
-        tint={
-          colorScheme === "light"
-            ? "systemThinMaterialLight"
-            : "systemThinMaterialDark"
-        }
-        style={{ height: headerHeight, flex: 1 }}
-      />
-    </Animated.View>
   );
 }
 

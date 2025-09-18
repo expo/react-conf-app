@@ -1,5 +1,11 @@
 import React from "react";
-import { Keyboard, Pressable, StyleSheet } from "react-native";
+import {
+  Keyboard,
+  Platform,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+} from "react-native";
 
 import { NotFound } from "@/components/NotFound";
 
@@ -10,11 +16,15 @@ import { FlatList } from "react-native-gesture-handler";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useScrollToTop } from "@react-navigation/native";
 import { SpeakerDetails } from "@/components/SpeakerDetails";
+import { useBookmark } from "@/hooks/useBookmark";
 
 export default function Speakers() {
   const ref = React.useRef(null);
   useScrollToTop(ref);
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
+  const { width } = useWindowDimensions();
+
+  const { toggleBookmarkById, isBookmarked, getSessionById } = useBookmark();
 
   const params = useLocalSearchParams<{ q?: string }>();
 
@@ -48,21 +58,49 @@ export default function Speakers() {
         ItemSeparatorComponent={() => (
           <ThemedView style={{ height: 1 }} color={theme.color.border} />
         )}
-        renderItem={({ item }) => (
-          <Link
-            push
-            key={item.id}
-            href={{
-              pathname: "/speaker/[speaker]",
-              params: { speaker: item.id },
-            }}
-            asChild
-          >
-            <Pressable style={styles.speakerContainer}>
-              <SpeakerDetails speaker={item} key={item.id} />
-            </Pressable>
-          </Link>
-        )}
+        renderItem={({ item }) => {
+          return (
+            <Link
+              push
+              key={item.id}
+              href={{
+                pathname: "/speaker/[speaker]",
+                params: { speaker: item.id },
+              }}
+              asChild
+            >
+              <Link.Trigger>
+                <Pressable style={styles.speakerContainer}>
+                  <SpeakerDetails speaker={item} key={item.id} />
+                </Pressable>
+              </Link.Trigger>
+              <Link.Preview style={{ width: width, height: 350 }} />
+              <Link.Menu title={`Talks by ${item.fullName}`}>
+                {item.sessions
+                  .map((sessionId) => {
+                    const sessionIdStr = sessionId.toString();
+                    const session = getSessionById(sessionIdStr);
+                    const bookmarked = isBookmarked(sessionIdStr);
+
+                    if (!session) return null;
+
+                    return (
+                      <Link.MenuAction
+                        key={sessionIdStr}
+                        title={session.title}
+                        icon={bookmarked ? "bookmark.fill" : "bookmark"}
+                        isOn={bookmarked}
+                        onPress={() => toggleBookmarkById(sessionIdStr)}
+                      />
+                    );
+                  })
+                  .filter(
+                    (item): item is NonNullable<typeof item> => item !== null,
+                  )}
+              </Link.Menu>
+            </Link>
+          );
+        }}
         data={filteredSpeakers}
         ListEmptyComponent={
           <ThemedView style={styles.noResultsContainer}>
@@ -83,6 +121,7 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: theme.space24,
+    paddingBottom: Platform.select({ android: 100, default: 0 }),
   },
   noResultsContainer: {
     paddingHorizontal: theme.space24,

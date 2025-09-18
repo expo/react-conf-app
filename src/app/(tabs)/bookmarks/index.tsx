@@ -1,6 +1,6 @@
 import { useScrollToTop } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 
 import { ThemedText, ThemedView } from "@/components/Themed";
 import { theme } from "@/theme";
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     paddingTop: theme.space16,
+    paddingBottom: Platform.select({ android: 100, default: 0 }),
   },
   bookmarks: {
     flex: 1,

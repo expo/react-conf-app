@@ -14,10 +14,10 @@ import { setBackgroundColorAsync } from "expo-system-ui";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as Notifications from "expo-notifications";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 
 import { theme } from "../theme";
 
-import { BackButton } from "@/components/BackButton";
 import { OfflineBanner } from "@/components/OfflineBanner";
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
@@ -127,30 +127,47 @@ export default function Layout() {
               <Stack.Screen
                 name="talk/[talkId]"
                 options={{
-                  headerLeft: () =>
-                    Platform.OS === "ios" ? <BackButton /> : null,
                   title: "",
-                  headerTransparent: true,
-                  // `headerBlurEffect` prop does not work on New Architecture at the moment
-                  // headerBlurEffect: "systemUltraThinMaterialLight",
+                  headerTransparent: Platform.OS === "ios" ? true : false,
                   presentation: "modal",
+                  headerStyle: {
+                    backgroundColor:
+                      Platform.OS === "ios"
+                        ? "transparent"
+                        : tabBarBackgroundColor,
+                  },
+                  headerBlurEffect: isLiquidGlassAvailable()
+                    ? undefined
+                    : colorScheme === "dark"
+                      ? "dark"
+                      : "light",
                 }}
               />
               <Stack.Screen
                 name="speaker/[speakerId]"
                 options={{
                   presentation: "modal",
-                  headerLeft: () =>
-                    Platform.OS === "ios" ? <BackButton /> : null,
                   headerStyle: {
-                    backgroundColor: tabBarBackgroundColor,
+                    backgroundColor:
+                      Platform.OS === "ios"
+                        ? "transparent"
+                        : tabBarBackgroundColor,
                   },
+                  headerTransparent: Platform.OS === "ios" ? true : false,
                   headerTitleAlign: "center",
-                  headerTitle: (props) => (
-                    <ThemedText fontSize={24} fontWeight="bold">
-                      {props.children}
-                    </ThemedText>
-                  ),
+                  headerBlurEffect: isLiquidGlassAvailable()
+                    ? undefined
+                    : colorScheme === "dark"
+                      ? "dark"
+                      : "light",
+                  headerTitle: Platform.select({
+                    android: (props) => (
+                      <ThemedText fontSize={24} fontWeight="bold">
+                        {props.children}
+                      </ThemedText>
+                    ),
+                    default: undefined,
+                  }),
                 }}
               />
               <Stack.Screen
