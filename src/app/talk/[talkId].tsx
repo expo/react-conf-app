@@ -9,7 +9,6 @@ import Animated, {
   useAnimatedScrollHandler,
   interpolate,
   Extrapolation,
-  SharedValue,
 } from "react-native-reanimated";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 
@@ -20,7 +19,6 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
-import { useHeaderHeight } from "@react-navigation/elements";
 import { Bookmark } from "@/components/Bookmark";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -47,12 +45,15 @@ export default function TalkDetail() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
 
-  // Animated header on scroll
+  // Animated header on scroll (iOS only)
   const translationY = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
   });
   const headerStyle = useAnimatedStyle(() => {
+    if (Platform.OS !== "ios") {
+      return {};
+    }
     return {
       transform: [
         {
@@ -160,49 +161,12 @@ export default function TalkDetail() {
                 <Section title="Description" value={talk.description} />
               </ThemedView>
             </AnimatedScrollView>
-
-            {Platform.OS === "android" ? (
-              <HeaderBackgroundAndroid scrollTranslationY={translationY} />
-            ) : null}
           </>
         ) : (
           <NotFound message="Talk not found" />
         )}
       </ThemedView>
     </>
-  );
-}
-
-// We use a transparent header background on Android to provide a nice looking
-// header that expands to the top of the screen. This component ensures that
-// a header background becomes visible as we scroll past the header, so we don't
-// just see a floating back button.
-function HeaderBackgroundAndroid({
-  scrollTranslationY,
-}: {
-  scrollTranslationY: SharedValue<number>;
-}) {
-  const headerHeight = useHeaderHeight();
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollTranslationY.value, [50, 150], [0, 1]),
-  }));
-
-  return (
-    <ThemedView
-      animated
-      color={theme.color.background}
-      style={[
-        animatedStyle,
-        {
-          height: headerHeight,
-          position: "absolute",
-          elevation: 4,
-          top: 0,
-          left: 0,
-          right: 0,
-        },
-      ]}
-    />
   );
 }
 
