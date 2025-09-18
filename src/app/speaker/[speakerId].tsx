@@ -1,7 +1,7 @@
 import Feather from "@expo/vector-icons/build/Feather";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { Image } from "expo-image";
-import { useLocalSearchParams, Stack } from "expo-router";
+import { useLocalSearchParams, Stack, useIsPreview } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import openWebBrowserAsync from "@/utils/openWebBrowserAsync";
 import { ScrollView } from "react-native-gesture-handler";
@@ -19,10 +19,13 @@ export default function SpeakerDetail() {
   const params = useLocalSearchParams();
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
   const speaker = speakers.find((speaker) => speaker.id === params.speakerId);
+  const isPreview = useIsPreview();
 
   return (
     <>
-      <Stack.Screen options={{ title: speaker?.fullName }} />
+      {!isPreview ? (
+        <Stack.Screen options={{ title: speaker?.fullName }} />
+      ) : null}
       <ThemedView style={styles.container} color={theme.color.background}>
         {speaker ? (
           <ScrollView
