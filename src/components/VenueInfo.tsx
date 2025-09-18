@@ -87,11 +87,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: theme.borderRadius12,
     overflow: "hidden",
   },
-  hotelName: {
-    flex: 1,
-    paddingLeft: theme.space12,
-    justifyContent: "center",
-  },
   venueName: {
     marginBottom: theme.space16,
   },

@@ -64,7 +64,4 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     flex: 1,
   },
-  switch: {
-    marginHorizontal: theme.space8,
-  },
 });

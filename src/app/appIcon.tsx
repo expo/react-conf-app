@@ -88,46 +88,31 @@ export default function AppIconModal() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: theme.space24,
     gap: theme.space32,
-  },
-  defaultIconContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    gap: theme.space8,
-  },
-  customIconsContainer: {
-    alignItems: "flex-start",
-    justifyContent: "space-around",
-    flexDirection: "row",
+    paddingVertical: theme.space24,
   },
   customIconContainer: {
     alignItems: "center",
-    justifyContent: "center",
     gap: theme.space8,
+    justifyContent: "center",
   },
-  content: {
-    paddingHorizontal: theme.space24,
+  customIconsContainer: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
-  heading: {
-    paddingHorizontal: theme.space24,
-    textAlign: "center",
-  },
-  animation: {
-    height: 200,
-    position: "absolute",
-  },
-  description: {
-    paddingHorizontal: theme.space24,
-    marginBottom: theme.fontSize24,
+  defaultIconContainer: {
+    alignItems: "center",
+    gap: theme.space8,
+    justifyContent: "center",
   },
   icon: {
-    borderWidth: 1,
-    width: 100,
-    height: 100,
     borderRadius: Platform.select({
       ios: 22,
       android: 50,
     }),
+    borderWidth: 1,
+    height: 100,
+    width: 100,
   },
 });
