@@ -67,7 +67,7 @@ export default function TalkDetail() {
           scale: interpolate(
             translationY.value,
             [-120, 0],
-            [1.4, 1],
+            [1, 0.8],
             Extrapolation.CLAMP,
           ),
         },
