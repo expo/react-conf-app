@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import { Button, Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
@@ -20,12 +20,19 @@ import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
 import { Bookmark } from "@/components/Bookmark";
+import {
+  Host,
+  Button as SwiftUIButton,
+  Image as SFImage,
+  Label,
+} from "@expo/ui/swift-ui";
+import { glassEffect } from "@expo/ui/swift-ui/modifiers";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const findTalk = (
   talkId: string | string[] | undefined,
-  { dayOne, dayTwo }: { dayOne: Session[]; dayTwo: Session[] },
+  { dayOne, dayTwo }: { dayOne: Session[]; dayTwo: Session[] }
 ) => {
   const talkDay1 = dayOne.find((session) => session.id === talkId);
   if (talkDay1) {
@@ -61,7 +68,7 @@ export default function TalkDetail() {
             translationY.value,
             [-120, 0, 150],
             [-90, 0, 120],
-            Extrapolation.CLAMP,
+            Extrapolation.CLAMP
           ),
         },
         {
@@ -69,7 +76,7 @@ export default function TalkDetail() {
             translationY.value,
             [-120, 0],
             [1, 0.8],
-            Extrapolation.CLAMP,
+            Extrapolation.CLAMP
           ),
         },
       ],
@@ -86,7 +93,29 @@ export default function TalkDetail() {
     <>
       <Stack.Screen
         options={{
-          headerRight: () => (talk ? <Bookmark session={talk} /> : null),
+          headerShown: true,
+          presentation: "modal",
+          headerRight: () => (
+            <Pressable
+              onPress={() => alert("bookmark")}
+              hitSlop={30}
+              style={{
+                width: 36,
+                height: 36,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Host style={{ width: 40, height: 40 }} matchContents>
+                <SFImage
+                  systemName="bookmark"
+                  onPress={() => alert("bookmark")}
+                  size={16}
+                />
+              </Host>
+            </Pressable>
+          ),
+          // headerRight: () => (talk ? <Bookmark session={talk} /> : null),
         }}
       />
       <ThemedView style={styles.container} color={theme.color.background}>

@@ -16,6 +16,7 @@
   "dependencies": {
     "@config-plugins/react-native-dynamic-app-icon": "^8.0.0",
     "@expo/react-native-action-sheet": "^4.1.1",
+    "@expo/ui": "^0.2.0-beta.3",
     "@expo/vector-icons": "^15.0.2",
     "@mozzius/expo-dynamic-app-icon": "^1.8.0",
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -80,5 +81,8 @@
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
     ]
+  },
+  "patchedDependencies": {
+    "expo-modules-core@3.0.16": "patches/expo-modules-core@3.0.16.patch"
   }
 }
