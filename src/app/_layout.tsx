@@ -56,11 +56,10 @@ export default function Layout() {
   useEffect(() => {
     QuickActions.setItems([
       {
-        title: "Just one more thing",
-        subtitle: "Return to app...",
-        icon: Platform.OS === "ios" ? "symbol:gift" : "gift",
+        title: "Change app icon",
+        icon: Platform.OS === "ios" ? "symbol:square.stack.3d.up" : "layers",
         id: "0",
-        params: { href: "/secretModal" },
+        params: { href: "/appIcon" },
       },
     ]);
   }, []);
@@ -155,10 +154,11 @@ export default function Layout() {
                 }}
               />
               <Stack.Screen
-                name="secretModal"
+                name="appIcon"
                 options={{
                   presentation: "modal",
-                  title: "Secret Modal",
+
+                  title: "Change App Icon",
                   headerTitleAlign: "center",
                   headerTitle: (props) => (
                     <ThemedText fontSize={24} fontWeight="bold">

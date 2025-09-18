@@ -39,7 +39,9 @@ export const theme = {
   space12: 12,
   space16: 16,
   space24: 24,
+  space32: 32,
 
+  fontSize14: 14,
   fontSize16: 16,
   fontSize18: 18,
   fontSize24: 24,
@@ -60,7 +62,7 @@ export const theme = {
   borderRadius12: 12,
   borderRadius20: 20,
   borderRadius34: 34,
-
+  borderRadius50: 50,
   dropShadow: {
     ...Platform.select({
       ios: {
