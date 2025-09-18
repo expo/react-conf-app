@@ -92,10 +92,6 @@ export default {
       ],
       "expo-router",
       [
-        "@config-plugins/react-native-dynamic-app-icon",
-        ["./assets/icon.png", "./assets/icons/icon-desert.png"],
-      ],
-      [
         "expo-font",
         {
           fonts: [
