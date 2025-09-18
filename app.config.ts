@@ -83,9 +83,9 @@ const config: ExpoConfig = {
       "expo-quick-actions",
       {
         androidIcons: {
-          gift: {
-            foregroundImage: "./assets/icons/gift.png",
-            backgroundColor: "#FFFFFF",
+          layers: {
+            foregroundImage: "./assets/icons/layers.png",
+            backgroundColor: "#24272E",
           },
         },
       },
@@ -111,19 +111,19 @@ const config: ExpoConfig = {
       },
     ],
     [
-      "expo-dynamic-app-icon",
+      "@mozzius/expo-dynamic-app-icon",
       {
         light: {
           ios: "./assets/app-icons/icon-light.png",
-          android: "assets/app-icons/icon-light-android.png",
+          android: "./assets/app-icons/icon-light.png",
         },
         gradient: {
           ios: "./assets/app-icons/icon-gradient.png",
-          android: "./assets/app-icons/icon-gradient-android.png",
+          android: "./assets/app-icons/icon-gradient.png",
         },
         fancy: {
           ios: "./assets/app-icons/icon-fancy.png",
-          android: "./assets/app-icons/icon-fancy-android.png",
+          android: "./assets/app-icons/icon-fancy.png",
         },
       },
     ],
