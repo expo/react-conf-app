@@ -1,5 +1,5 @@
 import React from "react";
-import { Keyboard, Pressable, StyleSheet } from "react-native";
+import { Keyboard, Platform, Pressable, StyleSheet } from "react-native";
 
 import { NotFound } from "@/components/NotFound";
 
@@ -83,6 +83,7 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: theme.space24,
+    paddingBottom: Platform.select({ android: 100, default: 0 }),
   },
   noResultsContainer: {
     paddingHorizontal: theme.space24,

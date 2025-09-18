@@ -1,7 +1,13 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, StyleSheet, View, ViewToken } from "react-native";
+import {
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
+  View,
+  ViewToken,
+} from "react-native";
 import Animated, {
   useAnimatedRef,
   useSharedValue,
@@ -118,6 +124,7 @@ export default function Schedule() {
           style={{ backgroundColor: sectionListBackgroundColor }}
           contentContainerStyle={{
             paddingTop: EXPANDED_HEADER,
+            paddingBottom: Platform.select({ android: 100, default: 0 }),
           }}
           scrollEventThrottle={8}
           data={data}
