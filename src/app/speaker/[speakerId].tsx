@@ -31,6 +31,7 @@ export default function SpeakerDetail() {
           <ScrollView
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
+            contentInsetAdjustmentBehavior="automatic"
           >
             <View style={styles.centered}>
               <SpeakerImage
