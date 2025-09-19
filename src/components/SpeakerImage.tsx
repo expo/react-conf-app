@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     height: 60,
   },
   imageSizeLarge: {
-    width: 100,
-    height: 100,
+    width: 96,
+    height: 96,
   },
   imageSizeExtraLarge: {
     width: 200,
