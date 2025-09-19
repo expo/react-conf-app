@@ -49,6 +49,7 @@ const config: ExpoConfig = {
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
   ios: {
+    icon: "./assets/app-icons/icon-default-ios.icon",
     supportsTablet: true,
     bundleIdentifier: getAppId(),
     userInterfaceStyle: "automatic",
