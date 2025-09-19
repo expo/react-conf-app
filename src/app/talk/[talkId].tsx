@@ -33,8 +33,6 @@ import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { useBookmark } from "@/hooks/useBookmark";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
-import { Host, Slider } from "@expo/ui/swift-ui";
-import { offset } from "@expo/ui/swift-ui/modifiers";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -157,7 +155,7 @@ export default function TalkDetail() {
       if (opened !== prev) {
         if (opened) {
           sheetAnim.value = withTiming(1, {
-            duration: 2000,
+            duration: 1000,
             easing: Easing.bezier(0, 0.3, 0.7, 1),
           });
         } else {
@@ -256,17 +254,15 @@ export default function TalkDetail() {
             </Fill>
           </Canvas>
         </Animated.View>
-        <Host>
-          <View style={{ height: 450 }}>
-            <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-              <Canvas style={{ width: width, height: 500 }}>
-                <Fill>
-                  <Shader source={source} uniforms={uniforms} />
-                </Fill>
-              </Canvas>
-            </Animated.View>
-          </View>
-        </Host>
+        <View style={{ height: 450 }}>
+          <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+            <Canvas style={{ width: width, height: 500 }}>
+              <Fill>
+                <Shader source={source} uniforms={uniforms} />
+              </Fill>
+            </Canvas>
+          </Animated.View>
+        </View>
       </View>
       <ThemedView
         style={styles.container}
@@ -281,6 +277,7 @@ export default function TalkDetail() {
             <AnimatedScrollView
               style={styles.container}
               contentInsetAdjustmentBehavior="automatic"
+              showsVerticalScrollIndicator={false}
               onScroll={scrollHandler}
               scrollEventThrottle={8}
               contentContainerStyle={[
@@ -405,7 +402,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 250,
+    height: 150,
     paddingTop: 50,
     paddingHorizontal: theme.space16,
     // overflow: "hidden",
