@@ -23,6 +23,7 @@ import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { AnimatedBootSplash } from "@/components/AnimatedBootSplash";
 import { useQuickActionCallback } from "@/utils/useQuickActionCallback";
+import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -127,9 +128,23 @@ export default function Layout() {
               <Stack.Screen
                 name="talk/[talkId]"
                 options={{
-                  title: "",
                   headerTransparent: Platform.OS === "ios" ? true : false,
-                  presentation: "modal",
+                  headerLargeTitle: false,
+                  title: "",
+                  presentation:
+                    Platform.OS === "ios"
+                      ? isLiquidGlassAvailable()
+                        ? "formSheet"
+                        : "modal"
+                      : "modal",
+                  sheetGrabberVisible: true,
+                  sheetAllowedDetents: [0.5, 1],
+                  sheetInitialDetentIndex: 0,
+                  contentStyle: {
+                    backgroundColor: isLiquidGlassAvailable()
+                      ? "transparent"
+                      : tabBarBackgroundColor,
+                  },
                   headerStyle: {
                     backgroundColor:
                       Platform.OS === "ios"

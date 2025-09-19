@@ -104,14 +104,13 @@ export default function TalkDetail() {
     <>
       <Stack.Screen
         options={{
-          headerShown: true,
-          presentation: "modal",
           headerLeft: () =>
             Platform.select({
-              ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+              ios: <HeaderButton buttonProps={{ onPress: router.back }} />, // iOS 18 and below
               default: undefined,
             }),
           headerRight: () => (
+            // iOS 18 and below
             <HeaderButton
               buttonProps={{
                 onPress: () => toggleBookmark(talk),
@@ -130,9 +129,36 @@ export default function TalkDetail() {
               }}
             />
           ),
+          // header: () =>
+          //   isLiquidGlassAvailable() ? (
+          //     <HeaderButton
+          //       buttonProps={{
+          //         onPress: () => toggleBookmark(talk),
+          //         variant: "glassProminent",
+          //         color: tintColor,
+          //       }}
+          //       imageProps={{
+          //         systemName: Platform.select({
+          //           ios: bookmarked ? "bookmark.fill" : "bookmark",
+          //           default: "bookmark",
+          //         }),
+          //         color: Platform.select({
+          //           ios: isLiquidGlassAvailable() ? "white" : bookmarkedColor,
+          //           default: bookmarkedColor,
+          //         }),
+          //       }}
+          //     />
+          //   ) : undefined,
         }}
       />
-      <ThemedView style={styles.container} color={theme.color.background}>
+      <ThemedView
+        style={styles.container}
+        color={
+          isLiquidGlassAvailable()
+            ? { light: "transparent", dark: "transparent" }
+            : theme.color.background
+        }
+      >
         {talk ? (
           <>
             <AnimatedScrollView
@@ -155,13 +181,17 @@ export default function TalkDetail() {
                 darkColor={
                   isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
                 }
-                style={[styles.header, headerStyle]}
+                style={[
+                  styles.header,
+                  headerStyle,
+                  { backgroundColor: "transparent" },
+                ]}
               >
-                <Image
+                {/* <Image
                   tintColor={iconColor}
                   source={require("@/assets/images/react-logo.png")}
                   style={styles.reactLogo}
-                />
+                /> */}
                 <View style={styles.centered}>
                   <ThemedText
                     fontWeight="bold"
@@ -172,7 +202,14 @@ export default function TalkDetail() {
                   </ThemedText>
                 </View>
               </ThemedView>
-              <ThemedView color={theme.color.background} style={styles.content}>
+              <ThemedView
+                color={
+                  isLiquidGlassAvailable()
+                    ? { light: "transparent", dark: "transparent" }
+                    : theme.color.background
+                }
+                style={styles.content}
+              >
                 {talk.speakers.map((speaker) => (
                   <Link
                     push
@@ -254,7 +291,7 @@ const styles = StyleSheet.create({
     height: 250,
     paddingTop: 50,
     paddingHorizontal: theme.space16,
-    overflow: "hidden",
+    // overflow: "hidden",
   },
   contentContainer: {
     borderBottomRightRadius: theme.borderRadius20,
@@ -277,7 +314,7 @@ const styles = StyleSheet.create({
   },
   reactLogo: {
     position: "absolute",
-    right: -100,
+    right: -150,
     top: "30%",
     height: 300,
     width: 300,
