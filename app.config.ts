@@ -112,23 +112,6 @@ const config: ExpoConfig = {
       },
     ],
     [
-      "@mozzius/expo-dynamic-app-icon",
-      {
-        light: {
-          ios: "./assets/app-icons/icon-light.png",
-          android: "./assets/app-icons/icon-light.png",
-        },
-        gradient: {
-          ios: "./assets/app-icons/icon-gradient.png",
-          android: "./assets/app-icons/icon-gradient.png",
-        },
-        fancy: {
-          ios: "./assets/app-icons/icon-fancy.png",
-          android: "./assets/app-icons/icon-fancy.png",
-        },
-      },
-    ],
-    [
       "react-native-bootsplash",
       {
         android: {
