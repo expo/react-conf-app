@@ -21,13 +21,16 @@ type VectorIconFamily = {
   getImageSource: (
     name: string,
     size: number,
-    // eslint-disable-next-line prettier/prettier
-    color: ColorValue
+    color: ColorValue,
   ) => Promise<ImageSourcePropType>;
 };
 
 export default function TabLayout() {
   const tabBarBackgroundColor = useThemeColor(theme.color.background);
+  const tintColor = useThemeColor({
+    light: theme.colorReactLightBlue,
+    dark: theme.colorReactDarkBlue,
+  });
 
   const tabBarActiveTintColor = useThemeColor({
     light: theme.colorBlack,
@@ -36,7 +39,7 @@ export default function TabLayout() {
 
   const tabBarInactiveTintColor = useThemeColor({
     light: theme.colorGrey,
-    dark: `rgba(255, 255, 255, 0.35)`,
+    dark: "#FFFFFF50",
   });
 
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
@@ -48,7 +51,10 @@ export default function TabLayout() {
       backgroundColor={tabBarBackgroundColor}
       labelVisibilityMode="labeled"
       iconColor={tabBarInactiveTintColor}
-      indicatorColor={tabBarActiveTintColor + "30"}
+      indicatorColor={tintColor + "20"}
+      labelStyle={{
+        color: tabBarInactiveTintColor,
+      }}
       disableTransparentOnScrollEdge={true} // Used to prevent transparent background on iOS 18 and older
     >
       <NativeTabs.Trigger name="index">
@@ -62,6 +68,7 @@ export default function TabLayout() {
                   name="calendar"
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}
@@ -78,11 +85,16 @@ export default function TabLayout() {
                   name={"bookmark"}
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}
         <Label>Bookmarked</Label>
-        {hasBookmarks && <Badge>{bookmarks.length.toString()}</Badge>}
+        {hasBookmarks && (
+          <Badge selectedBackgroundColor={tintColor}>
+            {bookmarks.length.toString()}
+          </Badge>
+        )}
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="speakers" role="search">
         {Platform.select({
@@ -95,6 +107,7 @@ export default function TabLayout() {
                   name={"people"}
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}
@@ -111,6 +124,7 @@ export default function TabLayout() {
                   name={"info"}
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}

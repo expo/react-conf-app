@@ -1,6 +1,8 @@
-import { useThemeColor } from "@/components/Themed";
+import { ThemedText, useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Stack } from "expo-router";
+import { Platform } from "react-native";
 
 export default function Layout() {
   const tabBarBackgroundColor = useThemeColor(theme.color.background);
@@ -16,8 +18,17 @@ export default function Layout() {
         name="index"
         options={{
           title: "Bookmarks",
+          headerTitle: () =>
+            Platform.OS === "android" ? (
+              <ThemedText fontSize={20} fontWeight="bold">
+                Bookmarks
+              </ThemedText>
+            ) : undefined,
+
           headerStyle: {
-            backgroundColor: tabBarBackgroundColor,
+            backgroundColor: isLiquidGlassAvailable()
+              ? "transparent"
+              : tabBarBackgroundColor,
           },
         }}
       />

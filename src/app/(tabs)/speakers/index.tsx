@@ -9,7 +9,7 @@ import {
 
 import { NotFound } from "@/components/NotFound";
 
-import { ThemedText, ThemedView } from "@/components/Themed";
+import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { FlatList } from "react-native-gesture-handler";
@@ -23,6 +23,7 @@ export default function Speakers() {
   useScrollToTop(ref);
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
   const { width } = useWindowDimensions();
+  const backgroundColor = useThemeColor(theme.color.background);
 
   const { toggleBookmarkById, isBookmarked, getSessionById } = useBookmark();
 
@@ -46,79 +47,74 @@ export default function Speakers() {
   };
 
   return (
-    <ThemedView style={styles.container} color={theme.color.background}>
-      <FlatList
-        scrollToOverflowEnabled
-        contentInsetAdjustmentBehavior="automatic"
-        onScrollBeginDrag={dismissKeyboard}
-        keyboardShouldPersistTaps="handled"
-        ref={ref}
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-        ItemSeparatorComponent={() => (
-          <ThemedView style={{ height: 1 }} color={theme.color.border} />
-        )}
-        renderItem={({ item }) => {
-          return (
-            <Link
-              push
-              key={item.id}
-              href={{
-                pathname: "/speaker/[speaker]",
-                params: { speaker: item.id },
-              }}
-              asChild
-            >
-              <Link.Trigger>
-                <Pressable style={styles.speakerContainer}>
-                  <SpeakerDetails speaker={item} key={item.id} />
-                </Pressable>
-              </Link.Trigger>
-              <Link.Preview style={{ width: width, height: 350 }} />
-              <Link.Menu title={`Talks by ${item.fullName}`}>
-                {item.sessions
-                  .map((sessionId) => {
-                    const sessionIdStr = sessionId.toString();
-                    const session = getSessionById(sessionIdStr);
-                    const bookmarked = isBookmarked(sessionIdStr);
+    <FlatList
+      scrollToOverflowEnabled
+      contentInsetAdjustmentBehavior="automatic"
+      onScrollBeginDrag={dismissKeyboard}
+      keyboardShouldPersistTaps="handled"
+      ref={ref}
+      style={{ backgroundColor }}
+      contentContainerStyle={styles.contentContainer}
+      ItemSeparatorComponent={() => (
+        <ThemedView style={{ height: 1 }} color={theme.color.border} />
+      )}
+      renderItem={({ item }) => {
+        return (
+          <Link
+            push
+            key={item.id}
+            href={{
+              pathname: "/speaker/[speaker]",
+              params: { speaker: item.id },
+            }}
+            asChild
+          >
+            <Link.Trigger>
+              <Pressable style={styles.speakerContainer}>
+                <SpeakerDetails speaker={item} key={item.id} />
+              </Pressable>
+            </Link.Trigger>
+            <Link.Preview style={{ width: width, height: 350 }} />
+            <Link.Menu title={`Talks by ${item.fullName}`}>
+              {item.sessions
+                .map((sessionId) => {
+                  const sessionIdStr = sessionId.toString();
+                  const session = getSessionById(sessionIdStr);
+                  const bookmarked = isBookmarked(sessionIdStr);
 
-                    if (!session) return null;
+                  if (!session) return null;
 
-                    return (
-                      <Link.MenuAction
-                        key={sessionIdStr}
-                        title={session.title}
-                        icon={bookmarked ? "bookmark.fill" : "bookmark"}
-                        isOn={bookmarked}
-                        onPress={() => toggleBookmarkById(sessionIdStr)}
-                      />
-                    );
-                  })
-                  .filter(
-                    (item): item is NonNullable<typeof item> => item !== null,
-                  )}
-              </Link.Menu>
-            </Link>
-          );
-        }}
-        data={filteredSpeakers}
-        ListEmptyComponent={
-          <ThemedView style={styles.noResultsContainer}>
-            <ThemedText>
-              No results found for{" "}
-              <ThemedText fontWeight="bold">{searchText}</ThemedText>
-            </ThemedText>
-          </ThemedView>
-        }
-      />
-    </ThemedView>
+                  return (
+                    <Link.MenuAction
+                      key={sessionIdStr}
+                      title={session.title}
+                      icon={bookmarked ? "bookmark.fill" : "bookmark"}
+                      isOn={bookmarked}
+                      onPress={() => toggleBookmarkById(sessionIdStr)}
+                    />
+                  );
+                })
+                .filter(
+                  (item): item is NonNullable<typeof item> => item !== null,
+                )}
+            </Link.Menu>
+          </Link>
+        );
+      }}
+      data={filteredSpeakers}
+      ListEmptyComponent={
+        <ThemedView style={styles.noResultsContainer}>
+          <ThemedText>
+            No results found for{" "}
+            <ThemedText fontWeight="bold">{searchText}</ThemedText>
+          </ThemedText>
+        </ThemedView>
+      }
+    />
   );
 }
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   contentContainer: {
     paddingHorizontal: theme.space24,
     paddingBottom: Platform.select({ android: 100, default: 0 }),

@@ -1,0 +1,22 @@
+diff --git a/ios/RNSScreenStackHeaderConfig.mm b/ios/RNSScreenStackHeaderConfig.mm
+index 57ff861b84b6b85e5c9e91775e1638a31ffd68ab..8b3db3ed673e5d267fb348b299f37ba4b3b2394a 100644
+--- a/ios/RNSScreenStackHeaderConfig.mm
++++ b/ios/RNSScreenStackHeaderConfig.mm
+@@ -678,11 +678,17 @@ + (void)updateViewController:(UIViewController *)vc
+         navitem.leftItemsSupplementBackButton = config.backButtonInCustomView;
+ #endif
+         UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:subview];
++        if (@available(iOS 26.0, *)) {
++          [buttonItem setHidesSharedBackground: true];
++        }
+         navitem.leftBarButtonItem = buttonItem;
+         break;
+       }
+       case RNSScreenStackHeaderSubviewTypeRight: {
+         UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:subview];
++        if (@available(iOS 26.0, *)) {
++          [buttonItem setHidesSharedBackground: true];
++        }
+         navitem.rightBarButtonItem = buttonItem;
+         break;
+       }
