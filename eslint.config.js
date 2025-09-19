@@ -20,6 +20,7 @@ module.exports = defineConfig([
     },
     rules: {
       "react-native/no-unused-styles": "error",
+      "comma-dangle": ["error", "always-multiline"],
 
       // TODO: (Kadi) separate PR to enable these
       // "react-native/sort-styles": "error",
