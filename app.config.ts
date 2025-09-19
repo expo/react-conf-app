@@ -49,6 +49,7 @@ const config: ExpoConfig = {
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
   ios: {
+    icon: "./assets/app-icons/icon-default-ios.icon",
     supportsTablet: true,
     bundleIdentifier: getAppId(),
     userInterfaceStyle: "automatic",
@@ -108,23 +109,6 @@ const config: ExpoConfig = {
           "./assets/fonts/FreightSansProSemiBold-Italic.ttf",
           "./assets/fonts/FreightSansProSemiBold-Regular.ttf",
         ],
-      },
-    ],
-    [
-      "@mozzius/expo-dynamic-app-icon",
-      {
-        light: {
-          ios: "./assets/app-icons/icon-light.png",
-          android: "./assets/app-icons/icon-light.png",
-        },
-        gradient: {
-          ios: "./assets/app-icons/icon-gradient.png",
-          android: "./assets/app-icons/icon-gradient.png",
-        },
-        fancy: {
-          ios: "./assets/app-icons/icon-fancy.png",
-          android: "./assets/app-icons/icon-fancy.png",
-        },
       },
     ],
     [

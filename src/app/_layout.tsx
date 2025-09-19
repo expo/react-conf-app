@@ -56,10 +56,10 @@ export default function Layout() {
   useEffect(() => {
     QuickActions.setItems([
       {
-        title: "Change app icon",
+        title: "Back to the app",
         icon: Platform.OS === "ios" ? "symbol:square.stack.3d.up" : "layers",
         id: "0",
-        params: { href: "/appIcon" },
+        params: { href: "/modal" },
       },
     ]);
   }, []);
@@ -171,11 +171,11 @@ export default function Layout() {
                 }}
               />
               <Stack.Screen
-                name="appIcon"
+                name="modal"
                 options={{
                   presentation: "modal",
 
-                  title: "Change App Icon",
+                  title: "Modal",
                   headerTitleAlign: "center",
                   headerTitle: (props) => (
                     <ThemedText fontSize={24} fontWeight="bold">
