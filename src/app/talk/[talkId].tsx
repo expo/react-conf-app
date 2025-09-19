@@ -185,7 +185,7 @@ export default function TalkDetail() {
   );
 
   const opacityStyle = useAnimatedStyle(() => ({
-    opacity: 1 - Math.abs(1 - sheetAnim.value * 2.0),
+    opacity: (1 - Math.abs(1 - sheetAnim.value * 2.0)) * 0.4, // Reduce opacity to 40%
   }));
 
   if (!talk) {
@@ -229,33 +229,6 @@ export default function TalkDetail() {
         }}
       />
 
-      {isLiquidGlassAvailable() ? (
-        <View style={styles.container}>
-          <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-            <Canvas
-              style={{
-                width: width,
-                height: 500,
-                transform: [{ scale: 1.8 }],
-                filter: "blur(10px)",
-              }}
-            >
-              <Fill>
-                <Shader source={source} uniforms={uniforms} />
-              </Fill>
-            </Canvas>
-          </Animated.View>
-          <View style={{ height: 450 }}>
-            <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-              <Canvas style={{ width: width, height: 500 }}>
-                <Fill>
-                  <Shader source={source} uniforms={uniforms} />
-                </Fill>
-              </Canvas>
-            </Animated.View>
-          </View>
-        </View>
-      ) : null}
       <ThemedView
         style={styles.container}
         color={
@@ -264,86 +237,108 @@ export default function TalkDetail() {
             : theme.color.background
         }
       >
-        {talk ? (
-          <>
-            <AnimatedScrollView
-              style={styles.container}
-              contentInsetAdjustmentBehavior="automatic"
-              showsVerticalScrollIndicator={false}
-              onScroll={scrollHandler}
-              scrollEventThrottle={8}
-              contentContainerStyle={[
-                styles.contentContainer,
-                {
-                  paddingBottom: insets.bottom + theme.space24,
-                },
+        <>
+          {isLiquidGlassAvailable() ? (
+            <View style={[{ height: 600 }]}>
+              <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+                <Canvas
+                  style={{
+                    width: width,
+                    height: 600,
+                    transform: [{ scale: 2 }],
+                  }}
+                >
+                  <Fill>
+                    <Shader source={source} uniforms={uniforms} />
+                  </Fill>
+                </Canvas>
+              </Animated.View>
+              <View style={{ height: 600 }}>
+                <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+                  <Canvas style={{ width: width, height: 600 }}>
+                    <Fill>
+                      <Shader source={source} uniforms={uniforms} />
+                    </Fill>
+                  </Canvas>
+                </Animated.View>
+              </View>
+            </View>
+          ) : null}
+          <AnimatedScrollView
+            style={styles.container}
+            contentInsetAdjustmentBehavior="automatic"
+            showsVerticalScrollIndicator={false}
+            onScroll={scrollHandler}
+            scrollEventThrottle={8}
+            contentContainerStyle={[
+              styles.contentContainer,
+              {
+                paddingBottom: insets.bottom + theme.space24,
+              },
+            ]}
+          >
+            <ThemedView
+              animated
+              lightColor={
+                isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
+              }
+              darkColor={
+                isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
+              }
+              style={[
+                styles.header,
+                headerStyle,
+                { backgroundColor: "transparent" },
               ]}
             >
-              <ThemedView
-                animated
-                lightColor={
-                  isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
-                }
-                darkColor={
-                  isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
-                }
-                style={[
-                  styles.header,
-                  headerStyle,
-                  { backgroundColor: "transparent" },
-                ]}
+              <ThemedText
+                fontWeight="bold"
+                fontSize={32}
+                style={styles.talkTitle}
               >
-                <ThemedText
-                  fontWeight="bold"
-                  fontSize={32}
-                  style={styles.talkTitle}
+                {talk?.title}
+              </ThemedText>
+            </ThemedView>
+            <ThemedView
+              color={
+                isLiquidGlassAvailable()
+                  ? { light: "transparent", dark: "transparent" }
+                  : theme.color.background
+              }
+              style={styles.content}
+            >
+              {talk.speakers.map((speaker) => (
+                <Link
+                  push
+                  key={speaker.id}
+                  href={{
+                    pathname: "/speaker/[speaker]",
+                    params: { speaker: speaker.id },
+                  }}
+                  asChild
                 >
-                  {talk?.title}
-                </ThemedText>
-              </ThemedView>
-              <ThemedView
-                color={
-                  isLiquidGlassAvailable()
-                    ? { light: "transparent", dark: "transparent" }
-                    : theme.color.background
+                  <Pressable>
+                    <SpeakerDetails speaker={speaker} />
+                  </Pressable>
+                </Link>
+              ))}
+              <Section
+                title="Date"
+                value={
+                  isDayOne
+                    ? "May 15, 2024 (Conference Day 1)"
+                    : "May 15, 2024 (Conference Day 2)"
                 }
-                style={styles.content}
-              >
-                {talk.speakers.map((speaker) => (
-                  <Link
-                    push
-                    key={speaker.id}
-                    href={{
-                      pathname: "/speaker/[speaker]",
-                      params: { speaker: speaker.id },
-                    }}
-                    asChild
-                  >
-                    <Pressable>
-                      <SpeakerDetails speaker={speaker} />
-                    </Pressable>
-                  </Link>
-                ))}
-                <Section
-                  title="Date"
-                  value={
-                    isDayOne
-                      ? "May 15, 2024 (Conference Day 1)"
-                      : "May 15, 2024 (Conference Day 2)"
-                  }
-                />
-                <Section
-                  title="Time"
-                  value={formatSessionTime(talk, shouldUseLocalTz)}
-                />
-                <Section title="Venue" value={talk.room} />
-                <Section title="Description" value={talk.description} />
-              </ThemedView>
-            </AnimatedScrollView>
-          </>
-        ) : (
-          <NotFound message="Talk not found" />
-        )}
+              />
+              <Section
+                title="Time"
+                value={formatSessionTime(talk, shouldUseLocalTz)}
+              />
+              <Section title="Venue" value={talk.room} />
+              <Section title="Description" value={talk.description} />
+            </ThemedView>
+          </AnimatedScrollView>
+        </>
       </ThemedView>
     </>
   );
