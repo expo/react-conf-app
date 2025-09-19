@@ -102,7 +102,6 @@ export default function TalkDetail() {
 
   const router = useRouter();
 
-  // Function to trigger haptic feedback (must be called from JS thread)
   const triggerHaptic = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
@@ -148,7 +147,7 @@ export default function TalkDetail() {
   const { talk, isDayOne } = findTalk(talkId, { dayOne, dayTwo });
 
   const insets = useSafeAreaInsets();
-  const [type, setType] = useState(0);
+  const type = Math.round(Math.random() * 3); // 0-3
 
   // Create shared value
   const sheetAnim = useSharedValue(0);
@@ -203,11 +202,10 @@ export default function TalkDetail() {
         options={{
           headerLeft: () =>
             Platform.select({
-              ios: <HeaderButton buttonProps={{ onPress: router.back }} />, // iOS 18 and below
+              ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
               default: undefined,
             }),
           headerRight: () => (
-            // iOS 18 and below
             <HeaderButton
               buttonProps={{
                 onPress: () => toggleBookmark(talk),
