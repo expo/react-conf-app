@@ -107,10 +107,16 @@ export default function TalkDetail() {
 
   const router = useRouter();
 
-  // Animated header on scroll (iOS only)
+  // Animated header on scroll (iOS only) and bottom overscroll detection
   const translationY = useSharedValue(0);
+  const isOverscrolling = useSharedValue(false);
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
+    // Detect bottom overscroll (scrolled past the end of content)
+    const { contentOffset, contentSize, layoutMeasurement } = event;
+    const scrollPastBottom =
+      contentOffset.y + layoutMeasurement.height > contentSize.height + 20;
+    isOverscrolling.value = scrollPastBottom;
   });
   const headerStyle = useAnimatedStyle(() => {
     if (Platform.OS !== "ios") {
@@ -148,18 +154,21 @@ export default function TalkDetail() {
   // Create shared value
   const sheetAnim = useSharedValue(0);
 
-  // Animate sheetAnim when isOpen changes
+  // Animate sheetAnim when bottom overscrolling
   useAnimatedReaction(
-    () => true,
-    (opened, prev) => {
-      if (opened !== prev) {
-        if (opened) {
+    () => isOverscrolling.value,
+    (overscrolling, prev) => {
+      if (overscrolling !== prev) {
+        if (overscrolling) {
           sheetAnim.value = withTiming(1, {
             duration: 1000,
             easing: Easing.bezier(0, 0.3, 0.7, 1),
           });
         } else {
-          sheetAnim.value = 0;
+          sheetAnim.value = withTiming(0, {
+            duration: 500,
+            easing: Easing.bezier(0.3, 0, 1, 0.7),
+          });
         }
       }
     },
