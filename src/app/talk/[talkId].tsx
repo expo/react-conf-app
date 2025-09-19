@@ -20,6 +20,7 @@ import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
+import { useBookmark } from "@/hooks/useBookmark";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -44,6 +45,8 @@ export default function TalkDetail() {
   const talkId = params.talkId || undefined;
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
+  const { toggleBookmark, isBookmarked } = useBookmark();
+
   const router = useRouter();
 
   // Animated header on scroll (iOS only)
@@ -83,23 +86,42 @@ export default function TalkDetail() {
   const insets = useSafeAreaInsets();
   const iconColor = useThemeColor(theme.color.background);
 
+  if (!talk) {
+    return <NotFound message="Talk not found" />;
+  }
+
+  const bookmarked = isBookmarked(talk.id);
+
   return (
     <>
       <Stack.Screen
         options={{
           headerShown: true,
           presentation: "modal",
-          headerLeft: () => (
-            <HeaderButton buttonProps={{ onPress: router.back }} />
-          ),
+          headerLeft: () =>
+            Platform.select({
+              ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+              default: undefined,
+            }),
           headerRight: () => (
             <HeaderButton
               buttonProps={{
-                onPress: () => alert("bookmark"),
+                onPress: () => toggleBookmark(talk),
                 variant: "glassProminent",
                 color: theme.colorReactLightBlue,
               }}
-              imageProps={{ systemName: "bookmark", color: "white" }}
+              imageProps={{
+                systemName: Platform.select({
+                  ios: bookmarked ? "bookmark.fill" : "bookmark",
+                  default: "bookmark",
+                }),
+                color: Platform.select({
+                  ios: "white",
+                  default: bookmarked
+                    ? theme.colorReactLightBlue
+                    : theme.colorGrey,
+                }),
+              }}
             />
           ),
         }}
