@@ -1,7 +1,7 @@
 import { ExpoConfig } from "expo/config";
 // Update this value to something unique in order to be able to build for a
 // physical iOS device.
-const APP_ID_PREFIX = "com.reactconf";
+const APP_ID_PREFIX = "dev.codewithbeto";
 
 // These values are tied to EAS. If you would like to use EAS Build or Update
 // on this project while playing with it, then remove these values and run

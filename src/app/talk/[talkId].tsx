@@ -1,7 +1,13 @@
 import { Image } from "expo-image";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Platform,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+  PlatformColor,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
@@ -9,8 +15,13 @@ import Animated, {
   useAnimatedScrollHandler,
   interpolate,
   Extrapolation,
+  Easing,
+  useAnimatedReaction,
+  useDerivedValue,
+  withTiming,
 } from "react-native-reanimated";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
+import { Canvas, Fill, Shader, Skia, vec } from "@shopify/react-native-skia";
 
 import { NotFound } from "@/components/NotFound";
 import { SpeakerImage } from "@/components/SpeakerImage";
@@ -22,8 +33,51 @@ import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { useBookmark } from "@/hooks/useBookmark";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { Host, Slider } from "@expo/ui/swift-ui";
+import { offset } from "@expo/ui/swift-ui/modifiers";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
+const source = Skia.RuntimeEffect.Make(`
+uniform float sheetAnim;
+uniform int type;
+uniform vec2 size;
+float rand(vec2 co){
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+vec4 main(vec2 pos) {
+  vec2 normalized = pos/vec2(256);
+  vec2 offset;
+  float dist;
+  offset = (pos - vec2(size.x/2, -size.y));
+  dist = sqrt(pow(offset.x, 2.0) + pow(offset.y, 2.0)) / sqrt(pow(size.x/2, 2.0) + pow(size.y/2, 2.0));
+  float mixVal = 0;
+  vec4 colorA;
+  float anim = 1 - sheetAnim;
+  if(type == 0) {
+    mixVal = anim;
+     colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
+  }
+  if(type == 1) {
+      mixVal = (1-dist) - anim;
+       colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
+  }
+  if(type == 2) {
+     mixVal = max(0,1.0- pow(1-dist,2.0) + pow(anim*0.7,1));
+      colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
+  }
+  if(type == 3) {
+    offset = (pos - vec2(size.x*anim, size.y*anim));
+    dist = sqrt(pow(offset.x, 2.0) + pow(offset.y, 2.0)) / sqrt(pow(size.x/2, 2.0) + pow(size.x/2, 2.0)) - pow(sheetAnim,1.3);
+     mixVal = max(0.0,dist);
+      colorA = vec4(1.0, normalized.x, normalized.y,1.0);
+  }
+  // float mixVal = (1-dist) - anim;
+  // float mixVal = max(0,1.0- pow(1-dist,2.0) + pow(anim*0.7,1));
+  vec4 colorB = vec4(0.0, 0.0, 0.0,0.0);
+  vec4 color = mix(colorA, colorB, mixVal+rand(pos)/(6.0));
+  return vec4(color);
+}`)!;
 
 const findTalk = (
   talkId: string | string[] | undefined,
@@ -51,6 +105,7 @@ export default function TalkDetail() {
     light: theme.colorReactLightBlue,
     dark: theme.colorReactDarkBlue,
   });
+  const { width } = useWindowDimensions();
 
   const router = useRouter();
 
@@ -90,6 +145,41 @@ export default function TalkDetail() {
 
   const insets = useSafeAreaInsets();
   const iconColor = useThemeColor(theme.color.background);
+  const [type, setType] = useState(0);
+
+  // Create shared value
+  const sheetAnim = useSharedValue(0);
+
+  // Animate sheetAnim when isOpen changes
+  useAnimatedReaction(
+    () => true,
+    (opened, prev) => {
+      if (opened !== prev) {
+        if (opened) {
+          sheetAnim.value = withTiming(1, {
+            duration: 2000,
+            easing: Easing.bezier(0, 0.3, 0.7, 1),
+          });
+        } else {
+          sheetAnim.value = 0;
+        }
+      }
+    },
+    [],
+  );
+
+  const uniforms = useDerivedValue(
+    () => ({
+      sheetAnim: sheetAnim.value,
+      size: vec(width, 500),
+      type: Math.round(type),
+    }),
+    [sheetAnim, type],
+  );
+
+  const opacityStyle = useAnimatedStyle(() => ({
+    opacity: 1 - Math.abs(1 - sheetAnim.value * 2.0),
+  }));
 
   if (!talk) {
     return <NotFound message="Talk not found" />;
@@ -151,6 +241,33 @@ export default function TalkDetail() {
           //   ) : undefined,
         }}
       />
+      <View style={styles.container}>
+        <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+          <Canvas
+            style={{
+              width: width,
+              height: 500,
+              transform: [{ scale: 1.8 }],
+              filter: "blur(10px)",
+            }}
+          >
+            <Fill>
+              <Shader source={source} uniforms={uniforms} />
+            </Fill>
+          </Canvas>
+        </Animated.View>
+        <Host>
+          <View style={{ height: 450 }}>
+            <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+              <Canvas style={{ width: width, height: 500 }}>
+                <Fill>
+                  <Shader source={source} uniforms={uniforms} />
+                </Fill>
+              </Canvas>
+            </Animated.View>
+          </View>
+        </Host>
+      </View>
       <ThemedView
         style={styles.container}
         color={
@@ -311,14 +428,6 @@ const styles = StyleSheet.create({
   centered: {
     flex: 1,
     justifyContent: "center",
-  },
-  reactLogo: {
-    position: "absolute",
-    right: -150,
-    top: "30%",
-    height: 300,
-    width: 300,
-    opacity: 0.2,
   },
   sectionContainer: {
     marginBottom: theme.space24,
