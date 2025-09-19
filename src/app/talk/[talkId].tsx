@@ -141,7 +141,7 @@ export default function TalkDetail() {
           ),
         },
       ],
-      opacity: interpolate(translationY.value, [0, 100], [1, 0.6]),
+      opacity: interpolate(translationY.value, [0, 100], [1, 0]),
     };
   });
 
@@ -226,53 +226,36 @@ export default function TalkDetail() {
               }}
             />
           ),
-          // header: () =>
-          //   isLiquidGlassAvailable() ? (
-          //     <HeaderButton
-          //       buttonProps={{
-          //         onPress: () => toggleBookmark(talk),
-          //         variant: "glassProminent",
-          //         color: tintColor,
-          //       }}
-          //       imageProps={{
-          //         systemName: Platform.select({
-          //           ios: bookmarked ? "bookmark.fill" : "bookmark",
-          //           default: "bookmark",
-          //         }),
-          //         color: Platform.select({
-          //           ios: isLiquidGlassAvailable() ? "white" : bookmarkedColor,
-          //           default: bookmarkedColor,
-          //         }),
-          //       }}
-          //     />
-          //   ) : undefined,
         }}
       />
-      <View style={styles.container}>
-        <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-          <Canvas
-            style={{
-              width: width,
-              height: 500,
-              transform: [{ scale: 1.8 }],
-              filter: "blur(10px)",
-            }}
-          >
-            <Fill>
-              <Shader source={source} uniforms={uniforms} />
-            </Fill>
-          </Canvas>
-        </Animated.View>
-        <View style={{ height: 450 }}>
+
+      {isLiquidGlassAvailable() ? (
+        <View style={styles.container}>
           <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-            <Canvas style={{ width: width, height: 500 }}>
+            <Canvas
+              style={{
+                width: width,
+                height: 500,
+                transform: [{ scale: 1.8 }],
+                filter: "blur(10px)",
+              }}
+            >
               <Fill>
                 <Shader source={source} uniforms={uniforms} />
               </Fill>
             </Canvas>
           </Animated.View>
+          <View style={{ height: 450 }}>
+            <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+              <Canvas style={{ width: width, height: 500 }}>
+                <Fill>
+                  <Shader source={source} uniforms={uniforms} />
+                </Fill>
+              </Canvas>
+            </Animated.View>
+          </View>
         </View>
-      </View>
+      ) : null}
       <ThemedView
         style={styles.container}
         color={
@@ -310,20 +293,13 @@ export default function TalkDetail() {
                   { backgroundColor: "transparent" },
                 ]}
               >
-                {/* <Image
-                  tintColor={iconColor}
-                  source={require("@/assets/images/react-logo.png")}
-                  style={styles.reactLogo}
-                /> */}
-                <View style={styles.centered}>
-                  <ThemedText
-                    fontWeight="bold"
-                    fontSize={32}
-                    style={styles.talkTitle}
-                  >
-                    {talk?.title}
-                  </ThemedText>
-                </View>
+                <ThemedText
+                  fontWeight="bold"
+                  fontSize={32}
+                  style={styles.talkTitle}
+                >
+                  {talk?.title}
+                </ThemedText>
               </ThemedView>
               <ThemedView
                 color={
@@ -411,10 +387,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 150,
+    minHeight: 150,
     paddingTop: 50,
     paddingHorizontal: theme.space16,
-    // overflow: "hidden",
   },
   contentContainer: {
     borderBottomRightRadius: theme.borderRadius20,
@@ -430,10 +405,7 @@ const styles = StyleSheet.create({
   },
   talkTitle: {
     textAlign: "center",
-  },
-  centered: {
-    flex: 1,
-    justifyContent: "center",
+    paddingTop: theme.space24,
   },
   sectionContainer: {
     marginBottom: theme.space24,
