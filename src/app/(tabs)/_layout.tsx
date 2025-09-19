@@ -39,7 +39,7 @@ export default function TabLayout() {
 
   const tabBarInactiveTintColor = useThemeColor({
     light: theme.colorGrey,
-    dark: `rgba(255, 255, 255, 0.35)`,
+    dark: "#FFFFFF50",
   });
 
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
@@ -51,7 +51,10 @@ export default function TabLayout() {
       backgroundColor={tabBarBackgroundColor}
       labelVisibilityMode="labeled"
       iconColor={tabBarInactiveTintColor}
-      indicatorColor={tabBarActiveTintColor + "30"}
+      indicatorColor={tintColor + "20"}
+      labelStyle={{
+        color: tabBarInactiveTintColor,
+      }}
       disableTransparentOnScrollEdge={true} // Used to prevent transparent background on iOS 18 and older
     >
       <NativeTabs.Trigger name="index">
@@ -65,6 +68,7 @@ export default function TabLayout() {
                   name="calendar"
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}
@@ -81,6 +85,7 @@ export default function TabLayout() {
                   name={"bookmark"}
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}
@@ -102,6 +107,7 @@ export default function TabLayout() {
                   name={"people"}
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}
@@ -118,6 +124,7 @@ export default function TabLayout() {
                   name={"info"}
                 />
               }
+              selectedColor={tintColor}
             />
           ),
         })}

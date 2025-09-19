@@ -9,7 +9,7 @@ import {
 
 import { NotFound } from "@/components/NotFound";
 
-import { ThemedText, ThemedView } from "@/components/Themed";
+import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { FlatList } from "react-native-gesture-handler";
@@ -23,6 +23,7 @@ export default function Speakers() {
   useScrollToTop(ref);
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
   const { width } = useWindowDimensions();
+  const backgroundColor = useThemeColor(theme.color.background);
 
   const { toggleBookmarkById, isBookmarked, getSessionById } = useBookmark();
 
@@ -52,7 +53,7 @@ export default function Speakers() {
       onScrollBeginDrag={dismissKeyboard}
       keyboardShouldPersistTaps="handled"
       ref={ref}
-      style={styles.container}
+      style={{ backgroundColor }}
       contentContainerStyle={styles.contentContainer}
       ItemSeparatorComponent={() => (
         <ThemedView style={{ height: 1 }} color={theme.color.border} />
@@ -114,9 +115,6 @@ export default function Speakers() {
 }
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   contentContainer: {
     paddingHorizontal: theme.space24,
     paddingBottom: Platform.select({ android: 100, default: 0 }),
