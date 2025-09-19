@@ -28,12 +28,17 @@ export default function SpeakerDetail() {
   const isPreview = useIsPreview();
   const router = useRouter();
 
+  const secondaryColor = useThemeColor({
+    light: theme.color.textSecondary.light,
+    dark: theme.color.textSecondary.dark,
+  });
+
   return (
     <>
       {!isPreview ? (
         <Stack.Screen
           options={{
-            title: speaker?.fullName,
+            title: "",
             headerLeft: () =>
               Platform.select({
                 ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
@@ -48,28 +53,41 @@ export default function SpeakerDetail() {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             contentInsetAdjustmentBehavior="automatic"
+            showsVerticalScrollIndicator={false}
           >
             <View style={styles.centered}>
               <SpeakerImage
                 style={styles.speakerImage}
                 profilePicture={speaker.profilePicture}
-                size="xlarge"
+                size="large"
               />
+              <ThemedText fontSize={theme.fontSize18} fontWeight="medium">
+                {speaker.fullName}
+              </ThemedText>
               {speaker.tagLine ? (
                 <ThemedText
-                  fontSize={theme.fontSize18}
+                  fontSize={theme.fontSize16}
                   fontWeight="medium"
-                  style={styles.tagLine}
-                  italic
+                  color={{ light: secondaryColor, dark: secondaryColor }}
                 >
                   {speaker.tagLine}
                 </ThemedText>
               ) : null}
+
+              <View
+                style={{
+                  width: "100%",
+                  borderBottomWidth: StyleSheet.hairlineWidth,
+                  borderBottomColor: secondaryColor,
+                  marginVertical: theme.space24,
+                }}
+              />
             </View>
             {speaker.links.length ? <Socials speaker={speaker} /> : null}
             {speaker.bio ? (
               <ThemedText
-                fontSize={theme.fontSize18}
+                fontSize={theme.fontSize14}
+                fontWeight="medium"
                 style={{
                   marginBottom: theme.space24,
                   lineHeight: theme.fontSize18 * 1.5,
@@ -170,9 +188,6 @@ const styles = StyleSheet.create({
   },
   centered: {
     alignItems: "center",
-  },
-  tagLine: {
-    marginBottom: theme.space24,
   },
   speakerImage: {
     marginBottom: theme.space24,

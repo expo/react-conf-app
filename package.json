@@ -22,6 +22,7 @@
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/core": "^7.0.0",
     "@react-navigation/elements": "^2.0.0",
+    "@shopify/react-native-skia": "2.2.12",
     "babel-plugin-react-compiler": "^19.0.0-beta-a7bf2bd-20241110",
     "date-fns": "^3.6.0",
     "date-fns-tz": "^3.1.3",

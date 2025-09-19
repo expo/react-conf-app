@@ -1,16 +1,21 @@
-import { Image } from "expo-image";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { Platform, StyleSheet, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   useAnimatedScrollHandler,
   interpolate,
   Extrapolation,
+  Easing,
+  useAnimatedReaction,
+  useDerivedValue,
+  withTiming,
 } from "react-native-reanimated";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
+import { Canvas, Fill, Shader, Skia, vec } from "@shopify/react-native-skia";
 
 import { NotFound } from "@/components/NotFound";
 import { SpeakerImage } from "@/components/SpeakerImage";
@@ -22,8 +27,50 @@ import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { useBookmark } from "@/hooks/useBookmark";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { scheduleOnRN } from "react-native-worklets";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
+
+const source = Skia.RuntimeEffect.Make(`
+uniform float sheetAnim;
+uniform int type;
+uniform vec2 size;
+float rand(vec2 co){
+    return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
+}
+vec4 main(vec2 pos) {
+  vec2 normalized = pos/vec2(256);
+  vec2 offset;
+  float dist;
+  offset = (pos - vec2(size.x/2, -size.y));
+  dist = sqrt(pow(offset.x, 2.0) + pow(offset.y, 2.0)) / sqrt(pow(size.x/2, 2.0) + pow(size.y/2, 2.0));
+  float mixVal = 0;
+  vec4 colorA;
+  float anim = 1 - sheetAnim;
+  if(type == 0) {
+    mixVal = anim;
+     colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
+  }
+  if(type == 1) {
+      mixVal = (1-dist) - anim;
+       colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
+  }
+  if(type == 2) {
+     mixVal = max(0,1.0- pow(1-dist,2.0) + pow(anim*0.7,1));
+      colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
+  }
+  if(type == 3) {
+    offset = (pos - vec2(size.x*anim, size.y*anim));
+    dist = sqrt(pow(offset.x, 2.0) + pow(offset.y, 2.0)) / sqrt(pow(size.x/2, 2.0) + pow(size.x/2, 2.0)) - pow(sheetAnim,1.3);
+     mixVal = max(0.0,dist);
+      colorA = vec4(1.0, normalized.x, normalized.y,1.0);
+  }
+  // float mixVal = (1-dist) - anim;
+  // float mixVal = max(0,1.0- pow(1-dist,2.0) + pow(anim*0.7,1));
+  vec4 colorB = vec4(0.0, 0.0, 0.0,0.0);
+  vec4 color = mix(colorA, colorB, mixVal+rand(pos)/(6.0));
+  return vec4(color);
+}`)!;
 
 const findTalk = (
   talkId: string | string[] | undefined,
@@ -51,13 +98,24 @@ export default function TalkDetail() {
     light: theme.colorReactLightBlue,
     dark: theme.colorReactDarkBlue,
   });
+  const { width } = useWindowDimensions();
 
   const router = useRouter();
 
-  // Animated header on scroll (iOS only)
+  const triggerHaptic = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
+
+  // Animated header on scroll (iOS only) and bottom overscroll detection
   const translationY = useSharedValue(0);
+  const isOverscrolling = useSharedValue(false);
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
+    // Detect bottom overscroll (scrolled past the end of content)
+    const { contentOffset, contentSize, layoutMeasurement } = event;
+    const scrollPastBottom =
+      contentOffset.y + layoutMeasurement.height > contentSize.height + 20;
+    isOverscrolling.value = scrollPastBottom;
   });
   const headerStyle = useAnimatedStyle(() => {
     if (Platform.OS !== "ios") {
@@ -82,14 +140,52 @@ export default function TalkDetail() {
           ),
         },
       ],
-      opacity: interpolate(translationY.value, [0, 100], [1, 0.6]),
+      opacity: interpolate(translationY.value, [0, 100], [1, 0]),
     };
   });
 
   const { talk, isDayOne } = findTalk(talkId, { dayOne, dayTwo });
 
   const insets = useSafeAreaInsets();
-  const iconColor = useThemeColor(theme.color.background);
+  const type = Math.round(Math.random() * 3); // 0-3
+
+  // Create shared value
+  const sheetAnim = useSharedValue(0);
+
+  // Animate sheetAnim when bottom overscrolling
+  useAnimatedReaction(
+    () => isOverscrolling.value,
+    (overscrolling, prev) => {
+      if (overscrolling !== prev) {
+        if (overscrolling) {
+          scheduleOnRN(triggerHaptic);
+          sheetAnim.value = withTiming(1, {
+            duration: 1000,
+            easing: Easing.bezier(0, 0.3, 0.7, 1),
+          });
+        } else {
+          sheetAnim.value = withTiming(0, {
+            duration: 500,
+            easing: Easing.bezier(0.3, 0, 1, 0.7),
+          });
+        }
+      }
+    },
+    [],
+  );
+
+  const uniforms = useDerivedValue(
+    () => ({
+      sheetAnim: sheetAnim.value,
+      size: vec(width, 500),
+      type: Math.round(type),
+    }),
+    [sheetAnim, type],
+  );
+
+  const opacityStyle = useAnimatedStyle(() => ({
+    opacity: (1 - Math.abs(1 - sheetAnim.value * 2.0)) * 0.4, // Reduce opacity to 40%
+  }));
 
   if (!talk) {
     return <NotFound message="Talk not found" />;
@@ -104,8 +200,6 @@ export default function TalkDetail() {
     <>
       <Stack.Screen
         options={{
-          headerShown: true,
-          presentation: "modal",
           headerLeft: () =>
             Platform.select({
               ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
@@ -132,82 +226,117 @@ export default function TalkDetail() {
           ),
         }}
       />
-      <ThemedView style={styles.container} color={theme.color.background}>
-        {talk ? (
-          <>
-            <AnimatedScrollView
-              style={styles.container}
-              contentInsetAdjustmentBehavior="automatic"
-              onScroll={scrollHandler}
-              scrollEventThrottle={8}
-              contentContainerStyle={[
-                styles.contentContainer,
-                {
-                  paddingBottom: insets.bottom + theme.space24,
-                },
+
+      <ThemedView
+        style={styles.container}
+        color={
+          isLiquidGlassAvailable()
+            ? { light: "transparent", dark: "transparent" }
+            : theme.color.background
+        }
+      >
+        <>
+          {isLiquidGlassAvailable() ? (
+            <View style={[{ height: 600 }]}>
+              <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+                <Canvas
+                  style={{
+                    width: width,
+                    height: 600,
+                    transform: [{ scale: 2 }],
+                  }}
+                >
+                  <Fill>
+                    <Shader source={source} uniforms={uniforms} />
+                  </Fill>
+                </Canvas>
+              </Animated.View>
+              <View style={{ height: 600 }}>
+                <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+                  <Canvas style={{ width: width, height: 600 }}>
+                    <Fill>
+                      <Shader source={source} uniforms={uniforms} />
+                    </Fill>
+                  </Canvas>
+                </Animated.View>
+              </View>
+            </View>
+          ) : null}
+          <AnimatedScrollView
+            style={styles.container}
+            contentInsetAdjustmentBehavior="automatic"
+            showsVerticalScrollIndicator={false}
+            onScroll={scrollHandler}
+            scrollEventThrottle={8}
+            contentContainerStyle={[
+              styles.contentContainer,
+              {
+                paddingBottom: insets.bottom + theme.space24,
+              },
+            ]}
+          >
+            <ThemedView
+              animated
+              lightColor={
+                isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
+              }
+              darkColor={
+                isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
+              }
+              style={[
+                styles.header,
+                headerStyle,
+                { backgroundColor: "transparent" },
               ]}
             >
-              <ThemedView
-                animated
-                lightColor={
-                  isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
-                }
-                darkColor={
-                  isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
-                }
-                style={[styles.header, headerStyle]}
+              <ThemedText
+                fontWeight="bold"
+                fontSize={32}
+                style={styles.talkTitle}
               >
-                <Image
-                  tintColor={iconColor}
-                  source={require("@/assets/images/react-logo.png")}
-                  style={styles.reactLogo}
-                />
-                <View style={styles.centered}>
-                  <ThemedText
-                    fontWeight="bold"
-                    fontSize={32}
-                    style={styles.talkTitle}
-                  >
-                    {talk?.title}
-                  </ThemedText>
-                </View>
-              </ThemedView>
-              <ThemedView color={theme.color.background} style={styles.content}>
-                {talk.speakers.map((speaker) => (
-                  <Link
-                    push
-                    key={speaker.id}
-                    href={{
-                      pathname: "/speaker/[speaker]",
-                      params: { speaker: speaker.id },
-                    }}
-                    asChild
-                  >
-                    <Pressable>
-                      <SpeakerDetails speaker={speaker} />
-                    </Pressable>
-                  </Link>
-                ))}
-                <Section
-                  title="Date"
-                  value={
-                    isDayOne
-                      ? "May 15, 2024 (Conference Day 1)"
-                      : "May 15, 2024 (Conference Day 2)"
-                  }
-                />
-                <Section
-                  title="Time"
-                  value={formatSessionTime(talk, shouldUseLocalTz)}
-                />
-                <Section title="Venue" value={talk.room} />
-                <Section title="Description" value={talk.description} />
-              </ThemedView>
-            </AnimatedScrollView>
-          </>
-        ) : (
-          <NotFound message="Talk not found" />
-        )}
+                {talk?.title}
+              </ThemedText>
+            </ThemedView>
+            <ThemedView
+              color={
+                isLiquidGlassAvailable()
+                  ? { light: "transparent", dark: "transparent" }
+                  : theme.color.background
+              }
+              style={styles.content}
+            >
+              {talk.speakers.map((speaker) => (
+                <Link
+                  push
+                  key={speaker.id}
+                  href={{
+                    pathname: "/speaker/[speaker]",
+                    params: { speaker: speaker.id },
+                  }}
+                  asChild
+                >
+                  <Pressable>
+                    <SpeakerDetails speaker={speaker} />
+                  </Pressable>
+                </Link>
+              ))}
+              <Section
+                title="Date"
+                value={
+                  isDayOne
+                    ? "May 15, 2024 (Conference Day 1)"
+                    : "May 15, 2024 (Conference Day 2)"
+                }
+              />
+              <Section
+                title="Time"
+                value={formatSessionTime(talk, shouldUseLocalTz)}
+              />
+              <Section title="Venue" value={talk.room} />
+              <Section title="Description" value={talk.description} />
+            </ThemedView>
+          </AnimatedScrollView>
+        </>
       </ThemedView>
     </>
   );
@@ -251,10 +380,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 250,
+    minHeight: 150,
     paddingTop: 50,
     paddingHorizontal: theme.space16,
-    overflow: "hidden",
   },
   contentContainer: {
     borderBottomRightRadius: theme.borderRadius20,
@@ -270,18 +398,7 @@ const styles = StyleSheet.create({
   },
   talkTitle: {
     textAlign: "center",
-  },
-  centered: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  reactLogo: {
-    position: "absolute",
-    right: -100,
-    top: "30%",
-    height: 300,
-    width: 300,
-    opacity: 0.2,
+    paddingTop: theme.space24,
   },
   sectionContainer: {
     marginBottom: theme.space24,
