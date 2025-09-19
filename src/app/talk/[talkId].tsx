@@ -19,14 +19,11 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
-import { Bookmark } from "@/components/Bookmark";
 import {
   Host,
   Button as SwiftUIButton,
   Image as SFImage,
-  Label,
 } from "@expo/ui/swift-ui";
-import { glassEffect } from "@expo/ui/swift-ui/modifiers";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -96,26 +93,16 @@ export default function TalkDetail() {
           headerShown: true,
           presentation: "modal",
           headerRight: () => (
-            <Pressable
-              onPress={() => alert("bookmark")}
-              hitSlop={30}
-              style={{
-                width: 36,
-                height: 36,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Host style={{ width: 40, height: 40 }} matchContents>
-                <SFImage
-                  systemName="bookmark"
-                  onPress={() => alert("bookmark")}
-                  size={16}
-                />
-              </Host>
-            </Pressable>
+            <Host matchContents>
+              <SwiftUIButton
+                variant="glassProminent"
+                color="white"
+                onPress={() => alert("bookmark")}
+              >
+                <SFImage systemName="bookmark" size={24} color="black" />
+              </SwiftUIButton>
+            </Host>
           ),
-          // headerRight: () => (talk ? <Bookmark session={talk} /> : null),
         }}
       />
       <ThemedView style={styles.container} color={theme.color.background}>
