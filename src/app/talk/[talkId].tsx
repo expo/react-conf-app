@@ -47,6 +47,10 @@ export default function TalkDetail() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { toggleBookmark, isBookmarked } = useBookmark();
+  const tintColor = useThemeColor({
+    light: theme.colorReactLightBlue,
+    dark: theme.colorReactDarkBlue,
+  });
 
   const router = useRouter();
 
@@ -112,7 +116,7 @@ export default function TalkDetail() {
               buttonProps={{
                 onPress: () => toggleBookmark(talk),
                 variant: "glassProminent",
-                color: theme.colorReactLightBlue,
+                color: tintColor,
               }}
               imageProps={{
                 systemName: Platform.select({

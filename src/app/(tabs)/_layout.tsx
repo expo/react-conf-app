@@ -27,6 +27,10 @@ type VectorIconFamily = {
 
 export default function TabLayout() {
   const tabBarBackgroundColor = useThemeColor(theme.color.background);
+  const tintColor = useThemeColor({
+    light: theme.colorReactLightBlue,
+    dark: theme.colorReactDarkBlue,
+  });
 
   const tabBarActiveTintColor = useThemeColor({
     light: theme.colorBlack,
@@ -81,7 +85,11 @@ export default function TabLayout() {
           ),
         })}
         <Label>Bookmarked</Label>
-        {hasBookmarks && <Badge>{bookmarks.length.toString()}</Badge>}
+        {hasBookmarks && (
+          <Badge selectedBackgroundColor={tintColor}>
+            {bookmarks.length.toString()}
+          </Badge>
+        )}
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="speakers" role="search">
         {Platform.select({

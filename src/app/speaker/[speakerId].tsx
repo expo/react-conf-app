@@ -1,8 +1,13 @@
 import Feather from "@expo/vector-icons/build/Feather";
 import Ionicons from "@expo/vector-icons/build/Ionicons";
 import { Image } from "expo-image";
-import { useLocalSearchParams, Stack, useIsPreview } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import {
+  useLocalSearchParams,
+  Stack,
+  useIsPreview,
+  useRouter,
+} from "expo-router";
+import { Platform, StyleSheet, View } from "react-native";
 import openWebBrowserAsync from "@/utils/openWebBrowserAsync";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -14,17 +19,28 @@ import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Speaker } from "@/types";
+import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 
 export default function SpeakerDetail() {
   const params = useLocalSearchParams();
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
   const speaker = speakers.find((speaker) => speaker.id === params.speakerId);
   const isPreview = useIsPreview();
+  const router = useRouter();
 
   return (
     <>
       {!isPreview ? (
-        <Stack.Screen options={{ title: speaker?.fullName }} />
+        <Stack.Screen
+          options={{
+            title: speaker?.fullName,
+            headerLeft: () =>
+              Platform.select({
+                ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+                default: undefined,
+              }),
+          }}
+        />
       ) : null}
       <ThemedView style={styles.container} color={theme.color.background}>
         {speaker ? (

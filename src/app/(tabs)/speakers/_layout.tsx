@@ -29,6 +29,7 @@ export default function Layout() {
             tintColor: tabBarTintColor,
             textColor: tabBarTintColor,
             hintTextColor: tabBarTintColor,
+            placeholder: "Search speakers",
             onChangeText: (event) => {
               router.setParams({
                 q: event.nativeEvent.text,

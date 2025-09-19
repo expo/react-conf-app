@@ -1,5 +1,6 @@
 import { useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Stack } from "expo-router";
 
 export default function Layout() {
@@ -17,7 +18,9 @@ export default function Layout() {
         options={{
           title: "Bookmarks",
           headerStyle: {
-            backgroundColor: tabBarBackgroundColor,
+            backgroundColor: isLiquidGlassAvailable()
+              ? "transparent"
+              : tabBarBackgroundColor,
           },
         }}
       />
