@@ -1,14 +1,8 @@
-import { Image } from "expo-image";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
-import {
-  Platform,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-  PlatformColor,
-} from "react-native";
+import { Platform, StyleSheet, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -33,6 +27,7 @@ import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { useBookmark } from "@/hooks/useBookmark";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { scheduleOnRN } from "react-native-worklets";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -107,6 +102,11 @@ export default function TalkDetail() {
 
   const router = useRouter();
 
+  // Function to trigger haptic feedback (must be called from JS thread)
+  const triggerHaptic = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
+
   // Animated header on scroll (iOS only) and bottom overscroll detection
   const translationY = useSharedValue(0);
   const isOverscrolling = useSharedValue(false);
@@ -148,7 +148,6 @@ export default function TalkDetail() {
   const { talk, isDayOne } = findTalk(talkId, { dayOne, dayTwo });
 
   const insets = useSafeAreaInsets();
-  const iconColor = useThemeColor(theme.color.background);
   const [type, setType] = useState(0);
 
   // Create shared value
@@ -160,6 +159,7 @@ export default function TalkDetail() {
     (overscrolling, prev) => {
       if (overscrolling !== prev) {
         if (overscrolling) {
+          scheduleOnRN(triggerHaptic);
           sheetAnim.value = withTiming(1, {
             duration: 1000,
             easing: Easing.bezier(0, 0.3, 0.7, 1),
