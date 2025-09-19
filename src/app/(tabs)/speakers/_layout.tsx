@@ -1,6 +1,8 @@
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Stack, useRouter } from "expo-router";
+import { Platform } from "react-native";
 
 export default function Layout() {
   const router = useRouter();
@@ -16,13 +18,18 @@ export default function Layout() {
         name="index"
         options={{
           headerStyle: {
-            backgroundColor: tabBarBackgroundColor,
+            backgroundColor: isLiquidGlassAvailable()
+              ? "transparent"
+              : tabBarBackgroundColor,
           },
-          headerTitle: () => (
-            <ThemedText fontSize={20} fontWeight="bold">
-              Speakers
-            </ThemedText>
-          ),
+          headerLargeTitle: true,
+          title: "Speakers",
+          headerTitle: () =>
+            Platform.OS === "android" ? (
+              <ThemedText fontSize={20} fontWeight="bold">
+                Speakers
+              </ThemedText>
+            ) : undefined,
 
           headerSearchBarOptions: {
             headerIconColor: tabBarTintColor,
