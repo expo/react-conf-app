@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { Button, Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -23,7 +23,10 @@ import {
   Host,
   Button as SwiftUIButton,
   Image as SFImage,
+  HStack,
 } from "@expo/ui/swift-ui";
+import { frame } from "@expo/ui/swift-ui/modifiers";
+import { theme as themeReact } from "@/theme";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -48,7 +51,11 @@ export default function TalkDetail() {
   const talkId = params.talkId || undefined;
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
-
+  const router = useRouter();
+  const tabBarActiveTintColor = useThemeColor({
+    light: theme.colorBlack,
+    dark: theme.colorWhite,
+  });
   // Animated header on scroll (iOS only)
   const translationY = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler((event) => {
@@ -92,14 +99,25 @@ export default function TalkDetail() {
         options={{
           headerShown: true,
           presentation: "modal",
+          headerLeft: () => (
+            <Host matchContents>
+              <SwiftUIButton onPress={() => router.back()} variant="glass">
+                <SFImage
+                  systemName="xmark"
+                  size={24}
+                  modifiers={[frame({ height: 33 })]}
+                />
+              </SwiftUIButton>
+            </Host>
+          ),
           headerRight: () => (
             <Host matchContents>
               <SwiftUIButton
                 variant="glassProminent"
-                color="white"
                 onPress={() => alert("bookmark")}
+                color={themeReact.colorReactLightBlue}
               >
-                <SFImage systemName="bookmark" size={24} color="black" />
+                <SFImage systemName="bookmark" size={24} color="white" />
               </SwiftUIButton>
             </Host>
           ),
