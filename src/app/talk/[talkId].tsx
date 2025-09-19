@@ -1,7 +1,7 @@
 import { Image } from "expo-image";
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { Button, Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
@@ -19,20 +19,13 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
-import {
-  Host,
-  Button as SwiftUIButton,
-  Image as SFImage,
-  HStack,
-} from "@expo/ui/swift-ui";
-import { frame } from "@expo/ui/swift-ui/modifiers";
-import { theme as themeReact } from "@/theme";
+import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const findTalk = (
   talkId: string | string[] | undefined,
-  { dayOne, dayTwo }: { dayOne: Session[]; dayTwo: Session[] }
+  { dayOne, dayTwo }: { dayOne: Session[]; dayTwo: Session[] },
 ) => {
   const talkDay1 = dayOne.find((session) => session.id === talkId);
   if (talkDay1) {
@@ -52,10 +45,7 @@ export default function TalkDetail() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const router = useRouter();
-  const tabBarActiveTintColor = useThemeColor({
-    light: theme.colorBlack,
-    dark: theme.colorWhite,
-  });
+
   // Animated header on scroll (iOS only)
   const translationY = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler((event) => {
@@ -72,7 +62,7 @@ export default function TalkDetail() {
             translationY.value,
             [-120, 0, 150],
             [-90, 0, 120],
-            Extrapolation.CLAMP
+            Extrapolation.CLAMP,
           ),
         },
         {
@@ -80,7 +70,7 @@ export default function TalkDetail() {
             translationY.value,
             [-120, 0],
             [1, 0.8],
-            Extrapolation.CLAMP
+            Extrapolation.CLAMP,
           ),
         },
       ],
@@ -100,26 +90,17 @@ export default function TalkDetail() {
           headerShown: true,
           presentation: "modal",
           headerLeft: () => (
-            <Host matchContents>
-              <SwiftUIButton onPress={() => router.back()} variant="glass">
-                <SFImage
-                  systemName="xmark"
-                  size={24}
-                  modifiers={[frame({ height: 33 })]}
-                />
-              </SwiftUIButton>
-            </Host>
+            <HeaderButton buttonProps={{ onPress: router.back }} />
           ),
           headerRight: () => (
-            <Host matchContents>
-              <SwiftUIButton
-                variant="glassProminent"
-                onPress={() => alert("bookmark")}
-                color={themeReact.colorReactLightBlue}
-              >
-                <SFImage systemName="bookmark" size={24} color="white" />
-              </SwiftUIButton>
-            </Host>
+            <HeaderButton
+              buttonProps={{
+                onPress: () => alert("bookmark"),
+                variant: "glassProminent",
+                color: theme.colorReactLightBlue,
+              }}
+              imageProps={{ systemName: "bookmark", color: "white" }}
+            />
           ),
         }}
       />

@@ -21,8 +21,7 @@ type VectorIconFamily = {
   getImageSource: (
     name: string,
     size: number,
-    // eslint-disable-next-line prettier/prettier
-    color: ColorValue
+    color: ColorValue,
   ) => Promise<ImageSourcePropType>;
 };
 
