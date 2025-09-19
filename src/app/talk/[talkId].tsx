@@ -21,6 +21,7 @@ import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { useBookmark } from "@/hooks/useBookmark";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -91,6 +92,9 @@ export default function TalkDetail() {
   }
 
   const bookmarked = isBookmarked(talk.id);
+  const bookmarkedColor = bookmarked
+    ? theme.colorReactLightBlue
+    : theme.colorGrey;
 
   return (
     <>
@@ -116,10 +120,8 @@ export default function TalkDetail() {
                   default: "bookmark",
                 }),
                 color: Platform.select({
-                  ios: "white",
-                  default: bookmarked
-                    ? theme.colorReactLightBlue
-                    : theme.colorGrey,
+                  ios: isLiquidGlassAvailable() ? "white" : bookmarkedColor,
+                  default: bookmarkedColor,
                 }),
               }}
             />

@@ -19,6 +19,7 @@ export function HeaderButton({ imageProps, buttonProps }: HeaderButtonProps) {
         <Image
           {...imageProps}
           systemName={imageProps?.systemName || "xmark"}
+          color={imageProps?.color || "primary"}
           size={imageProps?.size || 24}
           modifiers={[frame({ height: 33 }), ...(imageProps?.modifiers || [])]}
         />
