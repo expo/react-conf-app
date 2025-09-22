@@ -57,7 +57,7 @@ export default function TabLayout() {
       }}
       disableTransparentOnScrollEdge={true} // Used to prevent transparent background on iOS 18 and older
     >
-      <NativeTabs.Trigger name="index">
+      <NativeTabs.Trigger name="(calendar)">
         {Platform.select({
           ios: <Icon sf={"calendar"} selectedColor={tabBarActiveTintColor} />,
           android: (
