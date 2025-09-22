@@ -1,7 +1,7 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
 import React, { useRef, useState } from "react";
-import { Platform, StyleSheet, View, ViewToken } from "react-native";
+import { Platform, StyleSheet, ViewToken } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { ActivityCard } from "@/components/ActivityCard";
@@ -61,14 +61,13 @@ export default function Schedule() {
     changed: ViewToken<SessionItem>[];
   }) => {
     const topVisibleIndex = items.viewableItems?.[0]?.index || 0;
-    const isDayOneThreshold = topVisibleIndex <= dayOne.length - 1;
-    const isDayTwoThreshold = topVisibleIndex >= dayOne.length - 1;
+    const dayTwoStartIndex = dayOne.length - 1;
+    const isDayOneActive = topVisibleIndex < dayTwoStartIndex;
+    const isDayTwoActive = topVisibleIndex >= dayTwoStartIndex;
 
-    if (!shouldShowDayOneHeader && isDayOneThreshold) {
+    if (isDayOneActive && !shouldShowDayOneHeader) {
       setShouldShowDayOneHeader(true);
-    }
-
-    if (shouldShowDayOneHeader && isDayTwoThreshold) {
+    } else if (isDayTwoActive && shouldShowDayOneHeader) {
       setShouldShowDayOneHeader(false);
     }
   };

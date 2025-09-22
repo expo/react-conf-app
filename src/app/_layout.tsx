@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "expo-router";
 import { Stack } from "expo-router/stack";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { Platform, useColorScheme, View } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 import { setBackgroundColorAsync } from "expo-system-ui";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -23,7 +23,6 @@ import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { AnimatedBootSplash } from "@/components/AnimatedBootSplash";
 import { useQuickActionCallback } from "@/utils/useQuickActionCallback";
-import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
