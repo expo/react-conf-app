@@ -7,19 +7,17 @@ import { FlatList } from "react-native-gesture-handler";
 import { ActivityCard } from "@/components/ActivityCard";
 import { NotFound } from "@/components/NotFound";
 import { TalkCard } from "@/components/TalkCard";
-import { ThemedView, useThemeColor } from "@/components/Themed";
 import { ConferenceDay } from "@/consts";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { HomeHeader } from "@/components/HomeHeader";
 import { DayPicker } from "@/components/DayPicker";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ThemedView } from "@/components/Themed";
 
 export default function Schedule() {
   // TODO (Kadi): choose day based on the date
   const [selectedDay, setSelectedDay] = useState(ConferenceDay.One);
   const scrollRef = useRef<FlatList>(null);
   useScrollToTop(scrollRef as any);
-  const insets = useSafeAreaInsets();
 
   useFocusEffect(() => {
     refreshSchedule({ ttlMs: 60_000 });
@@ -44,13 +42,16 @@ export default function Schedule() {
   return (
     <ThemedView style={{ flex: 1 }}>
       <HomeHeader />
-      <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
       <FlatList
         ref={scrollRef}
         contentContainerStyle={{
           paddingBottom: Platform.select({ android: 100, default: 0 }),
         }}
         data={data}
+        ListHeaderComponent={
+          <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
+        }
+        stickyHeaderIndices={[0]}
         renderItem={({ item }) => {
           if (item.isServiceSession) {
             return <ActivityCard session={item} />;

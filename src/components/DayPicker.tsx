@@ -22,7 +22,7 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
 
   return (
     <View style={{ paddingBottom: theme.space24 }}>
-      <ThemedView color={theme.color.background} style={{ marginTop: 20 }}>
+      <ThemedView style={{ paddingTop: 20 }}>
         <ThemedView style={styles.dayPicker} color={backgroundHighlight}>
           <ThemedPressable
             onPress={() => onSelectDay(ConferenceDay.One)}

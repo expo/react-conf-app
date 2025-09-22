@@ -1,14 +1,8 @@
-import {
-  ThemedPressable,
-  ThemedText,
-  ThemedView,
-  useThemeColor,
-} from "./Themed";
 import { theme } from "@/theme";
-import { StyleSheet, View } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { StyleSheet } from "react-native";
 import { ConferenceDay } from "@/consts";
 import { Host, Picker } from "@expo/ui/swift-ui";
+import { ThemedView } from "./Themed";
 
 interface DayPickerProps {
   selectedDay: ConferenceDay;
@@ -16,11 +10,8 @@ interface DayPickerProps {
 }
 
 export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
-  const backgroundColor = useThemeColor(theme.color.background);
-  const transparentColor = useThemeColor(theme.color.transparent);
-
   return (
-    <View style={{ paddingBottom: theme.space24 }}>
+    <ThemedView style={{ paddingBottom: theme.space24 }}>
       <Host matchContents style={styles.dayPicker}>
         <Picker
           options={["Day 1", "Day 2"]}
@@ -31,12 +22,7 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
           variant="segmented"
         />
       </Host>
-      <LinearGradient
-        colors={[backgroundColor, transparentColor]}
-        style={styles.fadeGradient}
-        pointerEvents="none"
-      />
-    </View>
+    </ThemedView>
   );
 }
 
@@ -45,13 +31,5 @@ const styles = StyleSheet.create({
     marginTop: theme.space16,
     marginHorizontal: theme.space24,
     height: 31, // fixed height to prevent jumping
-  },
-
-  fadeGradient: {
-    height: theme.space24,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
 });
