@@ -1,5 +1,5 @@
 import { useScrollToTop } from "@react-navigation/native";
-import React from "react";
+import React, { useCallback } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
@@ -8,6 +8,8 @@ import { TalkCard } from "@/components/TalkCard";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { FlatList } from "react-native-gesture-handler";
+import { Session } from "@/types";
+import { ConferenceDay } from "@/consts";
 
 export default function Bookmarks() {
   const scrollRef = React.useRef<FlatList>(null);
@@ -27,6 +29,18 @@ export default function Bookmarks() {
     (session) => !!bookmarks.find((b) => b.sessionId === session.id),
   );
 
+  const renderItem = useCallback(
+    ({ item }: { item: { talk: Session; isDayOne: boolean } }) => (
+      <TalkCard
+        key={item.talk.id}
+        session={item.talk}
+        day={item.isDayOne ? ConferenceDay.One : ConferenceDay.Two}
+        isBookmarked={true}
+      />
+    ),
+    [],
+  );
+
   return (
     <FlatList
       contentInsetAdjustmentBehavior="automatic"
@@ -37,14 +51,7 @@ export default function Bookmarks() {
         ...dayOneFiltered.map((talk) => ({ talk, isDayOne: true })),
         ...dayTwoFiltered.map((talk) => ({ talk, isDayOne: false })),
       ]}
-      renderItem={({ item }) => (
-        <TalkCard
-          key={item.talk.id}
-          session={item.talk}
-          isDayOne={item.isDayOne}
-          isBookmarked={true}
-        />
-      )}
+      renderItem={renderItem}
       ListEmptyComponent={
         <View style={styles.bookmarks}>
           <ThemedText

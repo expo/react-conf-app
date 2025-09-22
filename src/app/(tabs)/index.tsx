@@ -1,6 +1,6 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { Platform } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
@@ -12,6 +12,7 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { HomeHeader } from "@/components/HomeHeader";
 import { DayPicker } from "@/components/DayPicker";
 import { ThemedView } from "@/components/Themed";
+import { Session } from "@/types";
 
 export default function Schedule() {
   // TODO (Kadi): choose day based on the date
@@ -35,6 +36,17 @@ export default function Schedule() {
     setSelectedDay(day);
   };
 
+  const renderItem = useCallback(
+    ({ item }: { item: Session }) => {
+      if (item.isServiceSession) {
+        return <ActivityCard session={item} />;
+      } else {
+        return <TalkCard key={item.id} session={item} day={selectedDay} />;
+      }
+    },
+    [selectedDay],
+  );
+
   if (!dayOne.length || !dayTwo.length) {
     return <NotFound message="Schedule unavailable" />;
   }
@@ -52,13 +64,7 @@ export default function Schedule() {
           <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
         }
         stickyHeaderIndices={[0]}
-        renderItem={({ item }) => {
-          if (item.isServiceSession) {
-            return <ActivityCard session={item} />;
-          } else {
-            return <TalkCard key={item.id} session={item} day={selectedDay} />;
-          }
-        }}
+        renderItem={renderItem}
       />
     </ThemedView>
   );
