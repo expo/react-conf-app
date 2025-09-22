@@ -139,6 +139,7 @@ export default function Schedule() {
                 <DayPicker
                   isDayOne={shouldShowDayOneHeader}
                   onSelectDay={scrollToSection}
+                  scrollOffset={scrollOffset}
                 />
               </Animated.View>
             );
