@@ -51,7 +51,7 @@ export default function Schedule() {
       scrollRef.current?.scrollToIndex({
         index: dayOne.length - 1,
         animated: true,
-        viewOffset: -30
+        viewOffset: -theme.space16,
       });
     }
   };
