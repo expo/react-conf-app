@@ -7,12 +7,12 @@ import { theme } from "@/theme";
 import { TalkCard } from "@/components/TalkCard";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useReactConfStore } from "@/store/reactConfStore";
-import { FlatList } from "react-native-gesture-handler";
 import { Session } from "@/types";
 import { ConferenceDay } from "@/consts";
+import { LegendList, LegendListRef } from "@legendapp/list";
 
 export default function Bookmarks() {
-  const scrollRef = React.useRef<FlatList>(null);
+  const scrollRef = React.useRef<LegendListRef>(null);
   useScrollToTop(scrollRef);
 
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
@@ -42,7 +42,7 @@ export default function Bookmarks() {
   );
 
   return (
-    <FlatList
+    <LegendList
       contentInsetAdjustmentBehavior="automatic"
       ref={scrollRef}
       style={{ backgroundColor }}

@@ -12,12 +12,12 @@ import { NotFound } from "@/components/NotFound";
 import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
-import { FlatList } from "react-native-gesture-handler";
 import { Link, useLocalSearchParams } from "expo-router";
 import { useScrollToTop } from "@react-navigation/native";
 import { SpeakerDetails } from "@/components/SpeakerDetails";
 import { useBookmark } from "@/hooks/useBookmark";
 import { Speaker } from "@/types";
+import { LegendList } from "@legendapp/list";
 
 export default function Speakers() {
   const ref = React.useRef(null);
@@ -95,7 +95,7 @@ export default function Speakers() {
   }
 
   return (
-    <FlatList
+    <LegendList
       scrollToOverflowEnabled
       contentInsetAdjustmentBehavior="automatic"
       onScrollBeginDrag={dismissKeyboard}
