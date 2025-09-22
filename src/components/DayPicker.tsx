@@ -12,21 +12,24 @@ import { ConferenceDay } from "@/consts";
 const backgroundHighlight = { dark: "#1A1A1A", light: "#E6E6E6" };
 
 interface DayPickerProps {
-  isDayOne: boolean;
+  selectedDay: ConferenceDay;
   onSelectDay: (day: ConferenceDay) => void;
 }
 
-export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
+export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
   const backgroundColor = useThemeColor(theme.color.background);
   const transparentColor = useThemeColor(theme.color.transparent);
 
   return (
     <View style={{ paddingBottom: theme.space24 }}>
-      <ThemedView color={theme.color.background} style={{ marginTop: 20 }}>
+      <ThemedView style={{ paddingTop: 20 }}>
         <ThemedView style={styles.dayPicker} color={backgroundHighlight}>
           <ThemedPressable
             onPress={() => onSelectDay(ConferenceDay.One)}
-            backgroundColor={(!isDayOne && backgroundHighlight) || undefined}
+            backgroundColor={
+              (selectedDay === ConferenceDay.Two && backgroundHighlight) ||
+              undefined
+            }
             style={styles.dayPickerItem}
           >
             <ThemedText fontWeight="semiBold" fontSize={theme.fontSize16}>
@@ -36,7 +39,10 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
 
           <ThemedPressable
             onPress={() => onSelectDay(ConferenceDay.Two)}
-            backgroundColor={(isDayOne && backgroundHighlight) || undefined}
+            backgroundColor={
+              (selectedDay === ConferenceDay.One && backgroundHighlight) ||
+              undefined
+            }
             style={styles.dayPickerItem}
           >
             <ThemedText fontWeight="semiBold" fontSize={theme.fontSize16}>
@@ -56,7 +62,6 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
 
 const styles = StyleSheet.create({
   dayPicker: {
-    marginTop: theme.space32,
     marginHorizontal: theme.space24,
     flexDirection: "row",
     justifyContent: "space-between",
