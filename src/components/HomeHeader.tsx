@@ -14,7 +14,7 @@ export function HomeHeader() {
   const insets = useSafeAreaInsets();
 
   return (
-    <ThemedView style={[styles.container]}>
+    <ThemedView style={styles.container}>
       <View style={[styles.hederInner, { paddingTop: insets.top }]}>
         <Image source={imageSource} style={styles.image} />
         <TimeZoneSwitch />
@@ -27,10 +27,6 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: theme.space24,
     paddingTop: theme.space12,
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
   },
   hederInner: {
     flexDirection: "row",

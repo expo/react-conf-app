@@ -10,7 +10,6 @@ import { TalkCard } from "@/components/TalkCard";
 import { ThemedView, useThemeColor } from "@/components/Themed";
 import { ConferenceDay } from "@/consts";
 import { useReactConfStore } from "@/store/reactConfStore";
-import { theme } from "@/theme";
 import { HomeHeader } from "@/components/HomeHeader";
 import { DayPicker } from "@/components/DayPicker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -21,7 +20,6 @@ export default function Schedule() {
   const scrollRef = useRef<FlatList>(null);
   useScrollToTop(scrollRef as any);
   const insets = useSafeAreaInsets();
-  const sectionListBackgroundColor = useThemeColor(theme.color.background);
 
   useFocusEffect(() => {
     refreshSchedule({ ttlMs: 60_000 });
@@ -45,18 +43,14 @@ export default function Schedule() {
 
   return (
     <ThemedView style={{ flex: 1 }}>
+      <HomeHeader />
+      <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
       <FlatList
         ref={scrollRef}
-        style={{ backgroundColor: sectionListBackgroundColor }}
         contentContainerStyle={{
           paddingBottom: Platform.select({ android: 100, default: 0 }),
-          marginTop: insets.top,
         }}
         data={data}
-        stickyHeaderIndices={[0]}
-        ListHeaderComponent={() => (
-          <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
-        )}
         renderItem={({ item }) => {
           if (item.isServiceSession) {
             return <ActivityCard session={item} />;
@@ -65,7 +59,6 @@ export default function Schedule() {
           }
         }}
       />
-      <HomeHeader />
     </ThemedView>
   );
 }
