@@ -1,8 +1,17 @@
 import React from "react";
-import { Text, View, useColorScheme, TextStyle } from "react-native";
+import {
+  Text,
+  View,
+  useColorScheme,
+  TextStyle,
+  PressableProps,
+  Pressable,
+} from "react-native";
 import Animated from "react-native-reanimated";
 
 import { theme } from "../theme";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 type ThemeProps = {
   color?: { light: string; dark: string };
@@ -83,4 +92,38 @@ export function ThemedView(props: ViewProps) {
   }
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function ThemedPressable(
+  props: PressableProps & {
+    backgroundColor?: { light: string; dark: string };
+    animated?: boolean;
+  },
+) {
+  const { style, animated, ...otherProps } = props;
+  const backgroundColor = useThemeColor(
+    props.backgroundColor ?? theme.color.background,
+  );
+
+  if (animated) {
+    return (
+      <AnimatedPressable
+        style={[
+          { backgroundColor },
+          typeof style === "function" ? style({ pressed: false }) : style,
+        ]}
+        {...otherProps}
+      />
+    );
+  }
+
+  return (
+    <Pressable
+      style={[
+        { backgroundColor },
+        typeof style === "function" ? style({ pressed: false }) : style,
+      ]}
+      {...otherProps}
+    />
+  );
 }

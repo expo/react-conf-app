@@ -112,12 +112,11 @@ const config: ExpoConfig = {
       },
     ],
     [
-      "react-native-bootsplash",
+      "expo-splash-screen",
       {
-        android: {
-          parentTheme: "TransparentStatus",
-          darkContentBarsStyle: false,
-        },
+        backgroundColor: "#24272E",
+        image: "./assets/splash-icon.png",
+        imageWidth: 200,
       },
     ],
   ],

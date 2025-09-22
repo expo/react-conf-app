@@ -10,14 +10,15 @@ import { formatSessionTime } from "../utils/formatDate";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { Pressable } from "react-native-gesture-handler";
 import { SpeakerDetails } from "./SpeakerDetails";
+import { ConferenceDay } from "@/consts";
 
 type Props = {
   session: Session;
-  isDayOne: boolean;
+  day: ConferenceDay;
   isBookmarked?: boolean;
 };
 
-export function TalkCard({ session, isDayOne, isBookmarked = false }: Props) {
+export function TalkCard({ session, day, isBookmarked = false }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const borderColor = useThemeColor(theme.color.border);
 
@@ -62,7 +63,7 @@ export function TalkCard({ session, isDayOne, isBookmarked = false }: Props) {
                   {formatSessionTime(session, shouldUseLocalTz)}
                 </ThemedText>
                 <ThemedText fontSize={14} fontWeight="medium">
-                  {isDayOne ? "Day 1" : "Day 2"}
+                  {day === ConferenceDay.One ? "Day 1" : "Day 2"}
                 </ThemedText>
               </View>
             )}

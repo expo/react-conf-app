@@ -1,35 +1,20 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
-import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  Platform,
-  StyleSheet,
-  View,
-  ViewToken,
-} from "react-native";
-import Animated, {
-  useAnimatedRef,
-  useSharedValue,
-  useAnimatedStyle,
-  useAnimatedScrollHandler,
-  SharedValue,
-  Extrapolation,
-  interpolate,
-} from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FlatList, Pressable } from "react-native-gesture-handler";
+import React, { useRef, useState } from "react";
+import { Platform, StyleSheet, ViewToken } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 
 import { ActivityCard } from "@/components/ActivityCard";
 import { NotFound } from "@/components/NotFound";
-import { ReactConfHeader } from "@/components/ReactConfHeader";
 import { TalkCard } from "@/components/TalkCard";
 import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
-import { TimeZoneSwitch } from "@/components/TimeZoneSwitch";
-import { COLLAPSED_HEADER, EXPANDED_HEADER, ROW_HEIGHT } from "@/consts";
+import { ConferenceDay } from "@/consts";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session } from "@/types";
+import { HomeHeader } from "@/components/HomeHeader";
+import { DayPicker } from "@/components/DayPicker";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SessionItem =
   | {
@@ -42,30 +27,11 @@ type SessionItem =
       day: number;
     };
 
-const AnimatedFlatList = Animated.createAnimatedComponent(
-  FlatList<SessionItem>,
-);
-
 export default function Schedule() {
-  const insets = useSafeAreaInsets();
-  const scrollRef = useAnimatedRef<FlatList>();
+  const scrollRef = useRef<FlatList>(null);
   useScrollToTop(scrollRef as any);
   const [shouldShowDayOneHeader, setShouldShowDayOneHeader] = useState(true);
-
-  const scrollOffset = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    scrollOffset.value = event.contentOffset.y;
-  });
-
-  const paddingTopStyle = useAnimatedStyle(() => ({
-    paddingTop: interpolate(
-      scrollOffset.value,
-      [COLLAPSED_HEADER, EXPANDED_HEADER],
-      [0, ROW_HEIGHT],
-      Extrapolation.CLAMP,
-    ),
-  }));
-
+  const insets = useSafeAreaInsets();
   const sectionListBackgroundColor = useThemeColor(theme.color.background);
 
   useFocusEffect(() => {
@@ -74,14 +40,20 @@ export default function Schedule() {
 
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const refreshSchedule = useReactConfStore((state) => state.refreshData);
-  const isRefreshing = useReactConfStore((state) => !!state.isRefreshing);
-  const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
 
-  const scrollToSection = ({ isDayOne }: { isDayOne: boolean }) => {
-    scrollRef.current?.scrollToIndex({
-      index: isDayOne ? 0 : dayOne.length,
-      animated: true,
-    });
+  const scrollToSection = (day: ConferenceDay) => {
+    if (day === ConferenceDay.One) {
+      scrollRef.current?.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    } else {
+      scrollRef.current?.scrollToIndex({
+        index: dayOne.length - 1,
+        animated: true,
+        viewOffset: -theme.space16,
+      });
+    }
   };
 
   const onViewableItemsChanged = (items: {
@@ -89,22 +61,29 @@ export default function Schedule() {
     changed: ViewToken<SessionItem>[];
   }) => {
     const topVisibleIndex = items.viewableItems?.[0]?.index || 0;
-    const isDayOneThreshold = topVisibleIndex <= dayOne.length;
-    const isDayTwoThreshold = topVisibleIndex >= dayOne.length;
+    const dayTwoStartIndex = dayOne.length - 1;
+    const isDayOneActive = topVisibleIndex < dayTwoStartIndex;
+    const isDayTwoActive = topVisibleIndex >= dayTwoStartIndex;
 
-    if (!shouldShowDayOneHeader && isDayOneThreshold) {
+    if (isDayOneActive && !shouldShowDayOneHeader) {
       setShouldShowDayOneHeader(true);
-    }
-
-    if (shouldShowDayOneHeader && isDayTwoThreshold) {
+    } else if (isDayTwoActive && shouldShowDayOneHeader) {
       setShouldShowDayOneHeader(false);
     }
   };
 
   const data = [
-    ...dayOne.map((item) => ({ type: "session", day: 1, item })),
-    { type: "section-header", day: 2 },
-    ...dayTwo.map((item) => ({ type: "session", day: 2, item })),
+    ...dayOne.map((item) => ({
+      type: "session",
+      day: ConferenceDay.One,
+      item,
+    })),
+    { type: "section-header", day: ConferenceDay.Two },
+    ...dayTwo.map((item) => ({
+      type: "session",
+      day: ConferenceDay.Two,
+      item,
+    })),
   ] as SessionItem[];
 
   if (!dayOne.length || !dayTwo.length) {
@@ -112,210 +91,51 @@ export default function Schedule() {
   }
 
   return (
-    <ThemedView
-      style={[styles.container, { paddingTop: insets.top }]}
-      color={theme.color.background}
-    >
-      <ThemedView style={[styles.container, paddingTopStyle]} animated>
-        <AnimatedFlatList
-          ref={scrollRef}
-          onViewableItemsChanged={onViewableItemsChanged}
-          onScroll={scrollHandler}
-          style={{ backgroundColor: sectionListBackgroundColor }}
-          contentContainerStyle={{
-            paddingTop: EXPANDED_HEADER,
-            paddingBottom: Platform.select({ android: 100, default: 0 }),
-          }}
-          scrollEventThrottle={8}
-          data={data}
-          stickyHeaderIndices={[0]}
-          ListHeaderComponent={() => {
+    <ThemedView style={{ flex: 1 }}>
+      <FlatList
+        ref={scrollRef}
+        onViewableItemsChanged={onViewableItemsChanged}
+        style={{ backgroundColor: sectionListBackgroundColor }}
+        contentContainerStyle={{
+          paddingBottom: Platform.select({ android: 100, default: 0 }),
+          marginTop: insets.top,
+        }}
+        data={data}
+        stickyHeaderIndices={[0]}
+        ListHeaderComponent={() => (
+          <DayPicker
+            isDayOne={shouldShowDayOneHeader}
+            onSelectDay={scrollToSection}
+          />
+        )}
+        renderItem={({ item }) => {
+          if (item.type === "section-header") {
             return (
-              <ThemedView
-                style={[
-                  styles.sectionHeader,
-                  {
-                    borderBottomColor: shouldShowDayOneHeader
-                      ? theme.colorReactLightBlue
-                      : theme.colorLightGreen,
-                  },
-                ]}
-                color={theme.color.background}
-              >
-                <SectionListButton
-                  title="Day 1"
-                  subtitle={!shouldUseLocalTz ? "(May 15)" : null}
-                  isBold={shouldShowDayOneHeader}
-                  onPress={() => scrollToSection({ isDayOne: true })}
-                />
-                <SectionListButton
-                  title="Day 2"
-                  subtitle={!shouldUseLocalTz ? "(May 16)" : null}
-                  isBold={!shouldShowDayOneHeader}
-                  onPress={() => scrollToSection({ isDayOne: false })}
-                />
+              <ThemedView style={styles.sectionHeader}>
+                <ThemedText fontWeight="bold" fontSize={24}>
+                  Day 2
+                </ThemedText>
               </ThemedView>
             );
-          }}
-          renderItem={({ item }) => {
-            const isDayOne = item.day === 1;
-            if (item.type === "section-header") {
-              return (
-                <ThemedView
-                  style={[
-                    styles.sectionHeader,
-                    {
-                      borderBottomColor: isDayOne
-                        ? theme.colorReactLightBlue
-                        : theme.colorLightGreen,
-                    },
-                  ]}
-                  color={theme.color.background}
-                >
-                  <SectionListButton
-                    title="Day 1"
-                    subtitle={!shouldUseLocalTz ? "(May 15)" : null}
-                    isBold={isDayOne}
-                    onPress={() => scrollToSection({ isDayOne: true })}
-                  />
-                  <SectionListButton
-                    title="Day 2"
-                    subtitle={!shouldUseLocalTz ? "(May 16)" : null}
-                    isBold={!isDayOne}
-                    onPress={() => scrollToSection({ isDayOne: false })}
-                  />
-                </ThemedView>
-              );
-            }
+          }
 
-            if (item.item.isServiceSession) {
-              return <ActivityCard session={item.item} />;
-            } else {
-              return (
-                <TalkCard
-                  key={item.item.id}
-                  session={item.item}
-                  isDayOne={isDayOne}
-                />
-              );
-            }
-          }}
-        />
-        <Header scrollOffset={scrollOffset} refreshing={isRefreshing} />
-      </ThemedView>
+          if (item.item.isServiceSession) {
+            return <ActivityCard session={item.item} />;
+          } else {
+            return (
+              <TalkCard key={item.item.id} session={item.item} day={item.day} />
+            );
+          }
+        }}
+      />
+      <HomeHeader />
     </ThemedView>
   );
 }
 
-const SectionListButton = ({
-  onPress,
-  isBold,
-  title,
-  subtitle,
-}: {
-  onPress: () => void;
-  isBold: boolean;
-  title: string;
-  subtitle: string | null;
-}) => {
-  const opacity = { opacity: isBold ? 1 : 0.5 };
-
-  return (
-    <Pressable onPress={onPress}>
-      <ThemedText
-        fontWeight="bold"
-        lightColor={theme.colorBlack}
-        darkColor={theme.colorWhite}
-        fontSize={24}
-        style={opacity}
-      >
-        {title}
-        {subtitle ? (
-          <ThemedText fontWeight="medium"> {subtitle} </ThemedText>
-        ) : null}
-      </ThemedText>
-    </Pressable>
-  );
-};
-
-interface HeaderProps {
-  scrollOffset: SharedValue<number>;
-  refreshing: boolean;
-}
-
-function Header({ scrollOffset, refreshing }: HeaderProps) {
-  const settingsBgColor = useThemeColor({
-    light: theme.colorThemeGrey,
-    dark: "rgba(255, 255, 255, 0.2)",
-  });
-
-  const animatedHeader = useAnimatedStyle(() => ({
-    height: interpolate(
-      scrollOffset.value,
-      [0, EXPANDED_HEADER],
-      [EXPANDED_HEADER, 0],
-    ),
-  }));
-
-  const animatedRow = useAnimatedStyle(() => ({
-    height: interpolate(
-      scrollOffset.value,
-      [0, ROW_HEIGHT],
-      [ROW_HEIGHT, 0],
-      Extrapolation.CLAMP,
-    ),
-    paddingVertical: interpolate(
-      scrollOffset.value,
-      [0, ROW_HEIGHT],
-      [theme.space8, 0],
-      Extrapolation.CLAMP,
-    ),
-  }));
-
-  return (
-    <Animated.View style={[styles.header, animatedHeader]}>
-      <ReactConfHeader scrollOffset={scrollOffset} />
-      <Animated.View
-        style={[styles.row, { backgroundColor: settingsBgColor }, animatedRow]}
-      >
-        <TimeZoneSwitch />
-      </Animated.View>
-      <View style={{ position: "absolute", right: 20, top: 15 }}>
-        <ActivityIndicator
-          size="small"
-          hidesWhenStopped={true}
-          animating={refreshing}
-        />
-      </View>
-    </Animated.View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   sectionHeader: {
     marginBottom: theme.space12,
-    paddingHorizontal: theme.space16,
-    paddingVertical: theme.space12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottomWidth: 3,
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: theme.space8,
-    backgroundColor: theme.colorThemeLightGrey,
-    overflow: "hidden",
-  },
-  header: {
-    position: "absolute",
-    top: 0,
-    zIndex: 1,
-    width: "100%",
+    paddingHorizontal: theme.space24,
   },
 });
