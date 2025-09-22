@@ -46,7 +46,7 @@ export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
     >
       <Pressable>
         <ThemedView style={[styles.container, { backgroundColor }]}>
-          <View>
+          <View style={{ flexShrink: 1 }}>
             <ThemedText fontSize={theme.fontSize16} fontWeight="semiBold">
               {talk.title}
             </ThemedText>
