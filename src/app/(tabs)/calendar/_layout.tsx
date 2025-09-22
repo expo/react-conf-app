@@ -1,5 +1,4 @@
-import { HomeHeader } from "@/components/HomeHeader";
-import { ThemedText, useThemeColor } from "@/components/Themed";
+import { useThemeColor } from "@/components/Themed";
 import { TimeZoneSwitch } from "@/components/TimeZoneSwitch";
 import { theme } from "@/theme";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
