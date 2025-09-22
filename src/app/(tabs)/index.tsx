@@ -42,10 +42,18 @@ export default function Schedule() {
   const refreshSchedule = useReactConfStore((state) => state.refreshData);
 
   const scrollToSection = (day: ConferenceDay) => {
-    scrollRef.current?.scrollToIndex({
-      index: day === ConferenceDay.One ? 0 : dayOne.length - 1,
-      animated: true,
-    });
+    if (day === ConferenceDay.One) {
+      scrollRef.current?.scrollToOffset({
+        offset: 0,
+        animated: true,
+      });
+    } else {
+      scrollRef.current?.scrollToIndex({
+        index: dayOne.length - 1,
+        animated: true,
+        viewOffset: -30
+      });
+    }
   };
 
   const onViewableItemsChanged = (items: {
@@ -130,6 +138,5 @@ const styles = StyleSheet.create({
   sectionHeader: {
     marginBottom: theme.space12,
     paddingHorizontal: theme.space24,
-    paddingVertical: theme.space12,
   },
 });

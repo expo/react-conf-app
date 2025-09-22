@@ -5,7 +5,7 @@ import {
   useThemeColor,
 } from "./Themed";
 import { theme } from "@/theme";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { ConferenceDay } from "@/consts";
 
@@ -21,7 +21,7 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
   const transparentColor = useThemeColor(theme.color.transparent);
 
   return (
-    <>
+    <View style={{ paddingBottom: theme.space24 }}>
       <ThemedView color={theme.color.background} style={{ marginTop: 20 }}>
         <ThemedView style={styles.dayPicker} color={backgroundHighlight}>
           <ThemedPressable
@@ -50,7 +50,7 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
         style={styles.fadeGradient}
         pointerEvents="none"
       />
-    </>
+    </View>
   );
 }
 
@@ -68,10 +68,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    height: 40,
+    height: 32,
     borderRadius: theme.borderRadius45,
   },
   fadeGradient: {
-    height: 40,
+    height: theme.space24,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 });
