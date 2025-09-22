@@ -1,5 +1,5 @@
 import { useScrollToTop } from "@react-navigation/native";
-import React from "react";
+import React, { useCallback } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
@@ -7,10 +7,12 @@ import { theme } from "@/theme";
 import { TalkCard } from "@/components/TalkCard";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useReactConfStore } from "@/store/reactConfStore";
-import { FlatList } from "react-native-gesture-handler";
+import { Session } from "@/types";
+import { ConferenceDay } from "@/consts";
+import { LegendList, LegendListRef } from "@legendapp/list";
 
 export default function Bookmarks() {
-  const scrollRef = React.useRef<FlatList>(null);
+  const scrollRef = React.useRef<LegendListRef>(null);
   useScrollToTop(scrollRef);
 
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
@@ -27,24 +29,30 @@ export default function Bookmarks() {
     (session) => !!bookmarks.find((b) => b.sessionId === session.id),
   );
 
+  const renderItem = useCallback(
+    ({ item }: { item: { talk: Session; day: ConferenceDay } }) => (
+      <TalkCard
+        key={item.talk.id}
+        session={item.talk}
+        day={item.day}
+        isBookmarked={true}
+      />
+    ),
+    [],
+  );
+
   return (
-    <FlatList
+    <LegendList
       contentInsetAdjustmentBehavior="automatic"
       ref={scrollRef}
       style={{ backgroundColor }}
       contentContainerStyle={styles.flatListContainer}
       data={[
-        ...dayOneFiltered.map((talk) => ({ talk, isDayOne: true })),
-        ...dayTwoFiltered.map((talk) => ({ talk, isDayOne: false })),
+        ...dayOneFiltered.map((talk) => ({ talk, day: ConferenceDay.One })),
+        ...dayTwoFiltered.map((talk) => ({ talk, day: ConferenceDay.Two })),
       ]}
-      renderItem={({ item }) => (
-        <TalkCard
-          key={item.talk.id}
-          session={item.talk}
-          isDayOne={item.isDayOne}
-          isBookmarked={true}
-        />
-      )}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.talk.id}
       ListEmptyComponent={
         <View style={styles.bookmarks}>
           <ThemedText
