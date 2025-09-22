@@ -96,7 +96,7 @@ export default function Speakers() {
 
   return (
     <LegendList
-      key={`speakers-list-${searchText}`}
+      key={`speakers-list-${searchText === "" ? "all" : "filtered"}`}
       scrollToOverflowEnabled
       contentInsetAdjustmentBehavior="automatic"
       onScrollBeginDrag={dismissKeyboard}

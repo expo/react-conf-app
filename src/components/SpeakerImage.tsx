@@ -47,6 +47,7 @@ export function SpeakerImage({
       <Image
         source={require("@/assets/images/reactlogo-white.png")}
         style={reactLogoSize}
+        cachePolicy={"disk"}
       />
     </View>
   );
