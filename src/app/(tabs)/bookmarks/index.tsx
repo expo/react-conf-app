@@ -52,6 +52,7 @@ export default function Bookmarks() {
         ...dayTwoFiltered.map((talk) => ({ talk, day: ConferenceDay.Two })),
       ]}
       renderItem={renderItem}
+      keyExtractor={(item) => item.talk.id}
       ListEmptyComponent={
         <View style={styles.bookmarks}>
           <ThemedText

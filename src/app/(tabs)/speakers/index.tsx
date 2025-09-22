@@ -108,6 +108,7 @@ export default function Speakers() {
       )}
       renderItem={renderItem}
       data={filteredSpeakers}
+      keyExtractor={(item) => item.id}
       ListEmptyComponent={
         <ThemedView style={styles.noResultsContainer}>
           <ThemedText>
