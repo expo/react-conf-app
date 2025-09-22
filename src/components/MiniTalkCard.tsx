@@ -1,4 +1,3 @@
-import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
@@ -13,7 +12,8 @@ import { Bookmark } from "./Bookmark";
 export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
-  const iconColor = useThemeColor(theme.color.background);
+  const backgroundColor = useThemeColor(theme.color.backgroundSecondary);
+  const textSecondaryColor = useThemeColor(theme.color.textSecondary);
 
   const { talk, isDayOne } = (() => {
     const dayOneTalk = dayOne.find(
@@ -45,34 +45,22 @@ export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
       asChild
     >
       <Pressable>
-        <ThemedView
-          lightColor={
-            isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
-          }
-          darkColor={
-            isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
-          }
-          style={styles.container}
-        >
-          <Image
-            tintColor={iconColor}
-            source={require("@/assets/images/react-logo.png")}
-            style={styles.reactLogo}
-          />
-          <View style={styles.heading}>
+        <ThemedView style={[styles.container, { backgroundColor }]}>
+          <View>
+            <ThemedText fontSize={theme.fontSize16} fontWeight="semiBold">
+              {talk.title}
+            </ThemedText>
             <ThemedText
-              fontSize={18}
+              fontSize={theme.fontSize14}
               fontWeight="medium"
+              color={{ light: textSecondaryColor, dark: textSecondaryColor }}
               style={{ marginBottom: theme.space8 }}
             >
               {formatSessionTime(talk, shouldUseLocalTz)}
               {` `}({isDayOne ? "Day 1" : "Day 2"})
             </ThemedText>
-            <Bookmark session={talk} />
           </View>
-          <ThemedText fontSize={20} fontWeight="bold">
-            {talk.title}
-          </ThemedText>
+          <Bookmark session={talk} />
         </ThemedView>
       </Pressable>
     </Link>
@@ -81,19 +69,11 @@ export function MiniTalkCard({ sessionId }: { sessionId: string | number }) {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: theme.borderRadius10,
-    padding: theme.space16,
-    marginBottom: theme.space24,
-  },
-  heading: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  reactLogo: {
-    position: "absolute",
-    height: 200,
-    width: 200,
-    opacity: 0.2,
-    right: 0,
+    alignItems: "center",
+    borderRadius: theme.borderRadius10,
+    padding: theme.space24,
+    marginBottom: theme.space24,
   },
 });
