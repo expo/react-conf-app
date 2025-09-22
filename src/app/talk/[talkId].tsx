@@ -1,5 +1,5 @@
 import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { Platform, StyleSheet, View, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
@@ -33,7 +33,6 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
 const source = Skia.RuntimeEffect.Make(`
 uniform float sheetAnim;
-uniform int type;
 uniform vec2 size;
 float rand(vec2 co){
     return fract(sin(dot(co, vec2(12.9898, 78.233))) * 43758.5453);
@@ -47,26 +46,8 @@ vec4 main(vec2 pos) {
   float mixVal = 0;
   vec4 colorA;
   float anim = 1 - sheetAnim;
-  if(type == 0) {
     mixVal = anim;
      colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
-  }
-  if(type == 1) {
-      mixVal = (1-dist) - anim;
-       colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
-  }
-  if(type == 2) {
-     mixVal = max(0,1.0- pow(1-dist,2.0) + pow(anim*0.7,1));
-      colorA = vec4(normalized.y, normalized.x, 1.0,1.0);
-  }
-  if(type == 3) {
-    offset = (pos - vec2(size.x*anim, size.y*anim));
-    dist = sqrt(pow(offset.x, 2.0) + pow(offset.y, 2.0)) / sqrt(pow(size.x/2, 2.0) + pow(size.x/2, 2.0)) - pow(sheetAnim,1.3);
-     mixVal = max(0.0,dist);
-      colorA = vec4(1.0, normalized.x, normalized.y,1.0);
-  }
-  // float mixVal = (1-dist) - anim;
-  // float mixVal = max(0,1.0- pow(1-dist,2.0) + pow(anim*0.7,1));
   vec4 colorB = vec4(0.0, 0.0, 0.0,0.0);
   vec4 color = mix(colorA, colorB, mixVal+rand(pos)/(6.0));
   return vec4(color);
@@ -106,16 +87,16 @@ export default function TalkDetail() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  // Animated header on scroll (iOS only) and bottom overscroll detection
   const translationY = useSharedValue(0);
-  const isOverscrolling = useSharedValue(false);
+  const overscrollAmount = useSharedValue(0);
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
-    // Detect bottom overscroll (scrolled past the end of content)
     const { contentOffset, contentSize, layoutMeasurement } = event;
-    const scrollPastBottom =
-      contentOffset.y + layoutMeasurement.height > contentSize.height + 20;
-    isOverscrolling.value = scrollPastBottom;
+    const scrollPastBottom = Math.max(
+      0,
+      contentOffset.y + layoutMeasurement.height - contentSize.height - 20,
+    );
+    overscrollAmount.value = scrollPastBottom;
   });
   const headerStyle = useAnimatedStyle(() => {
     if (Platform.OS !== "ios") {
@@ -147,29 +128,25 @@ export default function TalkDetail() {
   const { talk, isDayOne } = findTalk(talkId, { dayOne, dayTwo });
 
   const insets = useSafeAreaInsets();
-  const type = Math.round(Math.random() * 3); // 0-3
 
-  // Create shared value
   const sheetAnim = useSharedValue(0);
+  const hasTriggeredHaptic = useSharedValue(false);
 
-  // Animate sheetAnim when bottom overscrolling
   useAnimatedReaction(
-    () => isOverscrolling.value,
-    (overscrolling, prev) => {
-      if (overscrolling !== prev) {
-        if (overscrolling) {
-          scheduleOnRN(triggerHaptic);
-          sheetAnim.value = withTiming(1, {
-            duration: 1000,
-            easing: Easing.bezier(0, 0.3, 0.7, 1),
-          });
-        } else {
-          sheetAnim.value = withTiming(0, {
-            duration: 500,
-            easing: Easing.bezier(0.3, 0, 1, 0.7),
-          });
-        }
+    () => overscrollAmount.value,
+    (amount) => {
+      if (amount > 0 && !hasTriggeredHaptic.value) {
+        hasTriggeredHaptic.value = true;
+        scheduleOnRN(triggerHaptic);
+      } else if (amount === 0) {
+        hasTriggeredHaptic.value = false;
       }
+
+      const normalizedAmount = Math.min(amount / 100, 1);
+      sheetAnim.value = withTiming(normalizedAmount, {
+        duration: 600,
+        easing: Easing.out(Easing.quad),
+      });
     },
     [],
   );
@@ -178,13 +155,12 @@ export default function TalkDetail() {
     () => ({
       sheetAnim: sheetAnim.value,
       size: vec(width, 500),
-      type: Math.round(type),
     }),
-    [sheetAnim, type],
+    [sheetAnim],
   );
 
   const opacityStyle = useAnimatedStyle(() => ({
-    opacity: (1 - Math.abs(1 - sheetAnim.value * 2.0)) * 0.4, // Reduce opacity to 40%
+    opacity: sheetAnim.value * 0.4,
   }));
 
   if (!talk) {
