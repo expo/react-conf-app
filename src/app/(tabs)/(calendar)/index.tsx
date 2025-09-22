@@ -97,7 +97,9 @@ export default function Schedule() {
   const handleSelectDay = (day: ConferenceDay) => {
     setSelectedDay(day);
     if (translationY.value > 10) {
-      scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
+      setTimeout(() => {
+        scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
+      }, 100);
     }
   };
 
@@ -113,6 +115,7 @@ export default function Schedule() {
         paddingBottom: Platform.select({ android: 100, default: 0 }),
       }}
       contentInsetAdjustmentBehavior="automatic"
+      scrollToOverflowEnabled
       onScroll={scrollHandler}
       scrollEventThrottle={16}
       data={data}
