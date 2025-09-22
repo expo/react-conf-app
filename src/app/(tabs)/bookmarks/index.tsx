@@ -30,11 +30,11 @@ export default function Bookmarks() {
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: { talk: Session; isDayOne: boolean } }) => (
+    ({ item }: { item: { talk: Session; day: ConferenceDay } }) => (
       <TalkCard
         key={item.talk.id}
         session={item.talk}
-        day={item.isDayOne ? ConferenceDay.One : ConferenceDay.Two}
+        day={item.day}
         isBookmarked={true}
       />
     ),
@@ -48,8 +48,8 @@ export default function Bookmarks() {
       style={{ backgroundColor }}
       contentContainerStyle={styles.flatListContainer}
       data={[
-        ...dayOneFiltered.map((talk) => ({ talk, isDayOne: true })),
-        ...dayTwoFiltered.map((talk) => ({ talk, isDayOne: false })),
+        ...dayOneFiltered.map((talk) => ({ talk, day: ConferenceDay.One })),
+        ...dayTwoFiltered.map((talk) => ({ talk, day: ConferenceDay.Two })),
       ]}
       renderItem={renderItem}
       ListEmptyComponent={
