@@ -25,8 +25,16 @@ export function ExpandedHeader({ scrollOffset }: ExpandedHeaderProps) {
       Extrapolation.CLAMP,
     );
 
+    const opacity = interpolate(
+      scrollOffset.value,
+      [0, 500],
+      [1, 0],
+      Extrapolation.CLAMP,
+    );
+
     return {
       height,
+      opacity,
     };
   });
 
