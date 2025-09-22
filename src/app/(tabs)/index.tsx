@@ -26,10 +26,11 @@ import { ReactConfHeader } from "@/components/ReactConfHeader";
 import { TalkCard } from "@/components/TalkCard";
 import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { TimeZoneSwitch } from "@/components/TimeZoneSwitch";
-import { COLLAPSED_HEADER, EXPANDED_HEADER, ROW_HEIGHT } from "@/consts";
+import { COLLAPSED_HEADER, Day, EXPANDED_HEADER, ROW_HEIGHT } from "@/consts";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session } from "@/types";
+import { DayPicker } from "@/components/AnimatedHeader/DayPicker";
 
 type SessionItem =
   | {
@@ -77,9 +78,9 @@ export default function Schedule() {
   const isRefreshing = useReactConfStore((state) => !!state.isRefreshing);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
 
-  const scrollToSection = ({ isDayOne }: { isDayOne: boolean }) => {
+  const scrollToSection = (day: Day) => {
     scrollRef.current?.scrollToIndex({
-      index: isDayOne ? 0 : dayOne.length,
+      index: day === Day.DayOne ? 0 : dayOne.length,
       animated: true,
     });
   };
@@ -131,30 +132,10 @@ export default function Schedule() {
           stickyHeaderIndices={[0]}
           ListHeaderComponent={() => {
             return (
-              <ThemedView
-                style={[
-                  styles.sectionHeader,
-                  {
-                    borderBottomColor: shouldShowDayOneHeader
-                      ? theme.colorReactLightBlue
-                      : theme.colorLightGreen,
-                  },
-                ]}
-                color={theme.color.background}
-              >
-                <SectionListButton
-                  title="Day 1"
-                  subtitle={!shouldUseLocalTz ? "(May 15)" : null}
-                  isBold={shouldShowDayOneHeader}
-                  onPress={() => scrollToSection({ isDayOne: true })}
-                />
-                <SectionListButton
-                  title="Day 2"
-                  subtitle={!shouldUseLocalTz ? "(May 16)" : null}
-                  isBold={!shouldShowDayOneHeader}
-                  onPress={() => scrollToSection({ isDayOne: false })}
-                />
-              </ThemedView>
+              <DayPicker
+                isDayOne={shouldShowDayOneHeader}
+                onSelectDay={scrollToSection}
+              />
             );
           }}
           renderItem={({ item }) => {
