@@ -23,12 +23,12 @@ import { theme } from "@/theme";
 import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as any;
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
 export default function Schedule() {
   // TODO (Kadi): choose day based on the date
   const [selectedDay, setSelectedDay] = useState(ConferenceDay.One);
-  const scrollRef = useRef<any>(null);
+  const scrollRef = useRef<FlatList>(null);
   useScrollToTop(scrollRef as any);
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
@@ -37,6 +37,7 @@ export default function Schedule() {
   const translationY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
+    console.log("event.contentOffset.y", event.contentOffset);
     translationY.value = event.contentOffset.y;
   });
 
@@ -94,12 +95,10 @@ export default function Schedule() {
   const data = selectedDay === ConferenceDay.One ? dayOne : dayTwo;
 
   const handleSelectDay = (day: ConferenceDay) => {
-    scrollRef.current?.scrollToOffset({
-      offset: 0,
-      animated: true,
-    });
     setSelectedDay(day);
-    translationY.value = 0; // Reset animation state
+    if (translationY.value > 10) {
+      scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
+    }
   };
 
   if (!dayOne.length || !dayTwo.length) {
