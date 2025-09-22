@@ -1,5 +1,4 @@
 import { CollapsedHeader } from "./CollapsedHeader";
-import { ExpandedHeader } from "./ExpandedHeader";
 import { StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemedView } from "../Themed";

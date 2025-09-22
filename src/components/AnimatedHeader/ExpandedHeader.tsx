@@ -1,25 +1,48 @@
-import { theme } from "@/theme";
 import { Image } from "expo-image";
 import { useColorScheme, StyleSheet } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Animated, {
+  useAnimatedStyle,
+  interpolate,
+  Extrapolation,
+  SharedValue,
+} from "react-native-reanimated";
 
 const imageSource = require("@/assets/images/header-expanded.png");
 const darkImageSource = require("@/assets/images/header-expanded-dark.png");
 
-export function ExpandedHeader() {
+interface ExpandedHeaderProps {
+  scrollOffset: SharedValue<number>;
+}
+
+export function ExpandedHeader({ scrollOffset }: ExpandedHeaderProps) {
   const isDarkMode = useColorScheme() === "dark";
-  const insets = useSafeAreaInsets();
+
+  const animatedImageStyle = useAnimatedStyle(() => {
+    const height = interpolate(
+      scrollOffset.value,
+      [0, 600],
+      [600, 0],
+      Extrapolation.CLAMP,
+    );
+
+    return {
+      height,
+    };
+  });
+
   return (
-    <Image
-      source={isDarkMode ? darkImageSource : imageSource}
-      style={[styles.headerImage, { marginTop: -insets.top }]}
-    />
+    <Animated.View style={animatedImageStyle}>
+      <Image
+        source={isDarkMode ? darkImageSource : imageSource}
+        style={[styles.headerImage]}
+      />
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   headerImage: {
-    height: 600,
-    marginBottom: theme.space24,
+    width: "100%",
+    height: "100%",
   },
 });

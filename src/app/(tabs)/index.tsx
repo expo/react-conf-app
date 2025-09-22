@@ -1,7 +1,7 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
 import React, { useState } from "react";
-import { Platform, StyleSheet, ViewToken } from "react-native";
+import { Platform, StyleSheet, View, ViewToken } from "react-native";
 import Animated, {
   useAnimatedRef,
   useSharedValue,
@@ -65,6 +65,15 @@ export default function Schedule() {
     ),
   }));
 
+  const paddingBottomStyle = useAnimatedStyle(() => ({
+    paddingBottom: interpolate(
+      scrollOffset.value,
+      [0, 600],
+      [0, 600],
+      Extrapolation.CLAMP,
+    ),
+  }));
+
   const sectionListBackgroundColor = useThemeColor(theme.color.background);
 
   useFocusEffect(() => {
@@ -73,7 +82,6 @@ export default function Schedule() {
 
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const refreshSchedule = useReactConfStore((state) => state.refreshData);
-  const isRefreshing = useReactConfStore((state) => !!state.isRefreshing);
 
   const scrollToSection = (day: ConferenceDay) => {
     scrollRef.current?.scrollToIndex({
@@ -125,7 +133,6 @@ export default function Schedule() {
         onScroll={scrollHandler}
         style={{ backgroundColor: sectionListBackgroundColor }}
         contentContainerStyle={{
-          // paddingTop: EXPANDED_HEADER,
           paddingBottom: Platform.select({ android: 100, default: 0 }),
         }}
         scrollEventThrottle={8}
@@ -133,13 +140,13 @@ export default function Schedule() {
         stickyHeaderIndices={[0]}
         ListHeaderComponent={() => {
           return (
-            <>
-              <ExpandedHeader />
+            <Animated.View style={paddingBottomStyle}>
+              <ExpandedHeader scrollOffset={scrollOffset} />
               <DayPicker
                 isDayOne={shouldShowDayOneHeader}
                 onSelectDay={scrollToSection}
               />
-            </>
+            </Animated.View>
           );
         }}
         renderItem={({ item }) => {
@@ -170,7 +177,7 @@ export default function Schedule() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 100,
+    paddingTop: 80,
   },
   sectionHeader: {
     marginBottom: theme.space12,

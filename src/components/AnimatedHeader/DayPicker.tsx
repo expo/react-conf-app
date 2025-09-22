@@ -56,6 +56,7 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
 
 const styles = StyleSheet.create({
   dayPicker: {
+    marginTop: theme.space24,
     marginHorizontal: theme.space24,
     borderRadius: theme.borderRadius24,
     padding: theme.space8,
