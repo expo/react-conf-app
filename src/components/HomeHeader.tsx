@@ -5,8 +5,8 @@ import { ThemedView } from "./Themed";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TimeZoneSwitch } from "./TimeZoneSwitch";
 
-const lightImageSource = require("@/assets/images/header-collapsed.png");
-const darkImageSource = require("@/assets/images/header-collapsed-dark.png");
+const lightImageSource = require("@/assets/images/conf.png");
+const darkImageSource = require("@/assets/images/conf-dark.png");
 
 export function HomeHeader() {
   const isDarkMode = useColorScheme() === "dark";
