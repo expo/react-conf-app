@@ -7,13 +7,13 @@ import {
 import { theme } from "@/theme";
 import { StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Day } from "@/consts";
+import { ConferenceDay } from "@/consts";
 
 const backgroundHighlight = { dark: "#1A1A1A", light: "#E6E6E6" };
 
 interface DayPickerProps {
   isDayOne: boolean;
-  onSelectDay: (day: Day) => void;
+  onSelectDay: (day: ConferenceDay) => void;
 }
 
 export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
@@ -25,7 +25,7 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
       <ThemedView color={theme.color.background}>
         <ThemedView style={[styles.dayPicker]} color={backgroundHighlight}>
           <ThemedPressable
-            onPress={() => onSelectDay(Day.DayOne)}
+            onPress={() => onSelectDay(ConferenceDay.One)}
             backgroundColor={(!isDayOne && backgroundHighlight) || undefined}
             style={[styles.dayPickerItem]}
           >
@@ -35,7 +35,7 @@ export function DayPicker({ isDayOne, onSelectDay }: DayPickerProps) {
           </ThemedPressable>
 
           <ThemedPressable
-            onPress={() => onSelectDay(Day.DayTwo)}
+            onPress={() => onSelectDay(ConferenceDay.Two)}
             backgroundColor={(isDayOne && backgroundHighlight) || undefined}
             style={[styles.dayPickerItem]}
           >
