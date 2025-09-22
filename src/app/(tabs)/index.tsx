@@ -1,15 +1,7 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
-import React, { useState } from "react";
-import { Platform, StyleSheet, ViewToken } from "react-native";
-import Animated, {
-  useAnimatedRef,
-  useSharedValue,
-  useAnimatedStyle,
-  useAnimatedScrollHandler,
-  Extrapolation,
-  interpolate,
-} from "react-native-reanimated";
+import React, { useRef, useState } from "react";
+import { Platform, StyleSheet, View, ViewToken } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { ActivityCard } from "@/components/ActivityCard";
@@ -20,9 +12,9 @@ import { ConferenceDay } from "@/consts";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session } from "@/types";
-import { DayPicker } from "@/components/AnimatedHeader/DayPicker";
-import { CollapsedHeader } from "@/components/AnimatedHeader/CollapsedHeader";
-import { ExpandedHeader } from "@/components/AnimatedHeader/ExpandedHeader";
+import { HomeHeader } from "@/components/HomeHeader";
+import { DayPicker } from "@/components/DayPicker";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type SessionItem =
   | {
@@ -35,38 +27,11 @@ type SessionItem =
       day: number;
     };
 
-const AnimatedFlatList = Animated.createAnimatedComponent(
-  FlatList<SessionItem>,
-);
-
 export default function Schedule() {
-  const scrollRef = useAnimatedRef<FlatList>();
+  const scrollRef = useRef<FlatList>(null);
   useScrollToTop(scrollRef as any);
   const [shouldShowDayOneHeader, setShouldShowDayOneHeader] = useState(true);
-
-  const scrollOffset = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    scrollOffset.value = event.contentOffset.y;
-  });
-
-  const paddingBottomStyle = useAnimatedStyle(() => ({
-    paddingBottom: interpolate(
-      scrollOffset.value,
-      [0, 600],
-      [0, 600],
-      Extrapolation.CLAMP,
-    ),
-  }));
-
-  const containerPaddingTopStyle = useAnimatedStyle(() => ({
-    paddingTop: interpolate(
-      scrollOffset.value,
-      [300, 600],
-      [0, 80],
-      Extrapolation.CLAMP,
-    ),
-  }));
-
+  const insets = useSafeAreaInsets();
   const sectionListBackgroundColor = useThemeColor(theme.color.background);
 
   useFocusEffect(() => {
@@ -119,68 +84,49 @@ export default function Schedule() {
   }
 
   return (
-    <Animated.View style={[styles.container, containerPaddingTopStyle]}>
-      <ThemedView color={theme.color.background} style={styles.themedContainer}>
-        <AnimatedFlatList
-          ref={scrollRef}
-          onViewableItemsChanged={onViewableItemsChanged}
-          onScroll={scrollHandler}
-          style={{ backgroundColor: sectionListBackgroundColor }}
-          contentContainerStyle={{
-            paddingBottom: Platform.select({ android: 100, default: 0 }),
-          }}
-          scrollEventThrottle={8}
-          data={data}
-          stickyHeaderIndices={[0]}
-          ListHeaderComponent={() => {
+    <ThemedView style={{ flex: 1 }}>
+      <FlatList
+        ref={scrollRef}
+        onViewableItemsChanged={onViewableItemsChanged}
+        style={{ backgroundColor: sectionListBackgroundColor }}
+        contentContainerStyle={{
+          paddingBottom: Platform.select({ android: 100, default: 0 }),
+          marginTop: insets.top,
+        }}
+        data={data}
+        stickyHeaderIndices={[0]}
+        ListHeaderComponent={() => (
+          <DayPicker
+            isDayOne={shouldShowDayOneHeader}
+            onSelectDay={scrollToSection}
+          />
+        )}
+        renderItem={({ item }) => {
+          if (item.type === "section-header") {
             return (
-              <Animated.View style={paddingBottomStyle}>
-                <ExpandedHeader scrollOffset={scrollOffset} />
-                <DayPicker
-                  isDayOne={shouldShowDayOneHeader}
-                  onSelectDay={scrollToSection}
-                  scrollOffset={scrollOffset}
-                />
-              </Animated.View>
+              <ThemedView style={styles.sectionHeader}>
+                <ThemedText fontWeight="bold" fontSize={24}>
+                  Day 2
+                </ThemedText>
+              </ThemedView>
             );
-          }}
-          renderItem={({ item }) => {
-            if (item.type === "section-header") {
-              return (
-                <ThemedView style={styles.sectionHeader}>
-                  <ThemedText fontWeight="bold" fontSize={24}>
-                    Day 2
-                  </ThemedText>
-                </ThemedView>
-              );
-            }
+          }
 
-            if (item.item.isServiceSession) {
-              return <ActivityCard session={item.item} />;
-            } else {
-              return (
-                <TalkCard
-                  key={item.item.id}
-                  session={item.item}
-                  day={item.day}
-                />
-              );
-            }
-          }}
-        />
-      </ThemedView>
-      <CollapsedHeader scrollOffset={scrollOffset} />
-    </Animated.View>
+          if (item.item.isServiceSession) {
+            return <ActivityCard session={item.item} />;
+          } else {
+            return (
+              <TalkCard key={item.item.id} session={item.item} day={item.day} />
+            );
+          }
+        }}
+      />
+      <HomeHeader />
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  themedContainer: {
-    flex: 1,
-  },
   sectionHeader: {
     marginBottom: theme.space12,
     paddingHorizontal: theme.space24,

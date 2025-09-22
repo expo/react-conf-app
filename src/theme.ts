@@ -68,7 +68,9 @@ export const theme = {
   borderRadius20: 20,
   borderRadius24: 24,
   borderRadius34: 34,
+  borderRadius45: 45,
   borderRadius50: 50,
+  borderRadius80: 80,
 
   dropShadow: {
     ...Platform.select({
