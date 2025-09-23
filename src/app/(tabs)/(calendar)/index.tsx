@@ -1,7 +1,7 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
-import { Platform } from "react-native";
+import { Platform, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedScrollHandler,
@@ -33,6 +33,7 @@ export default function Schedule() {
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
   const insets = useSafeAreaInsets();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const translationY = useSharedValue(0);
 
@@ -85,13 +86,13 @@ export default function Schedule() {
     </Animated.View>
   );
 
-  useFocusEffect(() => {
-    refreshSchedule({ ttlMs: 60_000 });
-  });
-
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const refreshSchedule = useReactConfStore((state) => state.refreshData);
   const data = selectedDay === ConferenceDay.One ? dayOne : dayTwo;
+
+  useFocusEffect(() => {
+    refreshSchedule({ ttlMs: 60_000 });
+  });
 
   const handleSelectDay = (day: ConferenceDay) => {
     setSelectedDay(day);
@@ -106,9 +107,24 @@ export default function Schedule() {
     return <NotFound message="Schedule unavailable" />;
   }
 
+  const handleRefreshSchedule = async () => {
+    setIsRefreshing(true);
+    await Promise.all([
+      new Promise((resolve) => setTimeout(resolve, 1000)),
+      refreshSchedule(),
+    ]);
+    setIsRefreshing(false);
+  };
+
   return (
     <AnimatedFlatList
       ref={scrollRef}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefreshSchedule}
+        />
+      }
       style={{ backgroundColor }}
       contentContainerStyle={{
         paddingBottom: Platform.select({ android: 100, default: 0 }),

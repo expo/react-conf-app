@@ -8,8 +8,6 @@ export const theme = {
   colorGrey: "#adb5bd",
   colorReactLightBlue: "#58C4DC",
   colorReactDarkBlue: "#087EA4",
-  colorThemeLightGrey: "#FCFBFE",
-  colorThemeGrey: "#F5F4F3",
 
   color: {
     transparent: {
@@ -43,13 +41,10 @@ export const theme = {
   space12: 12,
   space16: 16,
   space24: 24,
-  space32: 32,
 
   fontSize14: 14,
   fontSize16: 16,
   fontSize18: 18,
-  fontSize24: 24,
-  fontSize32: 32,
 
   fontFamilyLight: "FreightSansProLight-Regular",
   fontFamilyLightItalic: "FreightSansProLight-Italic",
@@ -64,13 +59,10 @@ export const theme = {
   borderRadius6: 6,
   borderRadius10: 10,
   borderRadius12: 12,
-  borderRadius16: 16,
   borderRadius20: 20,
-  borderRadius24: 24,
   borderRadius34: 34,
   borderRadius40: 40,
   borderRadius45: 45,
-  borderRadius50: 50,
   borderRadius80: 80,
 
   dropShadow: {

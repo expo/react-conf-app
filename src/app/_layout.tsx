@@ -19,7 +19,6 @@ import * as SplashScreen from "expo-splash-screen";
 
 import { theme } from "../theme";
 
-import { OfflineBanner } from "@/components/OfflineBanner";
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { useQuickActionCallback } from "@/utils/useQuickActionCallback";
@@ -203,7 +202,6 @@ export default function Layout() {
               }}
             />
           </Stack>
-          <OfflineBanner />
         </ThemeProvider>
       </ActionSheetProvider>
     </GestureHandlerRootView>
