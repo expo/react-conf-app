@@ -47,7 +47,7 @@ export const useReactConfStore = create(
       lastRefreshed: null,
       shouldUseLocalTz: false,
       refreshData: async (options) => {
-        const ttlMs = options?.ttlMs;
+        const ttlMs = options?.ttlMs || 0;
         const { isRefreshing, lastRefreshed } = get();
 
         // Bail out if already refreshing
