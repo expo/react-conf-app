@@ -96,6 +96,7 @@ export default function Speakers() {
 
   return (
     <LegendList
+      key={`speakers-list-${searchText === "" ? "all" : "filtered"}`}
       scrollToOverflowEnabled
       contentInsetAdjustmentBehavior="automatic"
       onScrollBeginDrag={dismissKeyboard}
@@ -127,7 +128,7 @@ export const styles = StyleSheet.create({
     paddingBottom: Platform.select({ android: 100, default: 0 }),
   },
   noResultsContainer: {
-    paddingHorizontal: theme.space24,
+    padding: theme.space24,
   },
   speakerContainer: {
     paddingVertical: theme.space16,

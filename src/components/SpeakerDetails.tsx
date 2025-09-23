@@ -17,13 +17,15 @@ export function SpeakerDetails({ speaker }: { speaker: Speaker }) {
         <ThemedText fontSize={16} fontWeight="semiBold">
           {speaker.fullName}
         </ThemedText>
-        <ThemedText
-          fontSize={14}
-          fontWeight="medium"
-          color={theme.color.textSecondary}
-        >
-          {speaker.tagLine}
-        </ThemedText>
+        {speaker.tagLine ? (
+          <ThemedText
+            fontSize={14}
+            fontWeight="medium"
+            color={theme.color.textSecondary}
+          >
+            {speaker.tagLine}
+          </ThemedText>
+        ) : null}
       </View>
     </View>
   );

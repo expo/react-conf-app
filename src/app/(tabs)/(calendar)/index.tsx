@@ -37,7 +37,6 @@ export default function Schedule() {
   const translationY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
-    console.log("event.contentOffset.y", event.contentOffset);
     translationY.value = event.contentOffset.y;
   });
 
