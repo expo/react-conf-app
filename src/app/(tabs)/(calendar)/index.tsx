@@ -22,6 +22,7 @@ import { useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
 import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { scheduleOnRN } from "react-native-worklets";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
@@ -29,6 +30,7 @@ export default function Schedule() {
   // TODO (Kadi): choose day based on the date
   const [selectedDay, setSelectedDay] = useState(ConferenceDay.One);
   const scrollRef = useRef<FlatList>(null);
+  const isScrolledDown = useRef(false);
   useScrollToTop(scrollRef as any);
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
@@ -37,8 +39,13 @@ export default function Schedule() {
 
   const translationY = useSharedValue(0);
 
+  const updateIsScrolledDown = useCallback((offsetY: number) => {
+    isScrolledDown.current = offsetY > 10;
+  }, []);
+
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
+    scheduleOnRN(updateIsScrolledDown, event.contentOffset.y);
   });
 
   const stickyHeaderStyle = useAnimatedStyle(() => {
@@ -88,17 +95,12 @@ export default function Schedule() {
     refreshSchedule({ ttlMs: 60_000 });
   });
 
-  const handleSelectDay = useCallback(
-    (day: ConferenceDay) => {
-      setSelectedDay(day);
-      if (translationY.value > 10) {
-        setTimeout(() => {
-          scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
-        }, 100);
-      }
-    },
-    [translationY],
-  );
+  const handleSelectDay = useCallback((day: ConferenceDay) => {
+    setSelectedDay(day);
+    if (isScrolledDown.current) {
+      scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
+    }
+  }, []);
 
   const renderStickyHeader = useMemo(
     () => (
