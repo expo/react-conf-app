@@ -56,7 +56,12 @@ export default function Speakers() {
           asChild
         >
           <Link.Trigger>
-            <Pressable style={styles.speakerContainer}>
+            <Pressable
+              onLongPress={() => {
+                // adding this to prevent navigating on long press instead of opening the preview
+              }}
+              style={styles.speakerContainer}
+            >
               <SpeakerDetails speaker={item} key={item.id} />
             </Pressable>
           </Link.Trigger>
