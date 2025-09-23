@@ -1,6 +1,6 @@
 import { useScrollToTop } from "@react-navigation/native";
 import { useFocusEffect } from "expo-router";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Platform, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import Animated, {
@@ -80,12 +80,6 @@ export default function Schedule() {
     [selectedDay],
   );
 
-  const StickyHeader = () => (
-    <Animated.View style={[stickyHeaderStyle]}>
-      <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
-    </Animated.View>
-  );
-
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const refreshSchedule = useReactConfStore((state) => state.refreshData);
   const data = selectedDay === ConferenceDay.One ? dayOne : dayTwo;
@@ -94,14 +88,26 @@ export default function Schedule() {
     refreshSchedule({ ttlMs: 60_000 });
   });
 
-  const handleSelectDay = (day: ConferenceDay) => {
-    setSelectedDay(day);
-    if (translationY.value > 10) {
-      setTimeout(() => {
-        scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
-      }, 100);
-    }
-  };
+  const handleSelectDay = useCallback(
+    (day: ConferenceDay) => {
+      setSelectedDay(day);
+      if (translationY.value > 10) {
+        setTimeout(() => {
+          scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
+        }, 100);
+      }
+    },
+    [translationY],
+  );
+
+  const renderStickyHeader = useMemo(
+    () => (
+      <Animated.View style={[stickyHeaderStyle]}>
+        <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
+      </Animated.View>
+    ),
+    [handleSelectDay, selectedDay, stickyHeaderStyle],
+  );
 
   if (!dayOne.length || !dayTwo.length) {
     return <NotFound message="Schedule unavailable" />;
@@ -134,7 +140,7 @@ export default function Schedule() {
       onScroll={scrollHandler}
       scrollEventThrottle={16}
       data={data}
-      ListHeaderComponent={<StickyHeader />}
+      ListHeaderComponent={renderStickyHeader}
       stickyHeaderIndices={[0]}
       keyExtractor={(item: Session) => item.id}
       renderItem={renderItem}
