@@ -38,6 +38,8 @@ export default function Schedule() {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const translationY = useSharedValue(0);
+  const animatedTranslateY = useSharedValue(0);
+  const animatedPaddingTop = useSharedValue(0);
 
   const updateIsScrolledDown = useCallback((offsetY: number) => {
     isScrolledDown.current = offsetY > 10;
@@ -45,6 +47,29 @@ export default function Schedule() {
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
+
+    // Only start animating when scroll position is positive (user is actually scrolling down)
+    if (event.contentOffset.y >= -130) {
+      // TranslateY animation
+      animatedTranslateY.value = interpolate(
+        event.contentOffset.y,
+        [-160, -93, 0],
+        [0, -40, 40], // Different output range for translateY
+        Extrapolation.CLAMP,
+      );
+
+      animatedPaddingTop.value = interpolate(
+        event.contentOffset.y,
+        [-160, -93, 0],
+        [0, insets.top, insets.top], // Keep original output range for paddingTop
+        Extrapolation.CLAMP,
+      );
+    } else {
+      // Keep values at 0 when scroll position is negative
+      animatedTranslateY.value = 0;
+      animatedPaddingTop.value = 0;
+    }
+
     scheduleOnRN(updateIsScrolledDown, event.contentOffset.y);
   });
 
@@ -53,25 +78,9 @@ export default function Schedule() {
       return {};
     }
 
-    // Move the sticky header up during header collapse, then keep it in position
-    const translateY = interpolate(
-      translationY.value,
-      [-160, -93, 0], // Header visible -> collapsing -> collapsed
-      [0, -40, 40], // No movement -> move up by header collapse amount -> stay there
-      Extrapolation.CLAMP,
-    );
-
-    // Add safe area padding once header is collapsed
-    const paddingTop = interpolate(
-      translationY.value,
-      [-160, -93, 0],
-      [0, insets.top, insets.top],
-      Extrapolation.CLAMP,
-    );
-
     return {
-      transform: [{ translateY }],
-      paddingTop,
+      transform: [{ translateY: animatedTranslateY.value }],
+      paddingTop: animatedPaddingTop.value,
       backgroundColor: isLiquidGlass ? "transparent" : backgroundColor,
     };
   });

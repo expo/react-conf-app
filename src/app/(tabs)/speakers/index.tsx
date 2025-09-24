@@ -112,6 +112,7 @@ export default function Speakers() {
       ItemSeparatorComponent={() => (
         <ThemedView style={{ height: 1 }} color={theme.color.border} />
       )}
+      extraData={isBookmarked}
       renderItem={renderItem}
       data={filteredSpeakers}
       keyExtractor={(item) => item.id}
