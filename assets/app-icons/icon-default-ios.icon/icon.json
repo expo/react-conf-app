@@ -1,6 +1,6 @@
 {
   "fill" : {
-    "solid" : "display-p3:0.52941,0.75294,0.83922,1.00000"
+    "automatic-gradient" : "display-p3:0.52941,0.75294,0.83922,1.00000"
   },
   "groups" : [
     {
@@ -15,150 +15,14 @@
             {
               "appearance" : "dark",
               "value" : {
-                "solid" : "display-p3:0.63137,0.88627,0.98431,1.00000"
-              }
-            },
-            {
-              "appearance" : "tinted",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
+                "solid" : "display-p3:0.42745,0.70588,0.78824,1.00000"
               }
             }
           ],
-          "hidden" : false,
-          "image-name" : "react.svg",
-          "name" : "react",
-          "opacity-specializations" : [
-            {
-              "value" : 1
-            },
-            {
-              "appearance" : "tinted",
-              "value" : 0.8
-            }
-          ],
+          "image-name" : "logo_light.svg",
+          "name" : "logo_light",
           "position" : {
-            "scale" : 0.8,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        },
-        {
-          "fill-specializations" : [
-            {
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            },
-            {
-              "appearance" : "dark",
-              "value" : {
-                "solid" : "display-p3:0.63137,0.88627,0.98431,1.00000"
-              }
-            },
-            {
-              "appearance" : "tinted",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            }
-          ],
-          "hidden" : false,
-          "image-name" : "react-3.svg",
-          "name" : "react-3",
-          "opacity-specializations" : [
-            {
-              "value" : 1
-            },
-            {
-              "appearance" : "tinted",
-              "value" : 0.8
-            }
-          ],
-          "position" : {
-            "scale" : 0.8,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        },
-        {
-          "fill-specializations" : [
-            {
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            },
-            {
-              "appearance" : "dark",
-              "value" : {
-                "solid" : "display-p3:0.63137,0.88627,0.98431,1.00000"
-              }
-            },
-            {
-              "appearance" : "tinted",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            }
-          ],
-          "hidden" : false,
-          "image-name" : "react-2.svg",
-          "name" : "react-2",
-          "opacity-specializations" : [
-            {
-              "value" : 1
-            },
-            {
-              "appearance" : "tinted",
-              "value" : 0.8
-            }
-          ],
-          "position" : {
-            "scale" : 0.8,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        },
-        {
-          "fill-specializations" : [
-            {
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            },
-            {
-              "appearance" : "dark",
-              "value" : {
-                "solid" : "display-p3:0.63137,0.88627,0.98431,1.00000"
-              }
-            },
-            {
-              "appearance" : "tinted",
-              "value" : {
-                "solid" : "srgb:1.00000,1.00000,1.00000,1.00000"
-              }
-            }
-          ],
-          "hidden" : false,
-          "image-name" : "react-1.svg",
-          "name" : "react-1",
-          "opacity-specializations" : [
-            {
-              "value" : 1
-            },
-            {
-              "appearance" : "tinted",
-              "value" : 0.8
-            }
-          ],
-          "position" : {
-            "scale" : 0.8,
+            "scale" : 1.5,
             "translation-in-points" : [
               0,
               0
