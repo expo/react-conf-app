@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius10,
   },
   content: {
-    borderRadius: theme.borderRadius10,
+    borderRadius: theme.borderRadius32,
     padding: theme.space24,
     gap: theme.space24,
   },

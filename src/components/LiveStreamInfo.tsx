@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: theme.space24,
     marginBottom: theme.space16,
-    borderRadius: theme.borderRadius12,
+    borderRadius: theme.borderRadius32,
     padding: theme.space24,
     alignItems: "center",
   },
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingHorizontal: theme.space8,
     paddingVertical: theme.space4,
-    borderRadius: theme.borderRadius6,
+    borderRadius: theme.borderRadius32,
     marginBottom: theme.space16,
     flexDirection: "row",
     justifyContent: "center",
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
   liveStreamDot: {
     width: 8,
     height: 8,
-    borderRadius: theme.borderRadius4,
+    borderRadius: theme.borderRadius32,
   },
 });

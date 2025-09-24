@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: theme.space24,
     marginBottom: theme.space16,
-    borderRadius: theme.borderRadius12,
+    borderRadius: theme.borderRadius32,
     padding: theme.space24,
     alignItems: "center",
     gap: theme.space16,
