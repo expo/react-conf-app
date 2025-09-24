@@ -49,7 +49,7 @@ const config: ExpoConfig = {
   assetBundlePatterns: ["**/*"],
   newArchEnabled: true,
   ios: {
-    icon: "./assets/app-icons/icon-default-ios.icon",
+    icon: "./assets/app-icons/react-conf.icon",
     supportsTablet: true,
     bundleIdentifier: getAppId(),
     userInterfaceStyle: "automatic",
@@ -59,9 +59,9 @@ const config: ExpoConfig = {
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: "./assets/app-icons/icon-default-android.png",
+      foregroundImage: "./assets/app-icons/icon-android.png",
       monochromeImage: "./assets/app-icons/icon-monochrome-android.png",
-      backgroundColor: "#000000",
+      backgroundColor: "#23272F",
     },
     userInterfaceStyle: "automatic",
     package: getAppId(),
@@ -86,7 +86,7 @@ const config: ExpoConfig = {
         androidIcons: {
           layers: {
             foregroundImage: "./assets/icons/layers.png",
-            backgroundColor: "#24272E",
+            backgroundColor: "#23272F",
           },
         },
       },
@@ -114,9 +114,9 @@ const config: ExpoConfig = {
     [
       "expo-splash-screen",
       {
-        backgroundColor: "#24272E",
+        backgroundColor: "#23272F",
         image: "./assets/splash-icon.png",
-        imageWidth: 200,
+        imageWidth: 190,
       },
     ],
   ],
