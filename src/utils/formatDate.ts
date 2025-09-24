@@ -45,7 +45,7 @@ export const isDayOneSession = (date: string) => {
   try {
     return (
       formatInTimeZone(new Date(date), "America/Los_Angeles", `LLL d, yyyy`) ===
-      "May 15, 2024"
+      "Oct 7, 2025"
     );
   } catch {
     return false;
@@ -56,7 +56,7 @@ export const isDayTwoSession = (date: string) => {
   try {
     return (
       formatInTimeZone(new Date(date), "America/Los_Angeles", `LLL d, yyyy`) ===
-      "May 16, 2024"
+      "Oct 8, 2025"
     );
   } catch {
     return false;

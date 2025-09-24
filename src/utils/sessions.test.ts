@@ -3,105 +3,135 @@ import { formatSession } from "./sessions";
 import { allSessions } from "@/utils/testData/allSessions";
 
 describe(formatSession, () => {
-  it("formats non-talk correctly", () => {
-    const session = {
-      id: "2e115a1f-803c-4c38-a0c9-a0c809457d51",
-      title: "Registration",
-      description: null,
-      startsAt: "2024-05-15T01:00:00Z",
-      endsAt: "2024-05-15T04:00:00Z",
-      isServiceSession: true,
-      isPlenumSession: false,
-      speakers: [],
-      categoryItems: [],
-      questionAnswers: [],
-      roomId: 45058,
-      liveUrl: null,
-      recordingUrl: null,
-      status: null,
-      isInformed: false,
-      isConfirmed: false,
-    };
+  // no non-talks yet in the new version
+  // it("formats non-talk correctly", () => {
+  //   const session = {
+  //     id: "2e115a1f-803c-4c38-a0c9-a0c809457d51",
+  //     title: "Registration",
+  //     description: null,
+  //     startsAt: "2024-05-15T01:00:00Z",
+  //     endsAt: "2024-05-15T04:00:00Z",
+  //     isServiceSession: true,
+  //     isPlenumSession: false,
+  //     speakers: [],
+  //     categoryItems: [],
+  //     questionAnswers: [],
+  //     roomId: 45058,
+  //     liveUrl: null,
+  //     recordingUrl: null,
+  //     status: null,
+  //     isInformed: false,
+  //     isConfirmed: false,
+  //   };
 
-    expect(formatSession(session, allSessions)).toEqual({
-      id: "2e115a1f-803c-4c38-a0c9-a0c809457d51",
-      title: "Registration",
-      description: null,
-      startsAt: "2024-05-15T01:00:00Z",
-      endsAt: "2024-05-15T04:00:00Z",
-      isServiceSession: true,
-      room: "Lobby Hallway",
-      speakers: [],
-    });
-  });
+  //   expect(formatSession(session, allSessions)).toEqual({
+  //     id: "2e115a1f-803c-4c38-a0c9-a0c809457d51",
+  //     title: "Registration",
+  //     description: null,
+  //     startsAt: "2024-05-15T01:00:00Z",
+  //     endsAt: "2024-05-15T04:00:00Z",
+  //     isServiceSession: true,
+  //     room: "Lobby Hallway",
+  //     speakers: [],
+  //   });
+  // });
 
   it("formats a talk correcly", () => {
     const session = {
-      id: "665505",
-      title: "Vanilla React",
+      id: "987074",
+      title: "The React Router take on RSC",
       description:
-        "In 2014 Ryan and Michael first published React Router. Over the past decade, React Router has been the backbone of countless React apps, and has provided a stable foundation for anyone building with React. More recently, React Router has grown into a full stack framework with some help from Remix and Shopify. This talk will explore what we've done to keep React Router up to date as React evolves, and show off some of the latest developments we've been working on.",
-      startsAt: "2024-05-15T17:15:00Z",
-      endsAt: "2024-05-15T17:35:00Z",
+        "A lightning talk where Kent shows how React Router is embracing React Server Components to simplify its architecture, unlock new patterns for data loading, streaming, and code splitting, and make building full-stack React apps faster and more seamless.",
+      startsAt: "2025-10-08T15:15:00",
+      endsAt: "2025-10-08T15:30:00",
       isServiceSession: false,
       isPlenumSession: false,
-      speakers: ["e3e97117-b273-4cff-9c59-388b21a4b5b7"],
+      speakers: ["75da261e-612c-4869-a111-3475bffb99f0"],
       categoryItems: [],
-      questionAnswers: [],
-      roomId: 45056,
+      questionAnswers: [
+        {
+          questionId: 99885,
+          answerValue:
+            "React Server Components have changed how we think about building React applications. In this lightning talk, Kent will explore how React Router is embracing RSC and what this means for the future of routing in React applications. This talk will dive into how RSC has simplified React Router's architecture and enables powerful new patterns for data loading, streaming, and code splitting.\r\n\r\nWe'll see how React Router has evolved to work seamlessly with React Server Components, making it easier than ever to build full-stack React applications with excellent performance and developer experience.",
+        },
+      ],
+      roomId: 71511,
       liveUrl: null,
       recordingUrl: null,
       status: "Accepted",
       isInformed: true,
-      isConfirmed: false,
+      isConfirmed: true,
     };
     expect(formatSession(session, allSessions)).toEqual({
       description:
-        "In 2014 Ryan and Michael first published React Router. Over the past decade, React Router has been the backbone of countless React apps, and has provided a stable foundation for anyone building with React. More recently, React Router has grown into a full stack framework with some help from Remix and Shopify. This talk will explore what we've done to keep React Router up to date as React evolves, and show off some of the latest developments we've been working on.",
-      endsAt: "2024-05-15T17:35:00Z",
-      id: "665505",
+        "A lightning talk where Kent shows how React Router is embracing React Server Components to simplify its architecture, unlock new patterns for data loading, streaming, and code splitting, and make building full-stack React apps faster and more seamless.",
+      endsAt: "2025-10-08T15:30:00",
+      id: "987074",
       isServiceSession: false,
-      room: "Casablanca South",
+      room: "Casablanca Ballroom ",
       speakers: [
         {
-          bio: "Obsessed with UX since using an Intellivision.",
-          categoryItems: [],
-          firstName: "Ryan",
-          fullName: "Ryan Florence",
-          id: "e3e97117-b273-4cff-9c59-388b21a4b5b7",
+          id: "75da261e-612c-4869-a111-3475bffb99f0",
+          firstName: "Kent C.",
+          lastName: "Dodds",
+          bio: "Kent C. Dodds is a world renowned web development educator and engineer. He's actively involved in the open source community. He is the creator of EpicWeb.dev, EpicAI.pro, the Epic Stack, EpicReact.dev, and TestingJavaScript.com. He's a Microsoft MVP, instructor on egghead.io and Frontend Masters, live streamer, and podcaster. Kent is married and the father of five kids and he lives in Utah.",
+          tagLine: "Software Engineer Educator",
+          profilePicture:
+            "https://sessionize.com/image/c4e3-400o400o1-BMT43t5kd2U1XstaNnM6Ax.jpg",
           isTopSpeaker: false,
-          lastName: "Florence",
           links: [
             {
+              title: "X (Twitter)",
+              url: "https://x.com/kentcdodds",
               linkType: "Twitter",
-              title: "Twitter",
-              url: "https://twitter.com/ryanflorence",
             },
             {
-              linkType: "Blog",
+              title: "LinkedIn",
+              url: "https://www.linkedin.com/in/kentcdodds/",
+              linkType: "LinkedIn",
+            },
+            {
               title: "Blog",
-              url: "https://ryanflorence.com",
+              url: "https://kentcdodds.com/blog",
+              linkType: "Blog",
             },
             {
-              linkType: "Company_Website",
               title: "Company Website",
-              url: "https://remix.run",
+              url: "https://kentcdodds.com",
+              linkType: "Company_Website",
+            },
+            {
+              title: "Talks",
+              url: "https://kentcdodds.com/talks",
+              linkType: "Other",
+            },
+            {
+              title: "Sessionize",
+              url: "https://sessionize.com/kentcdodds",
+              linkType: "Sessionize",
             },
           ],
-          profilePicture:
-            "https://sessionize.com/image/8295-400o400o1-96d9fe36-2eb4-43ed-8f63-83765aa47767.jpg",
+          sessions: [987054, 987074, 947075],
+          fullName: "Kent C. Dodds",
+          categoryItems: [],
           questionAnswers: [
             {
-              answerValue: "ryanflorence",
-              questionId: 70280,
+              questionId: 99886,
+              answerValue: "https://github.com/kentcdodds",
+            },
+            {
+              questionId: 99887,
+              answerValue: "EpicReact.dev",
+            },
+            {
+              questionId: 99888,
+              answerValue: "https://x.com/kentcdodds",
             },
           ],
-          sessions: [665505],
-          tagLine: "Co-creator of Remix",
         },
       ],
-      startsAt: "2024-05-15T17:15:00Z",
-      title: "Vanilla React",
+      startsAt: "2025-10-08T15:15:00",
+      title: "The React Router take on RSC",
     });
   });
 });
