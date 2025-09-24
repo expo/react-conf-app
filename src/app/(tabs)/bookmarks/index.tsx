@@ -1,4 +1,3 @@
-import { useScrollToTop } from "@react-navigation/native";
 import React, { useCallback } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 
@@ -9,12 +8,13 @@ import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { Session } from "@/types";
 import { ConferenceDay } from "@/consts";
-import { LegendList, LegendListRef } from "@legendapp/list";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 
 export default function Bookmarks() {
-  const scrollRef = React.useRef<LegendListRef>(null);
-  useScrollToTop(scrollRef);
-
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
 
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
@@ -31,20 +31,16 @@ export default function Bookmarks() {
 
   const renderItem = useCallback(
     ({ item }: { item: { talk: Session; day: ConferenceDay } }) => (
-      <TalkCard
-        key={item.talk.id}
-        session={item.talk}
-        day={item.day}
-        isBookmarked={true}
-      />
+      <Animated.View key={item.talk.id} entering={FadeIn} exiting={FadeOut}>
+        <TalkCard session={item.talk} day={item.day} isBookmarked={true} />
+      </Animated.View>
     ),
     [],
   );
 
   return (
-    <LegendList
+    <Animated.FlatList
       contentInsetAdjustmentBehavior="automatic"
-      ref={scrollRef}
       style={{ backgroundColor }}
       contentContainerStyle={styles.flatListContainer}
       data={[
@@ -53,20 +49,23 @@ export default function Bookmarks() {
       ]}
       renderItem={renderItem}
       keyExtractor={(item) => item.talk.id}
+      itemLayoutAnimation={LinearTransition}
       ListEmptyComponent={
-        <View style={styles.bookmarks}>
-          <ThemedText
-            fontWeight="bold"
-            fontSize={20}
-            style={{ marginBottom: theme.space8 }}
-          >
-            No sessions bookmarked
-          </ThemedText>
-          <ThemedText fontSize={18}>
-            Tap on the bookmark icon on a session to add it to your bookmarks,
-            and it will be displayed here.
-          </ThemedText>
-        </View>
+        <Animated.View entering={FadeIn} exiting={FadeOut}>
+          <View style={styles.bookmarks}>
+            <ThemedText
+              fontWeight="bold"
+              fontSize={20}
+              style={{ marginBottom: theme.space8 }}
+            >
+              No sessions bookmarked
+            </ThemedText>
+            <ThemedText fontSize={18}>
+              Tap on the bookmark icon on a session to add it to your bookmarks,
+              and it will be displayed here.
+            </ThemedText>
+          </View>
+        </Animated.View>
       }
     />
   );
