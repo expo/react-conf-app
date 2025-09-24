@@ -7,7 +7,7 @@ import {
 } from "@expo/ui/swift-ui";
 import { frame } from "@expo/ui/swift-ui/modifiers";
 
-const SIZE = 33;
+const SIZE = 34;
 
 export interface HeaderButtonProps {
   imageProps?: ImageProps;
