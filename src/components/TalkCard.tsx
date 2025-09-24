@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   titleAndBookmark: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: theme.space8,
   },
   time: {
     borderBottomWidth: 1,

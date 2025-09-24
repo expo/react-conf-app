@@ -28,7 +28,7 @@ export function Bookmark({ session }: { session: Session }) {
       }}
       imageProps={{
         systemName: bookmarked ? "bookmark.fill" : "bookmark",
-        size: 16,
+        size: isLiquidGlassAvailable() ? 16 : 24,
         modifiers: [frame({ height: 20, width: 10 })],
         color: isLiquidGlassAvailable() ? "white" : tintColor,
       }}
