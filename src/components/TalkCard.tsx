@@ -68,7 +68,19 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
               </View>
             )}
             {session.speakers.map((speaker) => (
-              <SpeakerDetails speaker={speaker} key={speaker.id} />
+              <Link
+                push
+                key={speaker.id}
+                href={{
+                  pathname: "/speaker/[speaker]",
+                  params: { speaker: speaker.id },
+                }}
+                asChild
+              >
+                <Pressable>
+                  <SpeakerDetails speaker={speaker} key={speaker.id} />
+                </Pressable>
+              </Link>
             ))}
           </ThemedView>
         </ThemedView>
