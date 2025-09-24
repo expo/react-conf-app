@@ -5,6 +5,8 @@ import { HeaderButton } from "./HeaderButtons/HeaderButton";
 import { frame } from "@expo/ui/swift-ui/modifiers";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { useThemeColor } from "./Themed";
+import * as Haptics from "expo-haptics";
+import { Platform } from "react-native";
 
 export function Bookmark({ session }: { session: Session }) {
   const { toggleBookmark, isBookmarked } = useBookmark();
@@ -14,6 +16,14 @@ export function Bookmark({ session }: { session: Session }) {
   });
 
   const handlePress = async () => {
+    if (Platform.OS === "ios") {
+      if (isBookmarked(session.id)) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+      } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      }
+    }
+
     await toggleBookmark(session);
   };
 
