@@ -7,7 +7,7 @@ export function TimeZoneSwitch() {
   const toggleLocalTz = useReactConfStore((state) => state.toggleLocalTz);
 
   return (
-    <Host style={{ width: 33, height: 44 }}>
+    <Host matchContents>
       <ContextMenu>
         <ContextMenu.Items>
           <Picker

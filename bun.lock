@@ -70,7 +70,9 @@
   },
   "patchedDependencies": {
     "react-native-screens@4.16.0": "patches/react-native-screens@4.16.0.patch",
+    "react-native@0.81.4": "patches/react-native@0.81.4.patch",
     "expo-modules-core@3.0.16": "patches/expo-modules-core@3.0.16.patch",
+    "@expo/ui@0.2.0-beta.3": "patches/@expo%2Fui@0.2.0-beta.3.patch",
   },
   "packages": {
     "@0no-co/graphql.web": ["@0no-co/graphql.web@1.2.0", "", { "peerDependencies": { "graphql": "^14.0.0 || ^15.0.0 || ^16.0.0" }, "optionalPeers": ["graphql"] }, "sha512-/1iHy9TTr63gE1YcR5idjx8UREz1s0kFhydf3bBLCXyqjhkIc6igAzTOx3zPifCwFR87tsh/4Pa9cNts6d2otw=="],

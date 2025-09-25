@@ -1,8 +1,14 @@
+diff --git a/node_modules/expo-modules-core/.bun-tag-a8c59a8f16e7ed58 b/.bun-tag-a8c59a8f16e7ed58
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+diff --git a/node_modules/expo-modules-core/.bun-tag-dcfea0d99e726839 b/.bun-tag-dcfea0d99e726839
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
 diff --git a/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift b/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift
-index e814b2f441b2b40a82a39e72128afd39938b2456..1a0c8311604e22aa44e1f3fc405ca0c440db5f97 100644
+index e814b2f441b2b40a82a39e72128afd39938b2456..70ce4a01f1b89cbbb7fc2f1f67f3096f62e4b4ae 100644
 --- a/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift
 +++ b/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift
-@@ -179,26 +179,15 @@ extension ExpoSwiftUI {
+@@ -179,26 +179,16 @@ extension ExpoSwiftUI {
      }
  #endif // RCT_NEW_ARCH_ENABLED
  
@@ -26,6 +32,7 @@ index e814b2f441b2b40a82a39e72128afd39938b2456..1a0c8311604e22aa44e1f3fc405ca0c4
 -        view.rightAnchor.constraint(equalTo: rightAnchor)
 -      ])
 +      view.frame = self.bounds
++      view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
      }
  
 -    // MARK: - UIView lifecycle
@@ -33,7 +40,7 @@ index e814b2f441b2b40a82a39e72128afd39938b2456..1a0c8311604e22aa44e1f3fc405ca0c4
      public override func didMoveToWindow() {
        super.didMoveToWindow()
  
-@@ -216,7 +205,6 @@ extension ExpoSwiftUI {
+@@ -216,7 +206,6 @@ extension ExpoSwiftUI {
          #if os(iOS) || os(tvOS)
          hostingController.didMove(toParent: parentController)
          #endif
@@ -41,3 +48,16 @@ index e814b2f441b2b40a82a39e72128afd39938b2456..1a0c8311604e22aa44e1f3fc405ca0c4
        } else {
          hostingController.view.removeFromSuperview()
          hostingController.removeFromParent()
+diff --git a/ios/Fabric/ExpoFabricViewObjC.mm b/ios/Fabric/ExpoFabricViewObjC.mm
+index cb64efd25912fda87b2f205349ba1216a2562528..9bdb717928949ef895595e9b9725f76cd9e4fccb 100644
+--- a/ios/Fabric/ExpoFabricViewObjC.mm
++++ b/ios/Fabric/ExpoFabricViewObjC.mm
+@@ -169,7 +169,7 @@ - (void)viewDidUpdateProps
+ - (void)setShadowNodeSize:(float)width height:(float)height
+ {
+   if (_state) {
+-    _state->updateState(ExpoViewState(width,height));
++    _state->updateState(ExpoViewState(width,height), true);
+   }
+ }
+ 
