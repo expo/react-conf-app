@@ -15,6 +15,7 @@ import { ColorValue, ImageSourcePropType, Platform } from "react-native";
 import { useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
 import { useBookmarkStore } from "@/store/bookmarkStore";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 
 // Todo (betomoedano): In the future we can remove this type. Learn more: https://exponent-internal.slack.com/archives/C0447EFTS74/p1758042759724779?thread_ts=1758039375.241799&cid=C0447EFTS74
 type VectorIconFamily = {
@@ -96,7 +97,10 @@ export default function TabLayout() {
           </Badge>
         )}
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="speakers" role="search">
+      <NativeTabs.Trigger
+        name="speakers"
+        role={isLiquidGlassAvailable() ? "search" : undefined}
+      >
         {Platform.select({
           ios: <Icon sf={"person.2"} selectedColor={tabBarActiveTintColor} />,
           android: (

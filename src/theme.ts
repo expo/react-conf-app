@@ -60,6 +60,7 @@ export const theme = {
   borderRadius10: 10,
   borderRadius12: 12,
   borderRadius20: 20,
+  borderRadius32: 32,
   borderRadius34: 34,
   borderRadius40: 40,
   borderRadius45: 45,

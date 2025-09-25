@@ -32,6 +32,9 @@ export default function SpeakerDetail() {
     light: theme.color.textSecondary.light,
     dark: theme.color.textSecondary.dark,
   });
+  const backgroundColorSecondary = useThemeColor(
+    theme.color.backgroundSecondary,
+  );
 
   return (
     <>
@@ -47,7 +50,15 @@ export default function SpeakerDetail() {
           }}
         />
       ) : null}
-      <ThemedView style={styles.container} color={theme.color.background}>
+      <ThemedView
+        style={styles.container}
+        color={{
+          light: theme.color.background.light,
+          dark: isPreview
+            ? backgroundColorSecondary
+            : theme.color.background.dark,
+        }}
+      >
         {speaker ? (
           <ScrollView
             style={styles.container}

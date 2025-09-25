@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
     marginBottom: BOTTOM_OFFSET,
   },
   imageContainer: {
-    borderTopLeftRadius: theme.borderRadius12,
-    borderTopRightRadius: theme.borderRadius12,
+    borderTopLeftRadius: theme.borderRadius32,
+    borderTopRightRadius: theme.borderRadius32,
     overflow: "hidden",
   },
   venueName: {
@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: "center",
     paddingBottom: theme.space24,
-    borderBottomLeftRadius: theme.borderRadius12,
-    borderBottomRightRadius: theme.borderRadius12,
+    borderBottomLeftRadius: theme.borderRadius32,
+    borderBottomRightRadius: theme.borderRadius32,
   },
   venueAddress: {
     flexDirection: "row",

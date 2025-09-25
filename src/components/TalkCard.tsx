@@ -68,7 +68,19 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
               </View>
             )}
             {session.speakers.map((speaker) => (
-              <SpeakerDetails speaker={speaker} key={speaker.id} />
+              <Link
+                push
+                key={speaker.id}
+                href={{
+                  pathname: "/speaker/[speaker]",
+                  params: { speaker: speaker.id },
+                }}
+                asChild
+              >
+                <Pressable>
+                  <SpeakerDetails speaker={speaker} key={speaker.id} />
+                </Pressable>
+              </Link>
             ))}
           </ThemedView>
         </ThemedView>
@@ -84,13 +96,14 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius10,
   },
   content: {
-    borderRadius: theme.borderRadius10,
+    borderRadius: theme.borderRadius32,
     padding: theme.space24,
     gap: theme.space24,
   },
   titleAndBookmark: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: theme.space8,
   },
   time: {
     borderBottomWidth: 1,

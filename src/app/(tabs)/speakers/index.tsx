@@ -13,20 +13,18 @@ import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Link, useLocalSearchParams } from "expo-router";
-import { useScrollToTop } from "@react-navigation/native";
 import { SpeakerDetails } from "@/components/SpeakerDetails";
 import { useBookmark } from "@/hooks/useBookmark";
 import { Speaker } from "@/types";
 import { LegendList } from "@legendapp/list";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Speakers() {
-  const ref = React.useRef(null);
-  useScrollToTop(ref);
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
-  const { width } = useWindowDimensions();
-  const backgroundColor = useThemeColor(theme.color.background);
-
+  const { width, height } = useWindowDimensions();
+  const { bottom, top } = useSafeAreaInsets();
   const { toggleBookmarkById, isBookmarked, getSessionById } = useBookmark();
+  const backgroundColor = useThemeColor(theme.color.background);
 
   const params = useLocalSearchParams<{ q?: string }>();
 
@@ -101,18 +99,20 @@ export default function Speakers() {
 
   return (
     <LegendList
-      key={`speakers-list-${searchText === "" ? "all" : "filtered"}`}
+      key={searchText}
       scrollToOverflowEnabled
       contentInsetAdjustmentBehavior="automatic"
       onScrollBeginDrag={dismissKeyboard}
       keyboardShouldPersistTaps="handled"
-      ref={ref}
       style={{ backgroundColor }}
-      contentContainerStyle={styles.contentContainer}
+      contentContainerStyle={[
+        styles.contentContainer,
+        { minHeight: height - (bottom + top + 130) },
+      ]}
       ItemSeparatorComponent={() => (
         <ThemedView style={{ height: 1 }} color={theme.color.border} />
       )}
-      extraData={isBookmarked}
+      extraData={isBookmarked || searchText}
       renderItem={renderItem}
       data={filteredSpeakers}
       keyExtractor={(item) => item.id}

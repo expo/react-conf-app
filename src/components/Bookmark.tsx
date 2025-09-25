@@ -40,7 +40,7 @@ export function Bookmark({ session }: { session: Session }) {
     >
       <MaterialCommunityIcons
         name={bookmarked ? "bookmark" : "bookmark-outline"}
-        size={24}
+        size={28}
         color={bookmarked ? theme.colorReactLightBlue : theme.colorGrey}
       />
     </AnimatedPressable>
