@@ -5,12 +5,12 @@ import { Platform } from "react-native";
 import { BuildDetails } from "@/components/BuildDetails";
 import { LiveStreamInfo } from "@/components/LiveStreamInfo";
 import { DiscordInfo } from "@/components/DiscordInfo";
-import { PoweredByExpo } from "@/components/PoweredByExpo";
 import { useThemeColor } from "@/components/Themed";
 import { VenueInfo } from "@/components/VenueInfo";
 import { theme } from "@/theme";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
+import { PoweredByExpo2 } from "@/components/PoweredByExpo2";
 
 export default function Info() {
   const backgroundColor = useThemeColor(theme.color.background);
@@ -34,7 +34,7 @@ export default function Info() {
           <BuildDetails />
         </Pressable>
       </Link>
-      <PoweredByExpo />
+      <PoweredByExpo2 />
     </ScrollView>
   );
 }
