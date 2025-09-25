@@ -13,7 +13,7 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
   return (
     <View style={{ paddingBottom: theme.space24 }}>
       <GlassView style={styles.glassView}>
-        <Host matchContents style={styles.dayPicker}>
+        <Host matchContents>
           <Picker
             options={["Day 1", "Day 2"]}
             selectedIndex={selectedDay === ConferenceDay.One ? 0 : 1}
@@ -35,8 +35,5 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius80,
     marginTop: theme.space16,
     marginHorizontal: theme.space24,
-  },
-  dayPicker: {
-    height: 31, // fixed height to prevent jumping
   },
 });
