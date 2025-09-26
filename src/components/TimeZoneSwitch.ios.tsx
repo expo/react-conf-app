@@ -47,7 +47,7 @@ export function TimeZoneSwitch() {
         <ContextMenu.Trigger>
           <Button
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
-            color={isLiquidGlassAvailable() ? "primary" : color}
+            color={isLiquidGlassAvailable() ? "primary" : "gray"}
           >
             <HStack modifiers={[frame({ width: 70 })]} spacing={8}>
               <Text weight="semibold">
