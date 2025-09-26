@@ -138,7 +138,7 @@ export default function Speakers() {
 
 export const styles = StyleSheet.create({
   contentContainer: {
-    paddingHorizontal: theme.space24,
+    paddingHorizontal: theme.space16,
     paddingBottom: Platform.select({ android: 100, default: 0 }),
   },
   noResultsContainer: {
