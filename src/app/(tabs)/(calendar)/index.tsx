@@ -23,12 +23,12 @@ import { theme } from "@/theme";
 import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
+import { getInitialDay } from "@/utils/formatDate";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
 export default function Schedule() {
-  // TODO (Kadi): choose day based on the date
-  const [selectedDay, setSelectedDay] = useState(ConferenceDay.One);
+  const [selectedDay, setSelectedDay] = useState(getInitialDay());
   const scrollRef = useRef<FlatList>(null);
   const isScrolledDown = useRef(false);
   useScrollToTop(scrollRef as any);
