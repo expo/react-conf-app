@@ -2,7 +2,15 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { getCurrentTimezone } from "@/utils/formatDate";
 
-import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
+import {
+  Button,
+  ContextMenu,
+  Host,
+  HStack,
+  Image,
+  Picker,
+  Text,
+} from "@expo/ui/swift-ui";
 import * as Haptics from "expo-haptics";
 import { useThemeColor } from "./Themed";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
@@ -25,7 +33,7 @@ export function TimeZoneSwitch() {
   const color = useThemeColor(theme.color.reactBlue);
 
   return (
-    <Host style={{ width: 33, height: 44 }}>
+    <Host style={{ width: 94, height: 34 }}>
       <ContextMenu>
         <ContextMenu.Items>
           <Picker
@@ -39,10 +47,15 @@ export function TimeZoneSwitch() {
         <ContextMenu.Trigger>
           <Button
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
-            systemImage="clock"
-            modifiers={[frame({ width: 108 })]}
-            color={!isLiquidGlassAvailable() ? color : "primary"}
-          />
+            color={isLiquidGlassAvailable() ? "primary" : "gray"}
+          >
+            <HStack modifiers={[frame({ width: 70 })]} spacing={8}>
+              <Text weight="semibold">
+                {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
+              </Text>
+              <Image systemName="chevron.down" size={18} />
+            </HStack>
+          </Button>
         </ContextMenu.Trigger>
       </ContextMenu>
     </Host>
