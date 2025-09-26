@@ -20,7 +20,7 @@ export function TimeZoneSwitch() {
     <ThemedPressable
       style={styles.container}
       onPress={handleToggleLocalTz}
-      backgroundColor={theme.color.backgroundElement}
+      backgroundColor={theme.color.backgroundSecondary}
     >
       <ThemedText fontSize={12} fontWeight="semiBold">
         {shouldUseLocalTz ? getCurrentTimezone() : "PDT"}
