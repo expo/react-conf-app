@@ -30,7 +30,7 @@ export function DiscordInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space24,
+    marginHorizontal: theme.space16,
     marginBottom: theme.space16,
     borderRadius: theme.borderRadius32,
     padding: theme.space24,

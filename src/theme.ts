@@ -5,9 +5,7 @@ export const theme = {
   colorBlack: "#000000",
   colorLightGreen: "#9BDFB1",
   colorDarkGreen: "#1AC9A2",
-  colorGrey: "#adb5bd",
-  colorReactLightBlue: "#58C4DC",
-  colorReactDarkBlue: "#087EA4",
+  colorGrey: "#ADB5BD",
 
   color: {
     reactBlue: {

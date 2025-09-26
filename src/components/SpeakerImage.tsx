@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   fallbackImage: {
-    backgroundColor: theme.colorReactDarkBlue,
+    backgroundColor: theme.color.reactBlue.dark,
     justifyContent: "center",
     alignItems: "center",
   },

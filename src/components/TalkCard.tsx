@@ -1,16 +1,17 @@
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
 import { Bookmark } from "./Bookmark";
 import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 import { theme } from "../theme";
-import { Session } from "@/types";
+import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "../utils/formatDate";
 
 import { useReactConfStore } from "@/store/reactConfStore";
 import { Pressable } from "react-native-gesture-handler";
 import { SpeakerDetails } from "./SpeakerDetails";
 import { ConferenceDay } from "@/consts";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   session: Session;
@@ -21,77 +22,83 @@ type Props = {
 export function TalkCard({ session, day, isBookmarked = false }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const borderColor = useThemeColor(theme.color.border);
+  const router = useRouter();
+
+  const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push({
+      pathname: "/talk/[talk]",
+      params: { talk: session.id },
+    });
+  };
+
+  const handleSpeakerPress = (speaker: Speaker) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.push({
+      pathname: "/speaker/[speaker]",
+      params: { speaker: speaker.id },
+    });
+  };
 
   return (
-    <Link
-      push
-      href={{
-        pathname: "/talk/[talk]",
-        params: { talk: session.id },
-      }}
-      asChild
-    >
-      <Pressable>
-        <ThemedView style={styles.container}>
-          {!isBookmarked && (
-            <ThemedText
-              fontSize={18}
-              fontWeight="medium"
-              color={theme.color.textSecondary}
-              marginBottom={theme.space8}
-            >
-              {formatSessionTime(session, shouldUseLocalTz)}
-            </ThemedText>
-          )}
-          <ThemedView
-            color={theme.color.backgroundSecondary}
-            style={styles.content}
+    <Pressable onPress={handlePress}>
+      <ThemedView style={styles.container}>
+        {!isBookmarked && (
+          <ThemedText
+            fontSize={18}
+            fontWeight="medium"
+            color={theme.color.textSecondary}
+            marginBottom={theme.space8}
+            style={{ textAlign: "center" }}
           >
-            <View style={styles.titleAndBookmark}>
-              <ThemedText
-                fontSize={18}
-                fontWeight="semiBold"
-                style={{ flex: 1 }}
-              >
-                {session.title}
+            {formatSessionTime(session, shouldUseLocalTz)}
+          </ThemedText>
+        )}
+        <ThemedView
+          color={theme.color.backgroundSecondary}
+          style={styles.content}
+        >
+          <View style={styles.titleAndBookmark}>
+            <ThemedText fontSize={18} fontWeight="semiBold" style={{ flex: 1 }}>
+              {session.title}
+            </ThemedText>
+            <Bookmark session={session} size="small" />
+          </View>
+          {isBookmarked && (
+            <View style={[styles.time, { borderColor }]}>
+              <ThemedText fontSize={14} fontWeight="medium">
+                {formatSessionTime(session, shouldUseLocalTz)}
               </ThemedText>
-              <Bookmark session={session} />
+              <ThemedText fontSize={14} fontWeight="medium">
+                {day === ConferenceDay.One ? "Day 1" : "Day 2"}
+              </ThemedText>
             </View>
-            {isBookmarked && (
-              <View style={[styles.time, { borderColor }]}>
-                <ThemedText fontSize={14} fontWeight="medium">
-                  {formatSessionTime(session, shouldUseLocalTz)}
-                </ThemedText>
-                <ThemedText fontSize={14} fontWeight="medium">
-                  {day === ConferenceDay.One ? "Day 1" : "Day 2"}
-                </ThemedText>
-              </View>
-            )}
-            {session.speakers.map((speaker) => (
-              <Link
-                push
-                key={speaker.id}
-                href={{
-                  pathname: "/speaker/[speaker]",
-                  params: { speaker: speaker.id },
-                }}
-                asChild
-              >
-                <Pressable>
-                  <SpeakerDetails speaker={speaker} key={speaker.id} />
-                </Pressable>
-              </Link>
-            ))}
-          </ThemedView>
+          )}
+          {session.speakers.map((speaker) => (
+            <Pressable
+              onPress={() => handleSpeakerPress(speaker)}
+              key={speaker.id}
+              style={({ pressed }) => ({
+                marginHorizontal: -theme.space16,
+                paddingHorizontal: theme.space16,
+                marginVertical: -theme.space8,
+                paddingVertical: theme.space8,
+                borderRadius: theme.borderRadius32,
+                opacity: pressed ? 0.6 : 1,
+              })}
+            >
+              <SpeakerDetails speaker={speaker} key={speaker.id} />
+            </Pressable>
+          ))}
         </ThemedView>
-      </Pressable>
-    </Link>
+      </ThemedView>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space24,
+    marginHorizontal: theme.space16,
     marginBottom: theme.space16,
     borderRadius: theme.borderRadius10,
   },
@@ -104,6 +111,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: theme.space8,
+    alignItems: "center",
   },
   time: {
     borderBottomWidth: 1,

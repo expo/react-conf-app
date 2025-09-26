@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     height: 31,
     borderRadius: theme.borderRadius80,
     marginTop: theme.space16,
-    marginHorizontal: theme.space24,
+    marginHorizontal: theme.space16,
   },
   dayPicker: {
     height: 31, // fixed height to prevent jumping

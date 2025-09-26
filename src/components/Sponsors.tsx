@@ -129,11 +129,11 @@ const styles = StyleSheet.create({
     paddingTop: theme.space24,
   },
   title: {
-    paddingHorizontal: theme.space24,
+    paddingHorizontal: theme.space16,
     paddingBottom: theme.space16,
   },
   content: {
-    paddingHorizontal: theme.space24,
+    paddingHorizontal: theme.space16,
     paddingBottom: theme.space16,
   },
   imageContainer: {

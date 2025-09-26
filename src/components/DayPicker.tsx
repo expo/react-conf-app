@@ -62,7 +62,7 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
 
 const styles = StyleSheet.create({
   dayPicker: {
-    marginHorizontal: theme.space24,
+    marginHorizontal: theme.space16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
