@@ -16,9 +16,10 @@ import { ThemedText } from "../Themed";
 import { theme } from "@/theme";
 import * as Application from "expo-application";
 
-const CONTAINER_SIZE = 240;
-const SHADER_SIZE = 200;
-const LOGO_SIZE = 150;
+const CONTAINER_SIZE = 160;
+const SHADER_SIZE = 140;
+const LOGO_SIZE = 120;
+const FLIPPED_CONTENT_SIZE = 80;
 
 const SHADER_OFFSET = (CONTAINER_SIZE - SHADER_SIZE) / 2;
 const LOGO_OFFSET = (CONTAINER_SIZE - LOGO_SIZE) / 2;
@@ -236,8 +237,8 @@ const styles = StyleSheet.create({
   },
   flippedContent: {
     backgroundColor: theme.colorBlack,
-    height: 70,
-    width: 70,
+    height: FLIPPED_CONTENT_SIZE,
+    width: FLIPPED_CONTENT_SIZE,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
