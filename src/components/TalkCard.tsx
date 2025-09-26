@@ -49,7 +49,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
             fontWeight="medium"
             color={theme.color.textSecondary}
             marginBottom={theme.space8}
-            style={{ textAlign: "center" }}
+            style={{ marginLeft: theme.space24 }}
           >
             {formatSessionTime(session, shouldUseLocalTz)}
           </ThemedText>

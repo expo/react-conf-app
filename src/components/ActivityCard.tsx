@@ -20,6 +20,7 @@ export function ActivityCard({ session }: Props) {
         fontSize={14}
         fontWeight="medium"
         color={theme.color.textSecondary}
+        style={{ marginLeft: theme.space24 }}
       >
         {formatSessionTime(session, shouldUseLocalTz)}
       </ThemedText>
