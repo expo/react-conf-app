@@ -16,14 +16,12 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
     light: theme.colorReactLightBlue,
     dark: theme.colorReactDarkBlue,
   });
-  const colorBorder = useThemeColor({
-    light: theme.color.border.light,
-    dark: theme.color.border.dark,
-  });
   const colorText = useThemeColor({
     light: theme.color.text.light,
     dark: theme.color.text.dark,
   });
+
+  const backgroundSecondary = useThemeColor(theme.color.backgroundSecondary);
 
   return (
     <View
@@ -42,10 +40,10 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
         elementColors={{
           activeContainerColor: tintColor,
           activeContentColor: colorText,
-          activeBorderColor: tintColor,
-          inactiveContainerColor: backgroundColor,
+          activeBorderColor: "transparent",
+          inactiveContainerColor: backgroundSecondary,
           inactiveContentColor: colorText,
-          inactiveBorderColor: colorBorder,
+          inactiveBorderColor: "transparent",
         }}
         variant="segmented"
         style={{
