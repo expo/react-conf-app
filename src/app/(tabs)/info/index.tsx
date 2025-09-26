@@ -10,7 +10,7 @@ import { VenueInfo } from "@/components/VenueInfo";
 import { theme } from "@/theme";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
-import { PoweredByExpo2 } from "@/components/PoweredByExpo2";
+import { PoweredByExpo } from "@/components/PoweredByExpo";
 
 export default function Info() {
   const backgroundColor = useThemeColor(theme.color.background);
@@ -34,7 +34,7 @@ export default function Info() {
           <BuildDetails />
         </Pressable>
       </Link>
-      <PoweredByExpo2 />
+      <PoweredByExpo />
     </ScrollView>
   );
 }
