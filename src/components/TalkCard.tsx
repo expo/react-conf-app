@@ -35,7 +35,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
         <ThemedView style={styles.container}>
           {!isBookmarked && (
             <ThemedText
-              fontSize={14}
+              fontSize={18}
               fontWeight="medium"
               color={theme.color.textSecondary}
               marginBottom={theme.space8}
