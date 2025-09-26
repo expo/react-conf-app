@@ -25,10 +25,7 @@ type VectorIconFamily = {
 
 export default function TabLayout() {
   const tabBarBackgroundColor = useThemeColor(theme.color.background);
-  const tintColor = useThemeColor({
-    light: theme.colorReactLightBlue,
-    dark: theme.colorReactDarkBlue,
-  });
+  const tintColor = useThemeColor(theme.color.reactBlue);
 
   const tabBarActiveTintColor = useThemeColor({
     light: theme.colorBlack,

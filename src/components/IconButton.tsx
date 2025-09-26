@@ -18,10 +18,7 @@ export function IconButton({
     light: theme.colorWhite,
     dark: `rgba(255, 255, 255, 0.15)`,
   });
-  const backgroundColorActive = useThemeColor({
-    light: theme.colorReactLightBlue,
-    dark: theme.colorReactLightBlue,
-  });
+  const backgroundColorActive = useThemeColor(theme.color.reactBlue);
   const shadow = useThemeColor({ light: theme.dropShadow, dark: undefined });
 
   return (

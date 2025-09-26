@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",
+    paddingVertical: theme.space16,
   },
   layeredView: {
     width: CONTAINER_SIZE,
