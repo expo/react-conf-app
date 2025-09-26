@@ -9,7 +9,13 @@ import * as Haptics from "expo-haptics";
 import { Platform } from "react-native";
 import { useMemo } from "react";
 
-export function Bookmark({ session }: { session: Session }) {
+export function Bookmark({
+  session,
+  size = "large",
+}: {
+  session: Session;
+  size?: "small" | "large";
+}) {
   const { toggleBookmark, isBookmarked } = useBookmark();
   const tintColor = useThemeColor(theme.color.reactBlue);
   const notSelectedIconColor = useThemeColor({
@@ -51,9 +57,11 @@ export function Bookmark({ session }: { session: Session }) {
       }}
       imageProps={{
         systemName: bookmarked ? "bookmark.fill" : "bookmark",
-        size: isLiquidGlassAvailable() ? 16 : 24,
-        modifiers: [frame({ height: 20, width: 10 })],
         color: imageColor,
+        ...(size === "small" && {
+          size: isLiquidGlassAvailable() ? 16 : 24,
+          modifiers: [frame({ height: 20, width: 10 })],
+        }),
       }}
     />
   );

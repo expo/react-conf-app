@@ -19,15 +19,15 @@ import { Canvas, Fill, Shader, Skia, vec } from "@shopify/react-native-skia";
 
 import { NotFound } from "@/components/NotFound";
 import { SpeakerImage } from "@/components/SpeakerImage";
-import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
+import { ThemedText, ThemedView } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
-import { useBookmark } from "@/hooks/useBookmark";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
+import { Bookmark } from "@/components/Bookmark";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -74,8 +74,6 @@ export default function TalkDetail() {
   const talkId = params.talkId || undefined;
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
-  const { toggleBookmark, isBookmarked } = useBookmark();
-  const tintColor = useThemeColor(theme.color.reactBlue);
   const { width } = useWindowDimensions();
 
   const router = useRouter();
@@ -164,11 +162,6 @@ export default function TalkDetail() {
     return <NotFound message="Talk not found" />;
   }
 
-  const bookmarked = isBookmarked(talk.id);
-  const bookmarkedColor = bookmarked
-    ? theme.color.reactBlue.light
-    : theme.colorGrey;
-
   return (
     <>
       <Stack.Screen
@@ -178,25 +171,7 @@ export default function TalkDetail() {
               ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
               default: undefined,
             }),
-          headerRight: () => (
-            <HeaderButton
-              buttonProps={{
-                onPress: () => toggleBookmark(talk),
-                variant: "glassProminent",
-                color: tintColor,
-              }}
-              imageProps={{
-                systemName: Platform.select({
-                  ios: bookmarked ? "bookmark.fill" : "bookmark",
-                  default: "bookmark",
-                }),
-                color: Platform.select({
-                  ios: isLiquidGlassAvailable() ? "white" : bookmarkedColor,
-                  default: bookmarkedColor,
-                }),
-              }}
-            />
-          ),
+          headerRight: () => <Bookmark session={talk} />,
         }}
       />
 

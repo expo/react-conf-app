@@ -62,7 +62,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
             <ThemedText fontSize={18} fontWeight="semiBold" style={{ flex: 1 }}>
               {session.title}
             </ThemedText>
-            <Bookmark session={session} />
+            <Bookmark session={session} size="small" />
           </View>
           {isBookmarked && (
             <View style={[styles.time, { borderColor }]}>

@@ -12,7 +12,13 @@ import { useBookmark } from "@/hooks/useBookmark";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export function Bookmark({ session }: { session: Session }) {
+export function Bookmark({
+  session,
+  size = "large",
+}: {
+  session: Session;
+  size?: "small" | "large";
+}) {
   const { toggleBookmark, isBookmarked } = useBookmark();
   const scale = useSharedValue(1);
 
