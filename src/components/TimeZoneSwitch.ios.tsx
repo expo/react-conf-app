@@ -6,6 +6,7 @@ import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
 import * as Haptics from "expo-haptics";
 import { useThemeColor } from "./Themed";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { frame } from "@expo/ui/swift-ui/modifiers";
 
 const options = ["PDT (Venue)", `${getCurrentTimezone()} (Local)`];
 
@@ -38,8 +39,9 @@ export function TimeZoneSwitch() {
         <ContextMenu.Trigger>
           <Button
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
-            systemImage="globe"
-            color={color}
+            systemImage="clock"
+            modifiers={[frame({ width: 108 })]}
+            color={!isLiquidGlassAvailable() ? color : "primary"}
           />
         </ContextMenu.Trigger>
       </ContextMenu>
