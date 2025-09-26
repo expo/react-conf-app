@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import { StyleSheet, View } from "react-native";
 
 import { Bookmark } from "./Bookmark";
-import { ThemedText, ThemedView, useThemeColor } from "./Themed";
+import { ThemedText, ThemedView } from "./Themed";
 import { theme } from "../theme";
 import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "../utils/formatDate";
@@ -21,7 +21,6 @@ type Props = {
 
 export function TalkCard({ session, day, isBookmarked = false }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
-  const borderColor = useThemeColor(theme.color.border);
   const router = useRouter();
 
   const handlePress = () => {
@@ -65,14 +64,20 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
             <Bookmark session={session} size="small" />
           </View>
           {isBookmarked && (
-            <View style={[styles.time, { borderColor }]}>
+            <ThemedView
+              style={[styles.time]}
+              color={{
+                dark: "#3b3a3a",
+                light: "#dedede",
+              }}
+            >
               <ThemedText fontSize={14} fontWeight="medium">
                 {formatSessionTime(session, shouldUseLocalTz)}
               </ThemedText>
               <ThemedText fontSize={14} fontWeight="medium">
                 {day === ConferenceDay.One ? "Day 1" : "Day 2"}
               </ThemedText>
-            </View>
+            </ThemedView>
           )}
           {session.speakers.map((speaker) => (
             <Pressable
@@ -114,10 +119,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   time: {
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
     paddingVertical: theme.space16,
     justifyContent: "space-between",
     flexDirection: "row",
+    paddingHorizontal: theme.space16,
+    borderRadius: theme.borderRadius10,
   },
 });
