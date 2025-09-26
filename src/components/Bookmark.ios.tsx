@@ -6,7 +6,7 @@ import { frame } from "@expo/ui/swift-ui/modifiers";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { useThemeColor } from "./Themed";
 import * as Haptics from "expo-haptics";
-import { Platform } from "react-native";
+import { Platform, useColorScheme } from "react-native";
 import { useMemo } from "react";
 
 export function Bookmark({
@@ -22,6 +22,7 @@ export function Bookmark({
     dark: theme.colorWhite,
     light: theme.colorGrey,
   });
+  const colorScheme = useColorScheme();
 
   const handlePress = async () => {
     if (Platform.OS === "ios") {
@@ -53,11 +54,11 @@ export function Bookmark({
       buttonProps={{
         onPress: handlePress,
         variant: "glassProminent",
-        color: bookmarked ? tintColor : backgroundColor,
+        color: colorScheme === "dark" ? "transparent" : backgroundColor,
       }}
       imageProps={{
         systemName: bookmarked ? "bookmark.fill" : "bookmark",
-        color: imageColor,
+        color: bookmarked ? tintColor : imageColor,
         ...(size === "small" && {
           size: isLiquidGlassAvailable() ? 16 : 24,
           modifiers: [frame({ height: 20, width: 10 })],
