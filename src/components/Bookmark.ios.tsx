@@ -8,14 +8,21 @@ import { useThemeColor } from "./Themed";
 import * as Haptics from "expo-haptics";
 import { Platform } from "react-native";
 import { useMemo } from "react";
+import { BaseBookmark } from "./BaseBookmark";
 
-export function Bookmark({
-  session,
-  size = "large",
-}: {
+type BookmarkProps = {
   session: Session;
   size?: "small" | "large";
-}) {
+};
+
+export function Bookmark(props: BookmarkProps) {
+  if (isLiquidGlassAvailable()) {
+    return <GlassBookmark {...props} />;
+  }
+  return <BaseBookmark {...props} />;
+}
+
+function GlassBookmark({ session, size = "large" }: BookmarkProps) {
   const { toggleBookmark, isBookmarked } = useBookmark();
   const tintColor = useThemeColor(theme.color.reactBlue);
   const notSelectedIconColor = useThemeColor({
