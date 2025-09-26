@@ -85,7 +85,7 @@ export default function TabLayout() {
           ),
         })}
         <Label>Bookmarked</Label>
-        {hasBookmarks && (
+        {hasBookmarks && !isLiquidGlassAvailable() && (
           <Badge selectedBackgroundColor={tintColor}>
             {bookmarks.length.toString()}
           </Badge>
