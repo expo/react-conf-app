@@ -41,6 +41,7 @@ export function TimeZoneSwitch() {
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
             systemImage="clock"
             modifiers={[frame({ width: 108 })]}
+            color={!isLiquidGlassAvailable() ? color : "primary"}
           />
         </ContextMenu.Trigger>
       </ContextMenu>
