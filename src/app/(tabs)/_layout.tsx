@@ -1,7 +1,4 @@
-import Feather from "@expo/vector-icons/Feather";
-import Ionicons from "@expo/vector-icons/build/Ionicons";
-import Octicons from "@expo/vector-icons/build/Octicons";
-import MaterialCommunityIcons from "@expo/vector-icons/build/MaterialCommunityIcons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import {
   Badge,
   Icon,
@@ -60,13 +57,13 @@ export default function TabLayout() {
     >
       <NativeTabs.Trigger name="(calendar)">
         {Platform.select({
-          ios: <Icon sf={"calendar"} selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="calendar" selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
                 <VectorIcon
-                  family={Feather as VectorIconFamily}
-                  name="calendar"
+                  family={MaterialCommunityIcons as VectorIconFamily}
+                  name="calendar-blank"
                 />
               }
               selectedColor={tintColor}
@@ -77,13 +74,13 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="bookmarks">
         {Platform.select({
-          ios: <Icon sf={"bookmark"} selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="bookmark" selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
                 <VectorIcon
                   family={MaterialCommunityIcons as VectorIconFamily}
-                  name={"bookmark"}
+                  name="bookmark"
                 />
               }
               selectedColor={tintColor}
@@ -102,13 +99,13 @@ export default function TabLayout() {
         role={isLiquidGlassAvailable() ? "search" : undefined}
       >
         {Platform.select({
-          ios: <Icon sf={"person.2"} selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="person.2" selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
                 <VectorIcon
-                  family={Ionicons as VectorIconFamily}
-                  name={"people"}
+                  family={MaterialCommunityIcons as VectorIconFamily}
+                  name="account-multiple"
                 />
               }
               selectedColor={tintColor}
@@ -119,13 +116,13 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="info">
         {Platform.select({
-          ios: <Icon sf={"info"} selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="map" selectedColor={tabBarActiveTintColor} />,
           android: (
             <Icon
               src={
                 <VectorIcon
-                  family={Octicons as VectorIconFamily}
-                  name={"info"}
+                  family={MaterialCommunityIcons as VectorIconFamily}
+                  name="map-outline"
                 />
               }
               selectedColor={tintColor}

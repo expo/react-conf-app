@@ -10,12 +10,16 @@ export const theme = {
   colorReactDarkBlue: "#087EA4",
 
   color: {
+    reactBlue: {
+      light: "#58C4DC",
+      dark: "#087EA4",
+    },
     transparent: {
       light: "rgba(255,255,255,0)",
       dark: "rgba(0,0,0,0)",
     },
     text: { light: "#121212", dark: "#FFFFFF" },
-    textSecondary: { light: "#808080", dark: "#808080" },
+    textSecondary: { light: "#808080", dark: "#CCCCCC" },
     background: { light: "#FFFFFF", dark: "#000000" },
     backgroundSecondary: {
       light: "#f1f1f1",

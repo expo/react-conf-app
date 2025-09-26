@@ -16,8 +16,12 @@ import { Link, useLocalSearchParams } from "expo-router";
 import { SpeakerDetails } from "@/components/SpeakerDetails";
 import { useBookmark } from "@/hooks/useBookmark";
 import { Speaker } from "@/types";
-import { LegendList } from "@legendapp/list";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition,
+} from "react-native-reanimated";
 
 export default function Speakers() {
   const speakers = useReactConfStore((state) => state.allSessions.speakers);
@@ -44,50 +48,52 @@ export default function Speakers() {
   const renderItem = useCallback(
     ({ item }: { item: Speaker }) => {
       return (
-        <Link
-          push
-          key={item.id}
-          href={{
-            pathname: "/speaker/[speaker]",
-            params: { speaker: item.id },
-          }}
-          asChild
-        >
-          <Link.Trigger>
-            <Pressable
-              onLongPress={() => {
-                // adding this to prevent navigating on long press instead of opening the preview
-              }}
-              style={styles.speakerContainer}
-            >
-              <SpeakerDetails speaker={item} key={item.id} />
-            </Pressable>
-          </Link.Trigger>
-          <Link.Preview style={{ width: width, height: 350 }} />
-          <Link.Menu title={`Talks by ${item.fullName}`}>
-            {item.sessions
-              .map((sessionId) => {
-                const sessionIdStr = sessionId.toString();
-                const session = getSessionById(sessionIdStr);
-                const bookmarked = isBookmarked(sessionIdStr);
+        <Animated.View key={item.id} entering={FadeIn} exiting={FadeOut}>
+          <Link
+            push
+            key={item.id}
+            href={{
+              pathname: "/speaker/[speaker]",
+              params: { speaker: item.id },
+            }}
+            asChild
+          >
+            <Link.Trigger>
+              <Pressable
+                onLongPress={() => {
+                  // adding this to prevent navigating on long press instead of opening the preview
+                }}
+                style={styles.speakerContainer}
+              >
+                <SpeakerDetails speaker={item} key={item.id} />
+              </Pressable>
+            </Link.Trigger>
+            <Link.Preview style={{ width: width, height: 350 }} />
+            <Link.Menu title={`Talks by ${item.fullName}`}>
+              {item.sessions
+                .map((sessionId) => {
+                  const sessionIdStr = sessionId.toString();
+                  const session = getSessionById(sessionIdStr);
+                  const bookmarked = isBookmarked(sessionIdStr);
 
-                if (!session) return null;
+                  if (!session) return null;
 
-                return (
-                  <Link.MenuAction
-                    key={sessionIdStr}
-                    title={session.title}
-                    icon={bookmarked ? "bookmark.fill" : "bookmark"}
-                    isOn={bookmarked}
-                    onPress={() => toggleBookmarkById(sessionIdStr)}
-                  />
-                );
-              })
-              .filter(
-                (item): item is NonNullable<typeof item> => item !== null,
-              )}
-          </Link.Menu>
-        </Link>
+                  return (
+                    <Link.MenuAction
+                      key={sessionIdStr}
+                      title={session.title}
+                      icon={bookmarked ? "bookmark.fill" : "bookmark"}
+                      isOn={bookmarked}
+                      onPress={() => toggleBookmarkById(sessionIdStr)}
+                    />
+                  );
+                })
+                .filter(
+                  (item): item is NonNullable<typeof item> => item !== null,
+                )}
+            </Link.Menu>
+          </Link>
+        </Animated.View>
       );
     },
     [width, getSessionById, isBookmarked, toggleBookmarkById],
@@ -98,8 +104,7 @@ export default function Speakers() {
   }
 
   return (
-    <LegendList
-      key={searchText}
+    <Animated.FlatList
       scrollToOverflowEnabled
       contentInsetAdjustmentBehavior="automatic"
       onScrollBeginDrag={dismissKeyboard}
@@ -116,13 +121,16 @@ export default function Speakers() {
       renderItem={renderItem}
       data={filteredSpeakers}
       keyExtractor={(item) => item.id}
+      itemLayoutAnimation={LinearTransition}
       ListEmptyComponent={
-        <ThemedView style={styles.noResultsContainer}>
-          <ThemedText>
-            No results found for{" "}
-            <ThemedText fontWeight="bold">{searchText}</ThemedText>
-          </ThemedText>
-        </ThemedView>
+        <Animated.View entering={FadeIn} exiting={FadeOut}>
+          <ThemedView style={styles.noResultsContainer}>
+            <ThemedText>
+              No results found for{" "}
+              <ThemedText fontWeight="bold">{searchText}</ThemedText>
+            </ThemedText>
+          </ThemedView>
+        </Animated.View>
       }
     />
   );

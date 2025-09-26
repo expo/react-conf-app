@@ -23,12 +23,12 @@ import { theme } from "@/theme";
 import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
+import { getInitialDay } from "@/utils/formatDate";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
 export default function Schedule() {
-  // TODO (Kadi): choose day based on the date
-  const [selectedDay, setSelectedDay] = useState(ConferenceDay.One);
+  const [selectedDay, setSelectedDay] = useState(getInitialDay());
   const scrollRef = useRef<FlatList>(null);
   const isScrolledDown = useRef(false);
   useScrollToTop(scrollRef as any);
@@ -48,27 +48,19 @@ export default function Schedule() {
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
 
-    // Only start animating when scroll position is positive (user is actually scrolling down)
-    if (event.contentOffset.y >= -130) {
-      // TranslateY animation
-      animatedTranslateY.value = interpolate(
-        event.contentOffset.y,
-        [-160, -93, 0],
-        [0, -40, 40], // Different output range for translateY
-        Extrapolation.CLAMP,
-      );
+    animatedTranslateY.value = interpolate(
+      event.contentOffset.y,
+      [-160, -93, 0],
+      [0, -40, 40],
+      Extrapolation.CLAMP,
+    );
 
-      animatedPaddingTop.value = interpolate(
-        event.contentOffset.y,
-        [-160, -93, 0],
-        [0, insets.top, insets.top], // Keep original output range for paddingTop
-        Extrapolation.CLAMP,
-      );
-    } else {
-      // Keep values at 0 when scroll position is negative
-      animatedTranslateY.value = 0;
-      animatedPaddingTop.value = 0;
-    }
+    animatedPaddingTop.value = interpolate(
+      event.contentOffset.y,
+      [-160, -93, 0],
+      [0, insets.top, insets.top],
+      Extrapolation.CLAMP,
+    );
 
     scheduleOnRN(updateIsScrolledDown, event.contentOffset.y);
   });
