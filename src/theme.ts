@@ -10,6 +10,10 @@ export const theme = {
   colorReactDarkBlue: "#087EA4",
 
   color: {
+    reactBlue: {
+      light: "#58C4DC",
+      dark: "#087EA4",
+    },
     transparent: {
       light: "rgba(255,255,255,0)",
       dark: "rgba(0,0,0,0)",

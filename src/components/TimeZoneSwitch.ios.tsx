@@ -1,8 +1,11 @@
 import { useReactConfStore } from "@/store/reactConfStore";
+import { theme } from "@/theme";
 import { getCurrentTimezone } from "@/utils/formatDate";
 
 import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
 import * as Haptics from "expo-haptics";
+import { useThemeColor } from "./Themed";
+import { isLiquidGlassAvailable } from "expo-glass-effect";
 
 const options = ["PDT (Venue)", `${getCurrentTimezone()} (Local)`];
 
@@ -18,6 +21,7 @@ export function TimeZoneSwitch() {
       toggleLocalTz();
     }
   };
+  const color = useThemeColor(theme.color.reactBlue);
 
   return (
     <Host style={{ width: 33, height: 44 }}>
@@ -32,7 +36,11 @@ export function TimeZoneSwitch() {
           />
         </ContextMenu.Items>
         <ContextMenu.Trigger>
-          <Button variant="glass" systemImage="globe" />
+          <Button
+            variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
+            systemImage="globe"
+            color={color}
+          />
         </ContextMenu.Trigger>
       </ContextMenu>
     </Host>
