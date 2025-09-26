@@ -1,15 +1,8 @@
-import {
-  ThemedPressable,
-  ThemedText,
-  ThemedView,
-  useThemeColor,
-} from "./Themed";
+import { useThemeColor } from "./Themed";
 import { theme } from "@/theme";
-import { StyleSheet, View } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { useWindowDimensions, View } from "react-native";
 import { ConferenceDay } from "@/consts";
-
-const backgroundHighlight = { dark: "#1A1A1A", light: "#E6E6E6" };
+import { Picker } from "@expo/ui/jetpack-compose";
 
 interface DayPickerProps {
   selectedDay: ConferenceDay;
@@ -18,69 +11,52 @@ interface DayPickerProps {
 
 export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
   const backgroundColor = useThemeColor(theme.color.background);
-  const transparentColor = useThemeColor(theme.color.transparent);
+  const width = useWindowDimensions().width;
+  const tintColor = useThemeColor(theme.color.reactBlue);
+  const colorText = useThemeColor(theme.color.text);
+  const inactiveColorText = useThemeColor(theme.color.textSecondary);
+  const backgroundSecondary = useThemeColor(theme.color.backgroundSecondary);
 
   return (
-    <View style={{ paddingBottom: theme.space24 }}>
-      <ThemedView style={{ paddingTop: 20 }}>
-        <ThemedView style={styles.dayPicker} color={backgroundHighlight}>
-          <ThemedPressable
-            onPress={() => onSelectDay(ConferenceDay.One)}
-            backgroundColor={
-              (selectedDay === ConferenceDay.Two && backgroundHighlight) ||
-              undefined
-            }
-            style={styles.dayPickerItem}
-          >
-            <ThemedText fontWeight="semiBold" fontSize={theme.fontSize16}>
-              Day 1
-            </ThemedText>
-          </ThemedPressable>
+    <View
+      style={{
+        paddingVertical: theme.space4,
+        backgroundColor: backgroundColor,
+      }}
+    >
+      <Picker
+        options={["Day 1", "Day 2"]}
+        selectedIndex={selectedDay === ConferenceDay.One ? 0 : 1}
+        onOptionSelected={({ nativeEvent: { index } }) => {
+          onSelectDay(index === 0 ? ConferenceDay.One : ConferenceDay.Two);
+        }}
+        color={backgroundColor}
+        elementColors={{
+          activeContainerColor: tintColor,
+          activeContentColor: colorText,
+          activeBorderColor: "transparent",
+          inactiveContainerColor: backgroundSecondary,
+          inactiveContentColor: inactiveColorText,
+          inactiveBorderColor: "transparent",
+        }}
+        variant="segmented"
+        style={{
+          height: 40,
+          width: width - theme.space24 * 2,
+          alignSelf: "center",
+          paddingVertical: theme.space24,
+        }}
+      />
 
-          <ThemedPressable
-            onPress={() => onSelectDay(ConferenceDay.Two)}
-            backgroundColor={
-              (selectedDay === ConferenceDay.One && backgroundHighlight) ||
-              undefined
-            }
-            style={styles.dayPickerItem}
-          >
-            <ThemedText fontWeight="semiBold" fontSize={theme.fontSize16}>
-              Day 2
-            </ThemedText>
-          </ThemedPressable>
-        </ThemedView>
-      </ThemedView>
-      <LinearGradient
-        colors={[backgroundColor, transparentColor]}
-        style={styles.fadeGradient}
+      {/* Used to prevent onPress events from being triggered in components behind the picker */}
+      <View
+        style={{
+          height: 50,
+          width: "100%",
+          position: "absolute",
+        }}
         pointerEvents="none"
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  dayPicker: {
-    marginHorizontal: theme.space16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: theme.borderRadius80,
-    padding: theme.space4,
-  },
-  dayPickerItem: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 32,
-    borderRadius: theme.borderRadius45,
-  },
-  fadeGradient: {
-    height: theme.space24,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-});
