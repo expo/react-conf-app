@@ -2,6 +2,7 @@ import { formatDate } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
 import { Session } from "@/types";
+import { ConferenceDay } from "@/consts";
 
 const timeFormat = "h:mm aaa";
 const dateTimeFormat = `${timeFormat}, LLL d`;
@@ -41,11 +42,14 @@ export const getCurrentTimezone = () => {
   }
 };
 
+const DAY_ONE_DATE = "Oct 7, 2025";
+const DAY_TWO_DATE = "Oct 8, 2025";
+
 export const isDayOneSession = (date: string) => {
   try {
     return (
       formatInTimeZone(new Date(date), "America/Los_Angeles", `LLL d, yyyy`) ===
-      "Oct 7, 2025"
+      DAY_ONE_DATE
     );
   } catch {
     return false;
@@ -56,9 +60,17 @@ export const isDayTwoSession = (date: string) => {
   try {
     return (
       formatInTimeZone(new Date(date), "America/Los_Angeles", `LLL d, yyyy`) ===
-      "Oct 8, 2025"
+      DAY_TWO_DATE
     );
   } catch {
     return false;
   }
+};
+
+export const getInitialDay = () => {
+  const isDayTwo =
+    formatInTimeZone(new Date(), "America/Los_Angeles", `LLL d, yyyy`) ===
+    DAY_TWO_DATE;
+
+  return isDayTwo ? ConferenceDay.Two : ConferenceDay.One;
 };
