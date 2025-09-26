@@ -12,8 +12,11 @@ import Animated, {
 } from "react-native-reanimated";
 import { HolographicGradient } from "./HolographicGradient";
 import { scheduleOnRN } from "react-native-worklets";
+import { ThemedText } from "../Themed";
+import { theme } from "@/theme";
+import * as Application from "expo-application";
 
-const CONTAINER_SIZE = 260;
+const CONTAINER_SIZE = 240;
 const SHADER_SIZE = 200;
 const LOGO_SIZE = 150;
 
@@ -130,10 +133,21 @@ function GestureContainer({
 
 export function PoweredByExpo() {
   const [isFlipped, setIsFlipped] = React.useState(false);
+  const overlayOpacity = useSharedValue(0);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
+    overlayOpacity.value = withTiming(isFlipped ? 0 : 1, {
+      duration: 300,
+      easing: Easing.inOut(Easing.cubic),
+    });
   };
+
+  const overlayAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: overlayOpacity.value,
+    };
+  });
 
   return (
     <View style={styles.container}>
@@ -144,7 +158,7 @@ export function PoweredByExpo() {
         onFlip={handleFlip}
       >
         <View style={styles.layeredView}>
-          <View style={[styles.cardSide, !isFlipped && styles.cardSideVisible]}>
+          <View style={styles.cardSide}>
             <View style={styles.shaderBackground}>
               <HolographicGradient />
             </View>
@@ -153,6 +167,21 @@ export function PoweredByExpo() {
               style={styles.logoOverlay}
             />
           </View>
+          <Animated.View style={[styles.flippedOverlay, overlayAnimatedStyle]}>
+            <View style={styles.flippedContent}>
+              <ThemedText
+                fontSize={16}
+                fontWeight="semiBold"
+                color={{
+                  light: theme.colorWhite,
+                  dark: theme.colorWhite,
+                }}
+              >
+                v{Application.nativeApplicationVersion} (
+                {Application.nativeBuildVersion})
+              </ThemedText>
+            </View>
+          </Animated.View>
         </View>
       </GestureContainer>
     </View>
@@ -182,15 +211,14 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     top: SHADER_OFFSET,
     left: SHADER_OFFSET,
-    experimental_backgroundImage:
-      "linear-gradient(45deg, #CABBF3 0%, #D9E7D5 33%, #FDE1CB 66%, #FEF5F000 100%)",
+    borderWidth: 2,
+    borderColor: theme.colorBlack,
   },
   logoOverlay: {
     position: "absolute",
     width: LOGO_SIZE,
     height: LOGO_SIZE,
     resizeMode: "contain",
-    zIndex: 2,
     top: LOGO_OFFSET,
     left: LOGO_OFFSET,
   },
@@ -200,7 +228,18 @@ const styles = StyleSheet.create({
     height: CONTAINER_SIZE,
     justifyContent: "center",
     alignItems: "center",
-    backfaceVisibility: "hidden",
   },
-  cardSideVisible: {},
+  flippedOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flippedContent: {
+    backgroundColor: theme.colorBlack,
+    height: 70,
+    width: 70,
+    borderRadius: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

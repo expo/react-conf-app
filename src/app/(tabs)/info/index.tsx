@@ -2,14 +2,12 @@ import { useScrollToTop } from "@react-navigation/native";
 import React from "react";
 import { Platform } from "react-native";
 
-import { BuildDetails } from "@/components/BuildDetails";
 import { LiveStreamInfo } from "@/components/LiveStreamInfo";
 import { DiscordInfo } from "@/components/DiscordInfo";
 import { useThemeColor } from "@/components/Themed";
 import { VenueInfo } from "@/components/VenueInfo";
 import { theme } from "@/theme";
-import { Pressable, ScrollView } from "react-native-gesture-handler";
-import { Link } from "expo-router";
+import { ScrollView } from "react-native-gesture-handler";
 import { PoweredByExpo } from "@/components/PoweredByExpo";
 
 export default function Info() {
@@ -29,11 +27,6 @@ export default function Info() {
       <VenueInfo />
       <LiveStreamInfo />
       <DiscordInfo />
-      <Link asChild href="/secretModal">
-        <Pressable>
-          <BuildDetails />
-        </Pressable>
-      </Link>
       <PoweredByExpo />
     </ScrollView>
   );
