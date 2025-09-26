@@ -75,10 +75,7 @@ export default function TalkDetail() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { toggleBookmark, isBookmarked } = useBookmark();
-  const tintColor = useThemeColor({
-    light: theme.colorReactLightBlue,
-    dark: theme.colorReactDarkBlue,
-  });
+  const tintColor = useThemeColor(theme.color.reactBlue);
   const { width } = useWindowDimensions();
 
   const router = useRouter();
@@ -169,7 +166,7 @@ export default function TalkDetail() {
 
   const bookmarked = isBookmarked(talk.id);
   const bookmarkedColor = bookmarked
-    ? theme.colorReactLightBlue
+    ? theme.color.reactBlue.light
     : theme.colorGrey;
 
   return (
@@ -254,7 +251,7 @@ export default function TalkDetail() {
             <ThemedView
               animated
               lightColor={
-                isDayOne ? theme.colorReactLightBlue : theme.colorLightGreen
+                isDayOne ? theme.color.reactBlue.light : theme.colorLightGreen
               }
               darkColor={
                 isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
