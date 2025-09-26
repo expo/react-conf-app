@@ -1,5 +1,4 @@
 import { useReactConfStore } from "@/store/reactConfStore";
-import { theme } from "@/theme";
 import { getCurrentTimezone } from "@/utils/formatDate";
 
 import {
@@ -12,9 +11,9 @@ import {
   Text,
 } from "@expo/ui/swift-ui";
 import * as Haptics from "expo-haptics";
-import { useThemeColor } from "./Themed";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { frame } from "@expo/ui/swift-ui/modifiers";
+import { theme } from "@/theme";
 
 const options = ["PDT (Venue)", `${getCurrentTimezone()} (Local)`];
 
@@ -30,7 +29,6 @@ export function TimeZoneSwitch() {
       toggleLocalTz();
     }
   };
-  const color = useThemeColor(theme.color.reactBlue);
 
   return (
     <Host style={{ width: 94, height: 34 }}>
@@ -49,11 +47,11 @@ export function TimeZoneSwitch() {
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
             color={isLiquidGlassAvailable() ? "primary" : "gray"}
           >
-            <HStack modifiers={[frame({ width: 70 })]} spacing={8}>
-              <Text weight="semibold">
+            <HStack modifiers={[frame({ width: 70 })]} spacing={theme.space8}>
+              <Text weight="semibold" size={theme.fontSize14}>
                 {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
               </Text>
-              <Image systemName="chevron.down" size={18} />
+              <Image systemName="chevron.down" size={theme.fontSize18} />
             </HStack>
           </Button>
         </ContextMenu.Trigger>
