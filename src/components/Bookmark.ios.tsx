@@ -30,7 +30,10 @@ export function Bookmark({ session }: { session: Session }) {
   };
 
   const bookmarked = isBookmarked(session.id);
-  const backgroundColor = useThemeColor(theme.color.background);
+  const backgroundColor = useThemeColor({
+    light: theme.color.background.light,
+    dark: "#646469",
+  });
 
   const imageColor = useMemo(() => {
     if (isLiquidGlassAvailable()) {
