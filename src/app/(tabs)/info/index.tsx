@@ -9,7 +9,6 @@ import { VenueInfo } from "@/components/VenueInfo";
 import { theme } from "@/theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { PoweredByExpo } from "@/components/PoweredByExpo";
-import { BuildDetails } from "@/components/BuildDetails";
 
 export default function Info() {
   const backgroundColor = useThemeColor(theme.color.background);
@@ -28,7 +27,6 @@ export default function Info() {
       <VenueInfo />
       <LiveStreamInfo />
       <DiscordInfo />
-      <BuildDetails />
       <PoweredByExpo />
     </ScrollView>
   );
