@@ -1,5 +1,4 @@
 import { useReactConfStore } from "@/store/reactConfStore";
-import { theme } from "@/theme";
 import { getCurrentTimezone } from "@/utils/formatDate";
 
 import {
@@ -12,7 +11,6 @@ import {
   Text,
 } from "@expo/ui/swift-ui";
 import * as Haptics from "expo-haptics";
-import { useThemeColor } from "./Themed";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { frame } from "@expo/ui/swift-ui/modifiers";
 
@@ -30,7 +28,6 @@ export function TimeZoneSwitch() {
       toggleLocalTz();
     }
   };
-  const color = useThemeColor(theme.color.reactBlue);
 
   return (
     <Host style={{ width: 94, height: 34 }}>
