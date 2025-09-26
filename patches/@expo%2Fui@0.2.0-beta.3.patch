@@ -1,0 +1,43 @@
+diff --git a/node_modules/@expo/ui/.bun-tag-bf5ba0983fd04869 b/.bun-tag-bf5ba0983fd04869
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+diff --git a/node_modules/@expo/ui/.bun-tag-e64ee9fb6bcfdd15 b/.bun-tag-e64ee9fb6bcfdd15
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+diff --git a/ios/HostView.swift b/ios/HostView.swift
+index cda337c85897bec2d41a5fb9b85b36bfeb9be5cc..4190e80facfb86de63617643be260b14d71b9061 100644
+--- a/ios/HostView.swift
++++ b/ios/HostView.swift
+@@ -20,6 +20,7 @@ internal enum ExpoColorScheme: String, Enumerable {
+ internal final class HostViewProps: ExpoSwiftUI.ViewProps {
+   @Field var useViewportSizeMeasurement: Bool = false
+   @Field var colorScheme: ExpoColorScheme?
++  @Field var matchContents: Bool = false
+   var onLayoutContent = EventDispatcher()
+ }
+ 
+@@ -128,8 +129,12 @@ private struct ViewportSizeMeasurementLayout: Layout {
+  */
+ private struct GeometryChangeModifier: ViewModifier {
+   let props: HostViewProps
++  @EnvironmentObject var shadowNodeProxy: ExpoSwiftUI.ShadowNodeProxy
+ 
+   private func dispatchOnLayoutContent(_ size: CGSize) {
++    if (props.matchContents) {
++      shadowNodeProxy.setViewSize?(size)
++    }
+     props.onLayoutContent([
+       "width": size.width,
+       "height": size.height
+diff --git a/src/swift-ui/Host/index.tsx b/src/swift-ui/Host/index.tsx
+index 1798af6452e290bdfad9fed1b9f4bb4a85066fdd..3018fef5153162776ddc6bf7317e467b175cb025 100644
+--- a/src/swift-ui/Host/index.tsx
++++ b/src/swift-ui/Host/index.tsx
+@@ -65,6 +65,7 @@ export function Host(props: HostProps) {
+           setContainerStyle(newContainerStyle);
+         }
+       }}
++      matchContents={matchContents}
+       {...restProps}
+     />
+   );

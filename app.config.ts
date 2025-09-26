@@ -78,7 +78,14 @@ const config: ExpoConfig = {
   owner: EAS_APP_OWNER,
   plugins: [
     "expo-asset",
-    "expo-build-properties",
+    [
+      "expo-build-properties",
+      {
+        ios: {
+          buildReactNativeFromSource: true,
+        },
+      },
+    ],
     "expo-web-browser",
     [
       "expo-quick-actions",

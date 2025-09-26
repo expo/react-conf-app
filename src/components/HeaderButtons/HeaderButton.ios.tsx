@@ -16,7 +16,7 @@ export interface HeaderButtonProps {
 
 export function HeaderButton({ imageProps, buttonProps }: HeaderButtonProps) {
   return (
-    <Host matchContents style={{ height: SIZE, width: SIZE }}>
+    <Host matchContents>
       <Button {...buttonProps} variant={buttonProps?.variant || "glass"}>
         <Image
           {...imageProps}

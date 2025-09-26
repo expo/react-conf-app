@@ -25,7 +25,7 @@ export function TimeZoneSwitch() {
   const color = useThemeColor(theme.color.reactBlue);
 
   return (
-    <Host style={{ width: 33, height: 44 }}>
+    <Host matchContents>
       <ContextMenu>
         <ContextMenu.Items>
           <Picker
