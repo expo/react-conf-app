@@ -12,15 +12,9 @@ interface DayPickerProps {
 export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
   const backgroundColor = useThemeColor(theme.color.background);
   const width = useWindowDimensions().width;
-  const tintColor = useThemeColor({
-    light: theme.colorReactLightBlue,
-    dark: theme.colorReactDarkBlue,
-  });
-  const colorText = useThemeColor({
-    light: theme.color.text.light,
-    dark: theme.color.text.dark,
-  });
-
+  const tintColor = useThemeColor(theme.color.reactBlue);
+  const colorText = useThemeColor(theme.color.text);
+  const inactiveColorText = useThemeColor(theme.color.textSecondary);
   const backgroundSecondary = useThemeColor(theme.color.backgroundSecondary);
 
   return (
@@ -42,7 +36,7 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
           activeContentColor: colorText,
           activeBorderColor: "transparent",
           inactiveContainerColor: backgroundSecondary,
-          inactiveContentColor: colorText,
+          inactiveContentColor: inactiveColorText,
           inactiveBorderColor: "transparent",
         }}
         variant="segmented"
