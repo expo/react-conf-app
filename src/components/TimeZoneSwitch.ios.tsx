@@ -47,11 +47,11 @@ export function TimeZoneSwitch() {
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
             color={isLiquidGlassAvailable() ? "primary" : "gray"}
           >
-            <HStack modifiers={[frame({ width: 70 })]} spacing={theme.space8}>
-              <Text weight="semibold" size={theme.fontSize14}>
+            <HStack modifiers={[frame({ width: 50 })]} spacing={theme.space8}>
+              <Text weight="semibold" size={theme.fontSize10}>
                 {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
               </Text>
-              <Image systemName="chevron.down" size={theme.fontSize18} />
+              <Image systemName="chevron.down" size={theme.fontSize10} />
             </HStack>
           </Button>
         </ContextMenu.Trigger>
