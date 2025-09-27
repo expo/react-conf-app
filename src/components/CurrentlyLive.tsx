@@ -1,5 +1,5 @@
 import { theme } from "@/theme";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, Platform } from "react-native";
 import { ThemedText } from "./Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { getCurrentConferenceDay } from "@/utils/formatDate";
@@ -53,7 +53,6 @@ export function CurrentlyLive({
   const [currentlyLive, setCurrentlyLive] =
     useState<CurrentlyLiveSession | null>(null);
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
-
   const checkCurrentlyLive = useCallback(() => {
     const currentlyLive = getCurrentlyLive(dayOne, dayTwo);
     setCurrentlyLive(currentlyLive);
@@ -65,40 +64,43 @@ export function CurrentlyLive({
     return () => clearInterval(interval);
   }, [dayOne, dayTwo, checkCurrentlyLive]);
 
-  const currentDay = getCurrentConferenceDay();
-
-  if (!currentDay) {
-    return null;
-  }
-
-  if (!currentlyLive) {
-    return null;
-  }
-
   return (
     <AnimatedPressable
-      key={currentlyLive.session.id}
+      key={currentlyLive?.session.id}
       style={styles.container}
       onPressIn={() => {
-        scrollToSession(currentlyLive);
+        if (currentlyLive) {
+          scrollToSession(currentlyLive);
+        }
       }}
       entering={FadeIn}
       exiting={FadeOutUp}
     >
-      <View style={styles.dotContainer}>
-        <View style={styles.dot} />
-        <ThemedText
-          fontSize={12}
-          fontWeight="semiBold"
-          color={theme.color.textSecondary}
-          style={styles.text}
-        >
-          Currently Live
-        </ThemedText>
-      </View>
-      <ThemedText fontSize={14} fontWeight="semiBold" numberOfLines={1}>
-        {currentlyLive.session.title}
-      </ThemedText>
+      {currentlyLive ? (
+        <>
+          <View style={styles.dotContainer}>
+            <View style={styles.dot} />
+            <ThemedText
+              fontSize={12}
+              fontWeight="semiBold"
+              color={theme.color.textSecondary}
+              style={styles.text}
+            >
+              Currently Live
+            </ThemedText>
+          </View>
+          <ThemedText
+            fontSize={14}
+            fontWeight="semiBold"
+            numberOfLines={2}
+            style={{ textAlign: "center" }}
+          >
+            {currentlyLive.session.title}
+          </ThemedText>
+        </>
+      ) : (
+        <View />
+      )}
     </AnimatedPressable>
   );
 }
@@ -106,7 +108,7 @@ export function CurrentlyLive({
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    maxWidth: 200,
+    width: Platform.select({ android: undefined, default: 180 }),
   },
   dot: {
     height: theme.space4,
