@@ -1,0 +1,125 @@
+import { theme } from "@/theme";
+import { StyleSheet, View, Pressable } from "react-native";
+import { ThemedText } from "./Themed";
+import { useReactConfStore } from "@/store/reactConfStore";
+import { getCurrentConferenceDay } from "@/utils/formatDate";
+import { ConferenceDay } from "@/consts";
+import { Session } from "@/types";
+import { useCallback, useEffect, useState } from "react";
+import Animated, { FadeIn, FadeOutUp } from "react-native-reanimated";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+export type CurrentlyLiveSession = {
+  session: Session;
+  day: ConferenceDay;
+  sessionIndex: number;
+};
+
+function getCurrentlyLive(
+  dayOne: Session[],
+  dayTwo: Session[],
+): CurrentlyLiveSession | null {
+  const currentDay = getCurrentConferenceDay();
+  if (!currentDay) {
+    return null;
+  }
+
+  const currentSessions = currentDay === ConferenceDay.One ? dayOne : dayTwo;
+  const now = new Date();
+
+  for (let i = 0; i < currentSessions.length; i++) {
+    const session = currentSessions[i];
+    const startTime = new Date(session.startsAt);
+    const endTime = new Date(session.endsAt);
+
+    if (now >= startTime && now <= endTime) {
+      return {
+        session,
+        day: currentDay,
+        sessionIndex: i,
+      };
+    }
+  }
+
+  return null;
+}
+
+export function CurrentlyLive({
+  scrollToSession,
+}: {
+  scrollToSession: (currentlyLive: CurrentlyLiveSession) => void;
+}) {
+  const [currentlyLive, setCurrentlyLive] =
+    useState<CurrentlyLiveSession | null>(null);
+  const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
+
+  const checkCurrentlyLive = useCallback(() => {
+    const currentlyLive = getCurrentlyLive(dayOne, dayTwo);
+    setCurrentlyLive(currentlyLive);
+  }, [dayOne, dayTwo]);
+
+  useEffect(() => {
+    checkCurrentlyLive();
+    const interval = setInterval(checkCurrentlyLive, 5000);
+    return () => clearInterval(interval);
+  }, [dayOne, dayTwo, checkCurrentlyLive]);
+
+  const currentDay = getCurrentConferenceDay();
+
+  if (!currentDay) {
+    return null;
+  }
+
+  if (!currentlyLive) {
+    return null;
+  }
+
+  return (
+    <AnimatedPressable
+      key={currentlyLive.session.id}
+      style={styles.container}
+      onPressIn={() => {
+        scrollToSession(currentlyLive);
+      }}
+      entering={FadeIn}
+      exiting={FadeOutUp}
+    >
+      <View style={styles.dotContainer}>
+        <View style={styles.dot} />
+        <ThemedText
+          fontSize={12}
+          fontWeight="semiBold"
+          color={theme.color.textSecondary}
+          style={styles.text}
+        >
+          Currently Live
+        </ThemedText>
+      </View>
+      <ThemedText fontSize={14} fontWeight="semiBold" numberOfLines={1}>
+        {currentlyLive.session.title}
+      </ThemedText>
+    </AnimatedPressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    maxWidth: 200,
+  },
+  dot: {
+    height: theme.space4,
+    width: theme.space4,
+    borderRadius: theme.borderRadius4,
+    backgroundColor: "#FF0000",
+  },
+  dotContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: theme.space4,
+  },
+  text: {
+    textTransform: "uppercase",
+  },
+});
