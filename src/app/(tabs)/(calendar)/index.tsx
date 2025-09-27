@@ -1,5 +1,5 @@
 import { useScrollToTop } from "@react-navigation/native";
-import { useFocusEffect } from "expo-router";
+import { Stack, useFocusEffect } from "expo-router";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Platform, RefreshControl } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -24,6 +24,10 @@ import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
 import { getInitialDay } from "@/utils/formatDate";
+import {
+  CurrentlyLive,
+  type CurrentlyLiveSession,
+} from "@/components/CurrentlyLive";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
@@ -125,28 +129,57 @@ export default function Schedule() {
     setIsRefreshing(false);
   };
 
+  const handleScrollToSession = (currentlyLive: CurrentlyLiveSession) => {
+    setSelectedDay(currentlyLive.day);
+    setTimeout(() => {
+      scrollRef.current?.scrollToIndex({
+        index: currentlyLive.sessionIndex,
+        animated: true,
+        viewOffset: Platform.select({
+          android: 50,
+          default: isLiquidGlass
+            ? isScrolledDown.current
+              ? 155
+              : 87
+            : isScrolledDown.current
+              ? 125
+              : 120,
+        }),
+      });
+    }, 200);
+  };
+
   return (
-    <AnimatedFlatList
-      ref={scrollRef}
-      refreshControl={
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={handleRefreshSchedule}
-        />
-      }
-      style={{ backgroundColor }}
-      contentContainerStyle={{
-        paddingBottom: Platform.select({ android: 100, default: 0 }),
-      }}
-      contentInsetAdjustmentBehavior="automatic"
-      scrollToOverflowEnabled
-      onScroll={scrollHandler}
-      scrollEventThrottle={16}
-      data={data}
-      ListHeaderComponent={renderStickyHeader}
-      stickyHeaderIndices={[0]}
-      keyExtractor={(item: Session) => item.id}
-      renderItem={renderItem}
-    />
+    <>
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <CurrentlyLive scrollToSession={handleScrollToSession} />
+          ),
+        }}
+      />
+      <AnimatedFlatList
+        ref={scrollRef}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefreshSchedule}
+          />
+        }
+        style={{ backgroundColor }}
+        contentContainerStyle={{
+          paddingBottom: Platform.select({ android: 100, default: 0 }),
+        }}
+        contentInsetAdjustmentBehavior="automatic"
+        scrollToOverflowEnabled
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
+        data={data}
+        ListHeaderComponent={renderStickyHeader}
+        stickyHeaderIndices={[0]}
+        keyExtractor={(item: Session) => item.id}
+        renderItem={renderItem}
+      />
+    </>
   );
 }

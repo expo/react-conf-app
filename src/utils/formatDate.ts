@@ -45,10 +45,13 @@ export const getCurrentTimezone = () => {
 const DAY_ONE_DATE = "Oct 7, 2025";
 const DAY_TWO_DATE = "Oct 8, 2025";
 
+const VENUE_TIMEZONE = "America/Los_Angeles";
+const DATE_FORMAT = "LLL d, yyyy";
+
 export const isDayOneSession = (date: string) => {
   try {
     return (
-      formatInTimeZone(new Date(date), "America/Los_Angeles", `LLL d, yyyy`) ===
+      formatInTimeZone(new Date(date), VENUE_TIMEZONE, DATE_FORMAT) ===
       DAY_ONE_DATE
     );
   } catch {
@@ -59,7 +62,7 @@ export const isDayOneSession = (date: string) => {
 export const isDayTwoSession = (date: string) => {
   try {
     return (
-      formatInTimeZone(new Date(date), "America/Los_Angeles", `LLL d, yyyy`) ===
+      formatInTimeZone(new Date(date), VENUE_TIMEZONE, DATE_FORMAT) ===
       DAY_TWO_DATE
     );
   } catch {
@@ -69,8 +72,25 @@ export const isDayTwoSession = (date: string) => {
 
 export const getInitialDay = () => {
   const isDayTwo =
-    formatInTimeZone(new Date(), "America/Los_Angeles", `LLL d, yyyy`) ===
-    DAY_TWO_DATE;
+    formatInTimeZone(new Date(), VENUE_TIMEZONE, DATE_FORMAT) === DAY_TWO_DATE;
 
   return isDayTwo ? ConferenceDay.Two : ConferenceDay.One;
+};
+
+export const getCurrentConferenceDay = () => {
+  const isDayOne =
+    formatInTimeZone(new Date(), VENUE_TIMEZONE, DATE_FORMAT) === DAY_ONE_DATE;
+
+  if (isDayOne) {
+    return ConferenceDay.One;
+  }
+
+  const isDayTwo =
+    formatInTimeZone(new Date(), VENUE_TIMEZONE, DATE_FORMAT) === DAY_TWO_DATE;
+
+  if (isDayTwo) {
+    return ConferenceDay.Two;
+  }
+
+  return null;
 };

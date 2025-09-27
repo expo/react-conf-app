@@ -44,6 +44,8 @@ export const theme = {
   space16: 16,
   space24: 24,
 
+  fontSize10: 10,
+  fontSize12: 12,
   fontSize14: 14,
   fontSize16: 16,
   fontSize18: 18,
