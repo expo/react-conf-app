@@ -42,8 +42,8 @@ export const getCurrentTimezone = () => {
   }
 };
 
-const DAY_ONE_DATE = "Oct 7, 2025";
-const DAY_TWO_DATE = "Oct 8, 2025";
+export const DAY_ONE_DATE = "Oct 7, 2025";
+export const DAY_TWO_DATE = "Oct 8, 2025";
 
 export const isDayOneSession = (date: string) => {
   try {
