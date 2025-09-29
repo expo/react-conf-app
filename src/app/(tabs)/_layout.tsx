@@ -46,7 +46,7 @@ export default function TabLayout() {
       badgeBackgroundColor={tintColor}
       labelStyle={{
         color:
-          Platform.OS === "ios"
+          Platform.OS === "ios" && isLiquidGlassAvailable()
             ? DynamicColorIOS({
                 light: theme.colorBlack,
                 dark: theme.colorWhite,
@@ -54,7 +54,7 @@ export default function TabLayout() {
             : inactiveTintColor,
       }}
       iconColor={
-        Platform.OS === "ios"
+        Platform.OS === "ios" && isLiquidGlassAvailable()
           ? DynamicColorIOS({
               light: theme.colorBlack,
               dark: theme.colorWhite,
