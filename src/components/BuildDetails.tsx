@@ -16,16 +16,19 @@ export function BuildDetails() {
 
   return (
     <View style={styles.container}>
-      <ThemedText fontSize={12}>
+      <ThemedText fontSize={theme.fontSize12}>
         v{Application.nativeApplicationVersion} (
         {Application.nativeBuildVersion})
       </ThemedText>
-      <ThemedText fontSize={12}>
+      <ThemedText fontSize={theme.fontSize12}>
         Schedule last refreshed:{" "}
         {lastRefreshed ? formatFullDate(lastRefreshed) : "Never"}
       </ThemedText>
       {currentUpdateId ? (
-        <ThemedText fontSize={12} style={{ color: theme.colorGrey }}>
+        <ThemedText
+          fontSize={theme.fontSize12}
+          style={{ color: theme.colorGrey }}
+        >
           {currentUpdateId}
         </ThemedText>
       ) : null}

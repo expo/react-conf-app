@@ -20,6 +20,7 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Speaker } from "@/types";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
+import { osName } from "expo-device";
 
 export default function SpeakerDetail() {
   const params = useLocalSearchParams();
@@ -44,7 +45,13 @@ export default function SpeakerDetail() {
             title: "",
             headerLeft: () =>
               Platform.select({
-                ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+                ios: (
+                  <HeaderButton
+                    buttonProps={{ onPress: router.back }}
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{ padding: osName === "iPadOS" ? 40 : 0 }}
+                  />
+                ),
                 default: undefined,
               }),
           }}
@@ -149,7 +156,7 @@ function Socials({ speaker }: { speaker: Speaker }) {
               return (
                 <Ionicons
                   name="reader"
-                  size={18}
+                  size={theme.fontSize18}
                   color={iconColor}
                   style={styles.icon}
                 />
@@ -159,7 +166,7 @@ function Socials({ speaker }: { speaker: Speaker }) {
               return (
                 <Feather
                   name="link"
-                  size={18}
+                  size={theme.fontSize18}
                   color={iconColor}
                   style={styles.icon}
                 />
@@ -199,8 +206,8 @@ const styles = StyleSheet.create({
     paddingTop: theme.space24,
   },
   icon: {
-    height: 20,
-    width: 20,
+    height: theme.fontSize20,
+    width: theme.fontSize20,
   },
   separator: {
     borderBottomWidth: StyleSheet.hairlineWidth,

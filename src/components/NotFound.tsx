@@ -16,7 +16,11 @@ export function NotFound({ message }: { message: string }) {
   });
   return (
     <ThemedView style={styles.container} color={theme.color.background}>
-      <ThemedText fontWeight="bold" fontSize={24} style={styles.heading}>
+      <ThemedText
+        fontWeight="bold"
+        fontSize={theme.fontSize24}
+        style={styles.heading}
+      >
         {message}
       </ThemedText>
       <Image

@@ -30,6 +30,7 @@ import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
 import { Bookmark } from "@/components/Bookmark";
+import { osName } from "expo-device";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -145,10 +146,22 @@ export default function TalkDetail() {
         options={{
           headerLeft: () =>
             Platform.select({
-              ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+              ios: (
+                <HeaderButton
+                  buttonProps={{ onPress: router.back }}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{ padding: osName === "iPadOS" ? 40 : 0 }}
+                />
+              ),
               default: undefined,
             }),
-          headerRight: () => <Bookmark session={talk} />,
+          headerRight: () => (
+            <Bookmark
+              session={talk}
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{ padding: osName === "iPadOS" ? 40 : 0 }}
+            />
+          ),
         }}
       />
 
@@ -161,7 +174,7 @@ export default function TalkDetail() {
         }
       >
         <>
-          {isLiquidGlassAvailable() ? (
+          {isLiquidGlassAvailable() && osName !== "iPadOS" ? (
             <View style={{ height: drawerHeight }}>
               <Animated.View style={[opacityStyle, styles.absolute]}>
                 <Canvas
@@ -203,7 +216,7 @@ export default function TalkDetail() {
             <View style={styles.header}>
               <ThemedText
                 fontWeight="bold"
-                fontSize={32}
+                fontSize={theme.fontSize32}
                 style={[
                   styles.talkTitle,
                   { textDecorationColor: highlightColor },
@@ -262,10 +275,10 @@ function SpeakerDetails({ speaker }: { speaker: Speaker }) {
     <View style={styles.speaker}>
       <SpeakerImage profilePicture={speaker.profilePicture} />
       <View style={styles.speakerDetails}>
-        <ThemedText fontSize={18} fontWeight="bold">
+        <ThemedText fontSize={theme.fontSize18} fontWeight="bold">
           {speaker.fullName}
         </ThemedText>
-        <ThemedText fontSize={16} fontWeight="medium">
+        <ThemedText fontSize={theme.fontSize16} fontWeight="medium">
           {speaker.tagLine}
         </ThemedText>
       </View>
@@ -280,10 +293,10 @@ function Section({ title, value }: { title: string; value: string | null }) {
 
   return (
     <View style={styles.sectionContainer}>
-      <ThemedText fontSize={18} fontWeight="bold">
+      <ThemedText fontSize={theme.fontSize18} fontWeight="bold">
         {title}
       </ThemedText>
-      <ThemedText fontSize={18} fontWeight="medium">
+      <ThemedText fontSize={theme.fontSize18} fontWeight="medium">
         {value}
       </ThemedText>
     </View>

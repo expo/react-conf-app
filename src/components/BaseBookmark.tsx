@@ -49,7 +49,7 @@ export function BaseBookmark({
         fallback={
           <MaterialCommunityIcons
             name={bookmarked ? "bookmark" : "bookmark-outline"}
-            size={28}
+            size={theme.fontSize28}
             color={bookmarkColor}
           />
         }

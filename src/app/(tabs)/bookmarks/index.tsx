@@ -55,12 +55,12 @@ export default function Bookmarks() {
           <View style={styles.bookmarks}>
             <ThemedText
               fontWeight="bold"
-              fontSize={20}
+              fontSize={theme.fontSize20}
               style={{ marginBottom: theme.space8 }}
             >
               No sessions bookmarked
             </ThemedText>
-            <ThemedText fontSize={18}>
+            <ThemedText fontSize={theme.fontSize18}>
               Tap on the bookmark icon on a session to add it to your bookmarks,
               and it will be displayed here.
             </ThemedText>

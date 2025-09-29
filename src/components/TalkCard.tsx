@@ -43,7 +43,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
     <ThemedView style={styles.container}>
       {!isBookmarked && (
         <ThemedText
-          fontSize={18}
+          fontSize={theme.fontSize18}
           fontWeight="medium"
           color={theme.color.textSecondary}
           marginBottom={theme.space8}
@@ -67,7 +67,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
         >
           <View style={styles.titleAndBookmark}>
             <ThemedText
-              fontSize={18}
+              fontSize={theme.fontSize18}
               fontWeight="semiBold"
               style={styles.flex1}
             >
@@ -83,10 +83,10 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
                 light: "#dedede",
               }}
             >
-              <ThemedText fontSize={14} fontWeight="medium">
+              <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
                 {formatSessionTime(session, shouldUseLocalTz)}
               </ThemedText>
-              <ThemedText fontSize={14} fontWeight="medium">
+              <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
                 {day === ConferenceDay.One ? "Day 1" : "Day 2"}
               </ThemedText>
             </ThemedView>
@@ -139,5 +139,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: theme.space8,
     justifyContent: "space-between",
+    marginBottom: theme.space16,
   },
 });

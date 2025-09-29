@@ -119,7 +119,7 @@ function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
         openWebBrowserAsync(sponsor.url);
       }}
     >
-      <Image source={sponsor.image} style={styles.image} />
+      <Image source={sponsor.image} style={styles.image} contentFit="contain" />
     </Pressable>
   );
 }

@@ -17,7 +17,7 @@ export function ActivityCard({ session }: Props) {
   return (
     <View style={styles.container}>
       <ThemedText
-        fontSize={14}
+        fontSize={theme.fontSize14}
         fontWeight="medium"
         color={theme.color.textSecondary}
         style={{ marginLeft: theme.space24 }}
@@ -26,10 +26,10 @@ export function ActivityCard({ session }: Props) {
       </ThemedText>
       <ThemedView style={styles.content} color={theme.color.backgroundTertiary}>
         <View style={styles.row}>
-          <ThemedText fontSize={18} fontWeight="semiBold">
+          <ThemedText fontSize={theme.fontSize18} fontWeight="semiBold">
             {session.title}
           </ThemedText>
-          <ThemedText fontSize={14} fontWeight="light">
+          <ThemedText fontSize={theme.fontSize14} fontWeight="light">
             {session.room}
           </ThemedText>
         </View>

@@ -22,7 +22,7 @@ export function LiveStreamInfo() {
         />
         <ThemedText
           fontWeight="semiBold"
-          fontSize={14}
+          fontSize={theme.fontSize14}
           color={{
             light: theme.color.textSecondary.light,
             dark: theme.colorWhite,

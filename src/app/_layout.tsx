@@ -20,6 +20,7 @@ import { theme } from "../theme";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
+import { osName } from "expo-device";
 
 SplashScreen.setOptions({
   duration: 300,
@@ -109,7 +110,7 @@ export default function Layout() {
                 title: "",
                 presentation:
                   Platform.OS === "ios"
-                    ? isLiquidGlassAvailable()
+                    ? isLiquidGlassAvailable() && osName !== "iPadOS"
                       ? "formSheet"
                       : "modal"
                     : "modal",
@@ -153,7 +154,7 @@ export default function Layout() {
                     : "light",
                 headerTitle: Platform.select({
                   android: (props) => (
-                    <ThemedText fontSize={24} fontWeight="bold">
+                    <ThemedText fontSize={theme.fontSize24} fontWeight="bold">
                       {props.children}
                     </ThemedText>
                   ),
@@ -169,7 +170,7 @@ export default function Layout() {
                 title: "Modal",
                 headerTitleAlign: "center",
                 headerTitle: (props) => (
-                  <ThemedText fontSize={24} fontWeight="bold">
+                  <ThemedText fontSize={theme.fontSize24} fontWeight="bold">
                     {props.children}
                   </ThemedText>
                 ),
