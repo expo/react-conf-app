@@ -1,4 +1,14 @@
 import { Platform } from "react-native";
+import * as Device from "expo-device";
+
+const SPACE_SCALE = 1.33;
+const FONT_SCALE = 1.2;
+
+const isIpad = Device.osName === "iPadOS";
+const spaceScale = (value: number) =>
+  isIpad ? Math.round(value * SPACE_SCALE) : value;
+const fontScale = (size: number) =>
+  isIpad ? Math.round(size * FONT_SCALE) : size;
 
 export const theme = {
   colorRed: "#FF0000",
@@ -39,17 +49,17 @@ export const theme = {
 
   lightActiveContent: "rgba(0,0,0, 0.1)",
 
-  space4: 4,
-  space8: 8,
-  space12: 12,
-  space16: 16,
-  space24: 24,
+  space4: spaceScale(4),
+  space8: spaceScale(8),
+  space12: spaceScale(12),
+  space16: spaceScale(16),
+  space24: spaceScale(24),
 
-  fontSize10: 10,
-  fontSize12: 12,
-  fontSize14: 14,
-  fontSize16: 16,
-  fontSize18: 18,
+  fontSize10: fontScale(10),
+  fontSize12: fontScale(12),
+  fontSize14: fontScale(14),
+  fontSize16: fontScale(16),
+  fontSize18: fontScale(18),
 
   fontFamilyLight: "FreightSansProLight-Regular",
   fontFamilyLightItalic: "FreightSansProLight-Italic",
