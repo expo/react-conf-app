@@ -14,10 +14,6 @@ const venueName = "The Westin Lake Las Vegas Resort & Spa";
 const BOTTOM_OFFSET = 50;
 
 export function VenueInfo() {
-  const { width } = useWindowDimensions();
-
-  const hotelImageSize = width - theme.space24 * 2;
-
   const onOpenVenue = () => {
     Linking.openURL(
       `https://www.google.com/maps?q=${venueName}, ${venueAddress}`,
@@ -34,7 +30,7 @@ export function VenueInfo() {
         <View style={styles.imageContainer}>
           <Image
             source={require("@/assets/images/hotel.png")}
-            style={{ width: hotelImageSize, height: hotelImageSize }}
+            style={{ width: "100%", aspectRatio: 1 }}
           />
         </View>
         <LinearGradient
