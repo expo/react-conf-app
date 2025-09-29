@@ -17,7 +17,7 @@ import { Canvas, Fill, Shader, Skia, vec } from "@shopify/react-native-skia";
 
 import { NotFound } from "@/components/NotFound";
 import { SpeakerImage } from "@/components/SpeakerImage";
-import { ThemedText, ThemedView } from "@/components/Themed";
+import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
@@ -78,6 +78,7 @@ export default function TalkDetail() {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { width, height } = useWindowDimensions();
   const drawerHeight = height * 0.9;
+  const highlightColor = useThemeColor(theme.color.reactBlue);
 
   const router = useRouter();
 
@@ -203,7 +204,10 @@ export default function TalkDetail() {
               <ThemedText
                 fontWeight="bold"
                 fontSize={32}
-                style={styles.talkTitle}
+                style={[
+                  styles.talkTitle,
+                  { textDecorationColor: highlightColor },
+                ]}
               >
                 {talk?.title}
               </ThemedText>
@@ -291,9 +295,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingTop: theme.space24,
     paddingHorizontal: theme.space24,
-    paddingBottom: 50,
   },
   contentContainer: {
     borderBottomRightRadius: theme.borderRadius20,
@@ -308,13 +310,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   talkTitle: {
-    textAlign: "center",
+    textDecorationLine: "underline",
+    textDecorationStyle: "dashed",
   },
   sectionContainer: {
     marginBottom: theme.space24,
   },
   content: {
     paddingTop: theme.space16,
-    paddingHorizontal: theme.space16,
+    paddingHorizontal: theme.space24,
   },
 });
