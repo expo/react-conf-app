@@ -1,8 +1,9 @@
 name: Lint and Type Check
 
 on:
-  push:
   pull_request:
+  push:
+    branches: [main]
 
 jobs:
   lint-and-typecheck:
