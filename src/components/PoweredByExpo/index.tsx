@@ -2,7 +2,7 @@ import * as Haptics from "expo-haptics";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, {
+import {
   Easing,
   Extrapolation,
   interpolate,
@@ -12,7 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { HolographicGradient } from "./HolographicGradient";
 import { scheduleOnRN } from "react-native-worklets";
-import { ThemedText } from "../Themed";
+import { ThemedText, ThemedView } from "../Themed";
 import { theme } from "@/theme";
 import * as Application from "expo-application";
 
@@ -116,9 +116,13 @@ function GestureContainer({
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.transparent, { height, width }, rStyle]}>
+      <ThemedView
+        style={[{ height, width }, rStyle]}
+        color={theme.color.transparent}
+        animated
+      >
         {children}
-      </Animated.View>
+      </ThemedView>
     </GestureDetector>
   );
 }
@@ -142,14 +146,14 @@ export function PoweredByExpo() {
   });
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container} color={theme.color.transparent}>
       <GestureContainer
         width={CONTAINER_SIZE}
         height={CONTAINER_SIZE}
         maxAngle={15}
         onFlip={handleFlip}
       >
-        <View style={styles.layeredView}>
+        <ThemedView style={styles.layeredView} color={theme.color.transparent}>
           <View style={styles.cardSide}>
             <View style={styles.shaderBackground}>
               <HolographicGradient />
@@ -159,7 +163,11 @@ export function PoweredByExpo() {
               style={styles.logoOverlay}
             />
           </View>
-          <Animated.View style={[styles.flippedOverlay, overlayAnimatedStyle]}>
+          <ThemedView
+            color={theme.color.transparent}
+            style={[styles.flippedOverlay, overlayAnimatedStyle]}
+            animated
+          >
             <View style={styles.flippedContent}>
               <ThemedText
                 fontSize={16}
@@ -173,10 +181,10 @@ export function PoweredByExpo() {
                 {Application.nativeBuildVersion})
               </ThemedText>
             </View>
-          </Animated.View>
-        </View>
+          </ThemedView>
+        </ThemedView>
       </GestureContainer>
-    </View>
+    </ThemedView>
   );
 }
 
@@ -185,7 +193,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "transparent",
     paddingVertical: theme.space16,
   },
   layeredView: {
@@ -194,7 +201,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    backgroundColor: "transparent",
   },
   shaderBackground: {
     position: "absolute",
@@ -234,8 +240,5 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
-  },
-  transparent: {
-    backgroundColor: "transparent",
   },
 });

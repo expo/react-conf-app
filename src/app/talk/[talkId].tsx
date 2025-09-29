@@ -323,7 +323,6 @@ const styles = StyleSheet.create({
     minHeight: 150,
     paddingTop: 50,
     paddingHorizontal: theme.space16,
-    backgroundColor: "transparent",
   },
   contentContainer: {
     borderBottomRightRadius: theme.borderRadius20,
