@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ThemedText, ThemedView, useThemeColor } from "./Themed";
 
 import { theme } from "@/theme";
+import { osName } from "expo-device";
 
 const venueAddress = "101 Montelago Blvd, Henderson, NV 89011";
 const venueName = "The Westin Lake Las Vegas Resort & Spa";
@@ -34,7 +35,10 @@ export function VenueInfo() {
         <View style={styles.imageContainer}>
           <Image
             source={require("@/assets/images/hotel.png")}
-            style={{ width: hotelImageSize, height: hotelImageSize }}
+            style={{
+              width: hotelImageSize,
+              height: osName === "iPadOS" ? hotelImageSize / 2 : hotelImageSize,
+            }}
           />
         </View>
         <LinearGradient
