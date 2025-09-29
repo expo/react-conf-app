@@ -93,15 +93,18 @@ export default function Schedule() {
     refreshSchedule({ ttlMs: 60_000 });
   });
 
-  const handleSelectDay = useCallback((day: ConferenceDay) => {
-    setSelectedDay(day);
-    if (isScrolledDown.current) {
-      scrollRef.current?.scrollToOffset({
-        offset: -30 - insets.top,
-        animated: true,
-      });
-    }
-  }, []);
+  const handleSelectDay = useCallback(
+    (day: ConferenceDay) => {
+      setSelectedDay(day);
+      if (isScrolledDown.current) {
+        scrollRef.current?.scrollToOffset({
+          offset: -30 - insets.top,
+          animated: true,
+        });
+      }
+    },
+    [insets.top],
+  );
 
   const renderStickyHeader = useMemo(
     () => (
