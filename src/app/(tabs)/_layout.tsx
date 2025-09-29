@@ -43,6 +43,7 @@ export default function TabLayout() {
 
   return (
     <NativeTabs
+      badgeBackgroundColor={tintColor}
       labelStyle={{
         color:
           Platform.OS === "ios"
@@ -103,9 +104,7 @@ export default function TabLayout() {
         })}
         <Label selectedStyle={labelSelectedStyle}>Bookmarked</Label>
         {hasBookmarks && !isLiquidGlassAvailable() && (
-          <Badge selectedBackgroundColor={tintColor}>
-            {bookmarks.length.toString()}
-          </Badge>
+          <Badge>{bookmarks.length.toString()}</Badge>
         )}
       </NativeTabs.Trigger>
       <NativeTabs.Trigger
