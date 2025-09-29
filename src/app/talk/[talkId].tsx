@@ -30,6 +30,7 @@ import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
 import { Bookmark } from "@/components/Bookmark";
+import { osName } from "expo-device";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 
@@ -161,7 +162,7 @@ export default function TalkDetail() {
         }
       >
         <>
-          {isLiquidGlassAvailable() ? (
+          {isLiquidGlassAvailable() && osName !== "iPadOS" ? (
             <View style={{ height: drawerHeight }}>
               <Animated.View style={[opacityStyle, styles.absolute]}>
                 <Canvas
