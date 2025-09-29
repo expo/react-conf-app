@@ -78,7 +78,7 @@ export default function TalkDetail() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { width, height } = useWindowDimensions();
-  const drawerHeight = height * 0.9;
+  const drawerHeight = height * 0.8;
   const highlightColor = useThemeColor(theme.color.reactBlue);
 
   const router = useRouter();
