@@ -14,13 +14,14 @@ import * as Haptics from "expo-haptics";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { frame } from "@expo/ui/swift-ui/modifiers";
 import { theme } from "@/theme";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 
 const options = ["PDT (Venue)", `${getCurrentTimezone()} (Local)`];
 
 export function TimeZoneSwitch() {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const toggleLocalTz = useReactConfStore((state) => state.toggleLocalTz);
+  const isDarkMode = useColorScheme() === "dark";
 
   const selectedIndex = shouldUseLocalTz ? 1 : 0;
 
@@ -49,7 +50,17 @@ export function TimeZoneSwitch() {
             color={isLiquidGlassAvailable() ? "primary" : "gray"}
           >
             <HStack modifiers={[frame({ width: 50 })]} spacing={theme.space8}>
-              <Text weight="semibold" size={theme.fontSize10}>
+              <Text
+                weight="semibold"
+                size={theme.fontSize10}
+                color={
+                  isLiquidGlassAvailable()
+                    ? "primary"
+                    : isDarkMode
+                      ? "white"
+                      : "black"
+                }
+              >
                 {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
               </Text>
               <Image systemName="chevron.down" size={theme.fontSize10} />
