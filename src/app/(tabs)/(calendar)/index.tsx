@@ -10,7 +10,6 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ActivityCard } from "@/components/ActivityCard";
 import { NotFound } from "@/components/NotFound";
@@ -34,7 +33,6 @@ export default function Schedule() {
   useScrollToTop(scrollRef as any);
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
-  const insets = useSafeAreaInsets();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const translationY = useSharedValue(0);
@@ -50,15 +48,8 @@ export default function Schedule() {
 
     animatedTranslateY.value = interpolate(
       event.contentOffset.y,
-      [-160, -93, 0],
-      [0, -40, 40],
-      Extrapolation.CLAMP,
-    );
-
-    animatedPaddingTop.value = interpolate(
-      event.contentOffset.y,
-      [-160, -93, 0],
-      [0, insets.top, insets.top],
+      [-110, 0],
+      [0, 110],
       Extrapolation.CLAMP,
     );
 
