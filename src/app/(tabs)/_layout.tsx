@@ -7,12 +7,17 @@ import {
   VectorIcon,
 } from "expo-router/unstable-native-tabs";
 import React from "react";
-import { ColorValue, ImageSourcePropType, Platform } from "react-native";
+import {
+  ColorValue,
+  ImageSourcePropType,
+  Platform,
+  DynamicColorIOS,
+} from "react-native";
 
-import { useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
+import { useThemeColor } from "@/components/Themed";
 
 // Todo (betomoedano): In the future we can remove this type. Learn more: https://exponent-internal.slack.com/archives/C0447EFTS74/p1758042759724779?thread_ts=1758039375.241799&cid=C0447EFTS74
 type VectorIconFamily = {
@@ -24,37 +29,40 @@ type VectorIconFamily = {
 };
 
 export default function TabLayout() {
-  const tabBarBackgroundColor = useThemeColor(theme.color.background);
+  const bookmarks = useBookmarkStore((state) => state.bookmarks);
+  const hasBookmarks = bookmarks.length > 0;
   const tintColor = useThemeColor(theme.color.reactBlue);
-
+  const androidInactiveTintColor = useThemeColor({
+    light: theme.colorGrey,
+    dark: "#FFFFFF50",
+  });
   const tabBarActiveTintColor = useThemeColor({
     light: theme.colorBlack,
     dark: theme.colorWhite,
   });
 
-  const tabBarInactiveTintColor = useThemeColor({
-    light: theme.colorGrey,
-    dark: "#FFFFFF50",
-  });
-
-  const bookmarks = useBookmarkStore((state) => state.bookmarks);
-  const hasBookmarks = bookmarks.length > 0;
-
   return (
     <NativeTabs
-      tintColor={tabBarActiveTintColor}
-      backgroundColor={tabBarBackgroundColor}
-      labelVisibilityMode="labeled"
-      iconColor={tabBarInactiveTintColor}
-      indicatorColor={tintColor + "20"}
       labelStyle={{
-        color: tabBarInactiveTintColor,
+        color: Platform.OS === "ios" ? undefined : androidInactiveTintColor,
       }}
+      iconColor={
+        Platform.OS === "ios"
+          ? DynamicColorIOS(theme.color.reactBlue)
+          : androidInactiveTintColor
+      }
+      tintColor={
+        Platform.OS === "ios"
+          ? DynamicColorIOS(theme.color.reactBlue)
+          : tabBarActiveTintColor
+      }
+      labelVisibilityMode="labeled"
+      indicatorColor={tintColor + "25"}
       disableTransparentOnScrollEdge={true} // Used to prevent transparent background on iOS 18 and older
     >
       <NativeTabs.Trigger name="(calendar)">
         {Platform.select({
-          ios: <Icon sf="calendar" selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="calendar" />,
           android: (
             <Icon
               src={
@@ -71,7 +79,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="bookmarks">
         {Platform.select({
-          ios: <Icon sf="bookmark" selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="bookmark" />,
           android: (
             <Icon
               src={
@@ -96,7 +104,7 @@ export default function TabLayout() {
         role={isLiquidGlassAvailable() ? "search" : undefined}
       >
         {Platform.select({
-          ios: <Icon sf="person.2" selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="person.2" />,
           android: (
             <Icon
               src={
@@ -113,7 +121,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="info">
         {Platform.select({
-          ios: <Icon sf="map" selectedColor={tabBarActiveTintColor} />,
+          ios: <Icon sf="map" />,
           android: (
             <Icon
               src={
@@ -126,6 +134,7 @@ export default function TabLayout() {
             />
           ),
         })}
+        <Label>Info</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );
