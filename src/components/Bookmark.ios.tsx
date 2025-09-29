@@ -6,13 +6,14 @@ import { frame } from "@expo/ui/swift-ui/modifiers";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { useThemeColor } from "./Themed";
 import * as Haptics from "expo-haptics";
-import { Platform, useColorScheme } from "react-native";
+import { Platform, StyleProp, useColorScheme, ViewStyle } from "react-native";
 import { useMemo } from "react";
 import { BaseBookmark } from "./BaseBookmark";
 
 type BookmarkProps = {
   session: Session;
   size?: "small" | "large";
+  style?: StyleProp<ViewStyle>;
 };
 
 export function Bookmark(props: BookmarkProps) {
@@ -22,7 +23,7 @@ export function Bookmark(props: BookmarkProps) {
   return <BaseBookmark {...props} />;
 }
 
-function GlassBookmark({ session, size = "large" }: BookmarkProps) {
+function GlassBookmark({ session, size = "large", style }: BookmarkProps) {
   const { toggleBookmark, isBookmarked } = useBookmark();
   const tintColor = useThemeColor(theme.color.reactBlue);
   const notSelectedIconColor = useThemeColor({
@@ -63,6 +64,7 @@ function GlassBookmark({ session, size = "large" }: BookmarkProps) {
         variant: "glassProminent",
         color: colorScheme === "dark" ? "transparent" : backgroundColor,
       }}
+      style={style}
       imageProps={{
         systemName: bookmarked ? "bookmark.fill" : "bookmark",
         color: bookmarked ? tintColor : imageColor,

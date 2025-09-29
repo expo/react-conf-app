@@ -146,10 +146,22 @@ export default function TalkDetail() {
         options={{
           headerLeft: () =>
             Platform.select({
-              ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+              ios: (
+                <HeaderButton
+                  buttonProps={{ onPress: router.back }}
+                  // eslint-disable-next-line react-native/no-inline-styles
+                  style={{ padding: osName === "iPadOS" ? 40 : 0 }}
+                />
+              ),
               default: undefined,
             }),
-          headerRight: () => <Bookmark session={talk} />,
+          headerRight: () => (
+            <Bookmark
+              session={talk}
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{ padding: osName === "iPadOS" ? 40 : 0 }}
+            />
+          ),
         }}
       />
 

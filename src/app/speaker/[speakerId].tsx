@@ -20,6 +20,7 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Speaker } from "@/types";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
+import { osName } from "expo-device";
 
 export default function SpeakerDetail() {
   const params = useLocalSearchParams();
@@ -44,7 +45,13 @@ export default function SpeakerDetail() {
             title: "",
             headerLeft: () =>
               Platform.select({
-                ios: <HeaderButton buttonProps={{ onPress: router.back }} />,
+                ios: (
+                  <HeaderButton
+                    buttonProps={{ onPress: router.back }}
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{ padding: osName === "iPadOS" ? 40 : 0 }}
+                  />
+                ),
                 default: undefined,
               }),
           }}
