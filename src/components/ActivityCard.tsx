@@ -40,19 +40,19 @@ export function ActivityCard({ session }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space24,
-    marginBottom: theme.space16,
     borderRadius: theme.borderRadius10,
     gap: theme.space8,
+    marginBottom: theme.space16,
+    marginHorizontal: theme.space24,
   },
   content: {
-    padding: theme.space24,
-    justifyContent: "center",
     borderRadius: theme.borderRadius12,
+    justifyContent: "center",
+    padding: theme.space24,
   },
   row: {
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
 });

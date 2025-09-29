@@ -32,17 +32,17 @@ export function NotFound({ message }: { message: string }) {
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
     padding: theme.space24,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginBottom: theme.space24 * 2,
   },
   heading: {
     marginBottom: theme.space24,
+  },
+  image: {
+    height: 100,
+    marginBottom: theme.space24 * 2,
+    width: 100,
   },
 });

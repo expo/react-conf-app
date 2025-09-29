@@ -86,12 +86,10 @@ export default function SpeakerDetail() {
               ) : null}
 
               <View
-                style={{
-                  width: "100%",
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  borderBottomColor: secondaryColor,
-                  marginVertical: theme.space24,
-                }}
+                style={[
+                  styles.separator,
+                  { borderBottomColor: secondaryColor },
+                ]}
               />
             </View>
             {speaker.links.length ? <Socials speaker={speaker} /> : null}
@@ -188,28 +186,33 @@ function Socials({ speaker }: { speaker: Speaker }) {
 }
 
 const styles = StyleSheet.create({
+  centered: {
+    alignItems: "center",
+  },
   container: {
     flex: 1,
   },
   contentContainer: {
+    borderBottomLeftRadius: theme.borderRadius20,
+    borderBottomRightRadius: theme.borderRadius20,
     padding: theme.space16,
     paddingTop: theme.space24,
-    borderBottomRightRadius: theme.borderRadius20,
-    borderBottomLeftRadius: theme.borderRadius20,
-  },
-  centered: {
-    alignItems: "center",
-  },
-  speakerImage: {
-    marginBottom: theme.space24,
   },
   icon: {
     height: 20,
     width: 20,
   },
+  separator: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: theme.space24,
+    width: "100%",
+  },
   socials: {
-    marginBottom: theme.space24,
     flexDirection: "row",
     justifyContent: "center",
+    marginBottom: theme.space24,
+  },
+  speakerImage: {
+    marginBottom: theme.space24,
   },
 });

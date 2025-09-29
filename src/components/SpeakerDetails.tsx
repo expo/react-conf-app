@@ -33,8 +33,8 @@ export function SpeakerDetails({ speaker }: { speaker: Speaker }) {
 
 const styles = StyleSheet.create({
   speaker: {
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
   },
   speakerDetails: {
     flex: 1,

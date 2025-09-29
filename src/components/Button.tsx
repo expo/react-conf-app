@@ -41,17 +41,17 @@ export function Button({
 }
 
 const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    borderRadius: theme.borderRadius34,
+    justifyContent: "center",
+    minHeight: 40,
+    minWidth: 150,
+    paddingHorizontal: theme.space24,
+    paddingVertical: theme.space8,
+    width: "100%",
+  },
   text: {
     color: theme.colorWhite,
-  },
-  button: {
-    width: "100%",
-    paddingVertical: theme.space8,
-    paddingHorizontal: theme.space24,
-    borderRadius: theme.borderRadius34,
-    minWidth: 150,
-    minHeight: 40,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

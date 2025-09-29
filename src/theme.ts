@@ -9,8 +9,8 @@ export const theme = {
 
   color: {
     reactBlue: {
-      light: "#58C4DC",
-      dark: "#087EA4",
+      light: "#087EA4",
+      dark: "#58C4DC",
     },
     transparent: {
       light: "rgba(255,255,255,0)",
@@ -44,6 +44,8 @@ export const theme = {
   space16: 16,
   space24: 24,
 
+  fontSize10: 10,
+  fontSize12: 12,
   fontSize14: 14,
   fontSize16: 16,
   fontSize18: 18,
