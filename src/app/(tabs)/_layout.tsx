@@ -32,7 +32,11 @@ export default function TabLayout() {
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
   const hasBookmarks = bookmarks.length > 0;
   const tintColor = useThemeColor(theme.color.reactBlue);
-  const androidInactiveTintColor = useThemeColor({
+  const tintColorInvert = useThemeColor({
+    light: theme.color.reactBlue.dark,
+    dark: theme.color.reactBlue.light,
+  });
+  const inactiveTintColor = useThemeColor({
     light: theme.colorGrey,
     dark: "#FFFFFF50",
   });
@@ -41,15 +45,24 @@ export default function TabLayout() {
     dark: theme.colorWhite,
   });
 
+  const labelSelectedStyle =
+    Platform.OS === "ios" ? { color: tintColorInvert } : undefined;
+
   return (
     <NativeTabs
       labelStyle={{
-        color: Platform.OS === "ios" ? undefined : androidInactiveTintColor,
+        color:
+          Platform.OS === "ios"
+            ? DynamicColorIOS({
+                light: theme.colorBlack,
+                dark: theme.colorWhite,
+              })
+            : inactiveTintColor,
       }}
       iconColor={
         Platform.OS === "ios"
           ? DynamicColorIOS(theme.color.reactBlue)
-          : androidInactiveTintColor
+          : inactiveTintColor
       }
       tintColor={
         Platform.OS === "ios"
@@ -75,7 +88,7 @@ export default function TabLayout() {
             />
           ),
         })}
-        <Label>Calendar</Label>
+        <Label selectedStyle={labelSelectedStyle}>Calendar</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="bookmarks">
         {Platform.select({
@@ -92,7 +105,7 @@ export default function TabLayout() {
             />
           ),
         })}
-        <Label>Bookmarked</Label>
+        <Label selectedStyle={labelSelectedStyle}>Bookmarked</Label>
         {hasBookmarks && !isLiquidGlassAvailable() && (
           <Badge selectedBackgroundColor={tintColor}>
             {bookmarks.length.toString()}
@@ -117,7 +130,7 @@ export default function TabLayout() {
             />
           ),
         })}
-        <Label>Speakers</Label>
+        <Label selectedStyle={labelSelectedStyle}>Speakers</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="info">
         {Platform.select({
@@ -134,7 +147,7 @@ export default function TabLayout() {
             />
           ),
         })}
-        <Label>Info</Label>
+        <Label selectedStyle={labelSelectedStyle}>Info</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );
