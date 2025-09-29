@@ -93,7 +93,7 @@ export function CurrentlyLive({
             fontSize={14}
             fontWeight="semiBold"
             numberOfLines={2}
-            style={{ textAlign: "center" }}
+            style={styles.centeredText}
           >
             {currentlyLive.session.title}
           </ThemedText>
@@ -107,19 +107,22 @@ export function CurrentlyLive({
 }
 
 const styles = StyleSheet.create({
+  centeredText: {
+    textAlign: "center",
+  },
   container: {
     alignItems: "center",
     width: Platform.select({ android: undefined, default: 180 }),
   },
   dot: {
+    backgroundColor: theme.colorRed,
+    borderRadius: theme.borderRadius4,
     height: theme.space4,
     width: theme.space4,
-    borderRadius: theme.borderRadius4,
-    backgroundColor: "#FF0000",
   },
   dotContainer: {
-    flexDirection: "row",
     alignItems: "center",
+    flexDirection: "row",
     gap: theme.space4,
   },
   text: {
