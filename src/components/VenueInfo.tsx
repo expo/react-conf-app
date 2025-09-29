@@ -16,7 +16,7 @@ const BOTTOM_OFFSET = 50;
 export function VenueInfo() {
   const { width } = useWindowDimensions();
 
-  const hotelImageSize = width - theme.space24 * 2;
+  const hotelImageSize = width - theme.space24;
 
   const onOpenVenue = () => {
     Linking.openURL(
