@@ -34,12 +34,8 @@ export default function TabLayout() {
   const hasBookmarks = bookmarks.length > 0;
   const tintColor = useThemeColor(theme.color.reactBlue);
   const inactiveTintColor = useThemeColor({
-    light: theme.colorGrey,
-    dark: "#FFFFFF50",
-  });
-  const tabBarActiveTintColor = useThemeColor({
-    light: theme.colorBlack,
-    dark: theme.colorWhite,
+    light: "#00000090",
+    dark: "#FFFFFF90",
   });
 
   const labelSelectedStyle =
@@ -58,13 +54,16 @@ export default function TabLayout() {
       }}
       iconColor={
         Platform.OS === "ios"
-          ? DynamicColorIOS(theme.color.reactBlue)
+          ? DynamicColorIOS({
+              light: theme.colorBlack,
+              dark: theme.colorWhite,
+            })
           : inactiveTintColor
       }
       tintColor={
         Platform.OS === "ios"
           ? DynamicColorIOS(theme.color.reactBlue)
-          : tabBarActiveTintColor
+          : inactiveTintColor
       }
       labelVisibilityMode="labeled"
       indicatorColor={tintColor + "25"}
@@ -89,7 +88,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="bookmarks">
         {Platform.select({
-          ios: <Icon sf="bookmark" />,
+          ios: <Icon sf="bookmark" selectedColor={tintColor} />,
           android: (
             <Icon
               src={
