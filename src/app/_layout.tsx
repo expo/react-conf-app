@@ -20,7 +20,6 @@ import { theme } from "../theme";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
-import { useQuickActionCallback } from "@/utils/useQuickActionCallback";
 
 SplashScreen.setOptions({
   duration: 300,
