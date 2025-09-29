@@ -1,6 +1,6 @@
 import { useThemeColor } from "./Themed";
 import { theme } from "@/theme";
-import { useWindowDimensions, View, StyleSheet } from "react-native";
+import { useWindowDimensions, View, StyleSheet, Platform } from "react-native";
 import { ConferenceDay } from "@/consts";
 import { Picker } from "@expo/ui/jetpack-compose";
 
@@ -13,7 +13,16 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
   const backgroundColor = useThemeColor(theme.color.background);
   const width = useWindowDimensions().width;
   const tintColor = useThemeColor(theme.color.reactBlue);
-  const colorText = useThemeColor(theme.color.text);
+  const colorText = useThemeColor({
+    light: Platform.select({
+      ios: theme.color.text.light,
+      android: theme.color.text.dark,
+    }),
+    dark: Platform.select({
+      ios: theme.color.text.dark,
+      android: theme.color.text.light,
+    }),
+  });
   const inactiveColorText = useThemeColor(theme.color.textSecondary);
   const backgroundSecondary = useThemeColor(theme.color.backgroundSecondary);
 
