@@ -60,6 +60,8 @@ export const theme = {
   fontSize14: fontScale(14),
   fontSize16: fontScale(16),
   fontSize18: fontScale(18),
+  fontSize24: fontScale(24),
+  fontSize32: fontScale(32),
 
   fontFamilyLight: "FreightSansProLight-Regular",
   fontFamilyLightItalic: "FreightSansProLight-Italic",

@@ -176,7 +176,7 @@ export default function Layout() {
                     : "light",
                 headerTitle: Platform.select({
                   android: (props) => (
-                    <ThemedText fontSize={24} fontWeight="bold">
+                    <ThemedText fontSize={theme.fontSize24} fontWeight="bold">
                       {props.children}
                     </ThemedText>
                   ),
@@ -192,7 +192,7 @@ export default function Layout() {
                 title: "Modal",
                 headerTitleAlign: "center",
                 headerTitle: (props) => (
-                  <ThemedText fontSize={24} fontWeight="bold">
+                  <ThemedText fontSize={theme.fontSize24} fontWeight="bold">
                     {props.children}
                   </ThemedText>
                 ),

@@ -29,7 +29,7 @@ export function Button({
         <ActivityIndicator color={theme.colorWhite} />
       ) : (
         <ThemedText
-          fontSize={16}
+          fontSize={theme.fontSize16}
           fontWeight="semiBold"
           style={[styles.text, { color: textColor }]}
         >

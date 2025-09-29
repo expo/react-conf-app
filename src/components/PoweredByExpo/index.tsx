@@ -170,7 +170,7 @@ export function PoweredByExpo() {
           >
             <View style={styles.flippedContent}>
               <ThemedText
-                fontSize={16}
+                fontSize={theme.fontSize16}
                 fontWeight="semiBold"
                 color={{
                   light: theme.colorWhite,
