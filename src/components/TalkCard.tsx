@@ -40,22 +40,30 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
   };
 
   return (
-    <Pressable onPress={handlePress}>
-      <ThemedView style={styles.container}>
-        {!isBookmarked && (
-          <ThemedText
-            fontSize={18}
-            fontWeight="medium"
-            color={theme.color.textSecondary}
-            marginBottom={theme.space8}
-            style={{ marginLeft: theme.space24 }}
-          >
-            {formatSessionTime(session, shouldUseLocalTz)}
-          </ThemedText>
-        )}
-        <ThemedView
-          color={theme.color.backgroundSecondary}
-          style={styles.content}
+    <ThemedView style={styles.container}>
+      {!isBookmarked && (
+        <ThemedText
+          fontSize={18}
+          fontWeight="medium"
+          color={theme.color.textSecondary}
+          marginBottom={theme.space8}
+          style={{ marginLeft: theme.space24 }}
+        >
+          {formatSessionTime(session, shouldUseLocalTz)}
+        </ThemedText>
+      )}
+      <ThemedView
+        color={theme.color.backgroundSecondary}
+        style={styles.content}
+      >
+        <Pressable
+          onPress={handlePress}
+          style={{
+            marginHorizontal: -theme.space16,
+            paddingHorizontal: theme.space16,
+            marginVertical: -theme.space8,
+            paddingVertical: theme.space8,
+          }}
         >
           <View style={styles.titleAndBookmark}>
             <ThemedText fontSize={18} fontWeight="semiBold" style={{ flex: 1 }}>
@@ -79,25 +87,25 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
               </ThemedText>
             </ThemedView>
           )}
-          {session.speakers.map((speaker) => (
-            <Pressable
-              onPress={() => handleSpeakerPress(speaker)}
-              key={speaker.id}
-              style={({ pressed }) => ({
-                marginHorizontal: -theme.space16,
-                paddingHorizontal: theme.space16,
-                marginVertical: -theme.space8,
-                paddingVertical: theme.space8,
-                borderRadius: theme.borderRadius32,
-                opacity: pressed ? 0.6 : 1,
-              })}
-            >
-              <SpeakerDetails speaker={speaker} key={speaker.id} />
-            </Pressable>
-          ))}
-        </ThemedView>
+        </Pressable>
+        {session.speakers.map((speaker) => (
+          <Pressable
+            onPress={() => handleSpeakerPress(speaker)}
+            key={speaker.id}
+            style={({ pressed }) => ({
+              marginHorizontal: -theme.space16,
+              paddingHorizontal: theme.space16,
+              marginVertical: -theme.space8,
+              paddingVertical: theme.space8,
+              borderRadius: theme.borderRadius32,
+              opacity: pressed ? 0.6 : 1,
+            })}
+          >
+            <SpeakerDetails speaker={speaker} key={speaker.id} />
+          </Pressable>
+        ))}
       </ThemedView>
-    </Pressable>
+    </ThemedView>
   );
 }
 
