@@ -75,6 +75,7 @@
     "eslint-plugin-react-native": "^5.0.0",
     "patch-package": "^8.0.0",
     "prettier": "^3.2.5",
+    "tsx": "^4.20.6",
     "typescript": "~5.9.2"
   },
   "jest": {
