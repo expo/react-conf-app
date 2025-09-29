@@ -31,6 +31,8 @@ import {
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
+const HEADER_SCROLL_OFFSET = isLiquidGlassAvailable() ? 110 : 90;
+
 export default function Schedule() {
   const [selectedDay, setSelectedDay] = useState(getInitialDay());
   const scrollRef = useRef<FlatList>(null);
@@ -54,8 +56,8 @@ export default function Schedule() {
 
     animatedTranslateY.value = interpolate(
       event.contentOffset.y,
-      [-110, 0],
-      [0, 110],
+      [-HEADER_SCROLL_OFFSET, 0],
+      [0, HEADER_SCROLL_OFFSET],
       Extrapolation.CLAMP,
     );
 

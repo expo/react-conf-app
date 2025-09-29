@@ -80,17 +80,6 @@ const config: ExpoConfig = {
     "expo-asset",
     "expo-build-properties",
     "expo-web-browser",
-    [
-      "expo-quick-actions",
-      {
-        androidIcons: {
-          layers: {
-            foregroundImage: "./assets/icons/layers.png",
-            backgroundColor: "#23272F",
-          },
-        },
-      },
-    ],
     "expo-router",
     [
       "expo-font",

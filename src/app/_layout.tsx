@@ -4,7 +4,6 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { differenceInMinutes } from "date-fns";
-import * as QuickActions from "expo-quick-actions";
 import { usePathname, useRouter } from "expo-router";
 import { Stack } from "expo-router/stack";
 import { StatusBar } from "expo-status-bar";
@@ -21,7 +20,6 @@ import { theme } from "../theme";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
-import { useQuickActionCallback } from "@/utils/useQuickActionCallback";
 
 SplashScreen.setOptions({
   duration: 300,
@@ -56,17 +54,6 @@ export default function Layout() {
     );
   }, [colorScheme]);
 
-  useEffect(() => {
-    QuickActions.setItems([
-      {
-        title: "Back to the app",
-        icon: Platform.OS === "ios" ? "symbol:square.stack.3d.up" : "layers",
-        id: "0",
-        params: { href: "/modal" },
-      },
-    ]);
-  }, []);
-
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
     if (
@@ -85,13 +72,6 @@ export default function Layout() {
     // eslint-disable-next-line react-compiler/react-compiler
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastNotificationResponse]);
-
-  useQuickActionCallback((action) => {
-    const href = action.params?.href;
-    if (href && typeof href === "string") {
-      router.navigate(href);
-    }
-  });
 
   useEffect(() => {
     const fetchData = async () => {
