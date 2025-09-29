@@ -42,7 +42,7 @@ export function VenueInfo() {
           start={{ x: 0.5, y: 0 }}
           end={{ x: 0.5, y: 1 }}
           colors={["transparent", backgroundColor]}
-          style={[StyleSheet.absoluteFillObject]}
+          style={StyleSheet.absoluteFillObject}
         />
         <ThemedView
           style={styles.venueDetails}
@@ -77,33 +77,33 @@ export function VenueInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space16,
-    paddingTop: theme.space24,
-    paddingBottom: theme.space16,
     marginBottom: BOTTOM_OFFSET,
+    marginHorizontal: theme.space16,
+    paddingBottom: theme.space16,
+    paddingTop: theme.space24,
   },
   imageContainer: {
     borderTopLeftRadius: theme.borderRadius32,
     borderTopRightRadius: theme.borderRadius32,
     overflow: "hidden",
   },
-  venueName: {
-    marginBottom: theme.space16,
+  venueAddress: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 1,
+    justifyContent: "center",
   },
   venueDetails: {
-    position: "absolute",
-    bottom: -BOTTOM_OFFSET,
-    left: 0,
-    right: 0,
     alignItems: "center",
-    paddingBottom: theme.space24,
     borderBottomLeftRadius: theme.borderRadius32,
     borderBottomRightRadius: theme.borderRadius32,
+    bottom: -BOTTOM_OFFSET,
+    left: 0,
+    paddingBottom: theme.space24,
+    position: "absolute",
+    right: 0,
   },
-  venueAddress: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 1,
+  venueName: {
+    marginBottom: theme.space16,
   },
 });

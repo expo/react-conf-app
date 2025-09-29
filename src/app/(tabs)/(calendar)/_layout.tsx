@@ -38,7 +38,7 @@ export default function Layout() {
 }
 const styles = StyleSheet.create({
   image: {
-    width: 72,
     height: 20,
+    width: 72,
   },
 });

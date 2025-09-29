@@ -32,11 +32,11 @@ export function LiveStreamInfo() {
         </ThemedText>
       </View>
       <ThemedText
-        style={{
-          marginBottom: theme.space24,
-          textAlign: "center",
-          color: borderColor,
+        color={{
+          light: theme.color.textSecondary.light,
+          dark: theme.colorWhite,
         }}
+        style={styles.text}
       >
         Join React Conf from anywhere with our free live stream access. Watch
         all the talks remotely.
@@ -48,26 +48,30 @@ export function LiveStreamInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space16,
-    marginBottom: theme.space16,
-    borderRadius: theme.borderRadius32,
-    padding: theme.space24,
     alignItems: "center",
+    borderRadius: theme.borderRadius32,
+    marginBottom: theme.space16,
+    marginHorizontal: theme.space16,
+    padding: theme.space24,
   },
   liveStreamContainer: {
+    alignItems: "center",
+    borderRadius: theme.borderRadius32,
     borderWidth: 2,
+    flexDirection: "row",
+    gap: theme.space8,
+    justifyContent: "center",
+    marginBottom: theme.space16,
     paddingHorizontal: theme.space8,
     paddingVertical: theme.space4,
-    borderRadius: theme.borderRadius32,
-    marginBottom: theme.space16,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: theme.space8,
   },
   liveStreamDot: {
-    width: 8,
-    height: 8,
     borderRadius: theme.borderRadius32,
+    height: 8,
+    width: 8,
+  },
+  text: {
+    marginBottom: theme.space24,
+    textAlign: "center",
   },
 });

@@ -162,8 +162,8 @@ export default function TalkDetail() {
       >
         <>
           {isLiquidGlassAvailable() ? (
-            <View style={[{ height: drawerHeight }]}>
-              <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+            <View style={{ height: drawerHeight }}>
+              <Animated.View style={[opacityStyle, styles.absolute]}>
                 <Canvas
                   style={{
                     width: width,
@@ -177,7 +177,7 @@ export default function TalkDetail() {
                 </Canvas>
               </Animated.View>
               <View style={{ height: drawerHeight }}>
-                <Animated.View style={[opacityStyle, { position: "absolute" }]}>
+                <Animated.View style={[opacityStyle, styles.absolute]}>
                   <Canvas style={{ width: width, height: drawerHeight }}>
                     <Fill>
                       <Shader source={source} uniforms={uniforms} />
@@ -291,15 +291,25 @@ function Section({ title, value }: { title: string; value: string | null }) {
 }
 
 const styles = StyleSheet.create({
+  absolute: {
+    position: "absolute",
+  },
   container: {
     flex: 1,
+  },
+  content: {
+    paddingHorizontal: theme.space24,
+    paddingTop: theme.space16,
+  },
+  contentContainer: {
+    borderBottomLeftRadius: theme.borderRadius20,
+    borderBottomRightRadius: theme.borderRadius20,
   },
   header: {
     paddingHorizontal: theme.space24,
   },
-  contentContainer: {
-    borderBottomRightRadius: theme.borderRadius20,
-    borderBottomLeftRadius: theme.borderRadius20,
+  sectionContainer: {
+    marginBottom: theme.space24,
   },
   speaker: {
     flexDirection: "row",
@@ -312,12 +322,5 @@ const styles = StyleSheet.create({
   talkTitle: {
     textDecorationLine: "underline",
     textDecorationStyle: "dashed",
-  },
-  sectionContainer: {
-    marginBottom: theme.space24,
-  },
-  content: {
-    paddingTop: theme.space16,
-    paddingHorizontal: theme.space24,
   },
 });

@@ -14,6 +14,7 @@ import * as Haptics from "expo-haptics";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { frame } from "@expo/ui/swift-ui/modifiers";
 import { theme } from "@/theme";
+import { StyleSheet } from "react-native";
 
 const options = ["PDT (Venue)", `${getCurrentTimezone()} (Local)`];
 
@@ -31,7 +32,7 @@ export function TimeZoneSwitch() {
   };
 
   return (
-    <Host style={{ width: 94, height: 34 }}>
+    <Host style={styles.container}>
       <ContextMenu>
         <ContextMenu.Items>
           <Picker
@@ -47,11 +48,11 @@ export function TimeZoneSwitch() {
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
             color={isLiquidGlassAvailable() ? "primary" : "gray"}
           >
-            <HStack modifiers={[frame({ width: 70 })]} spacing={theme.space8}>
-              <Text weight="semibold" size={theme.fontSize14}>
+            <HStack modifiers={[frame({ width: 50 })]} spacing={theme.space8}>
+              <Text weight="semibold" size={theme.fontSize10}>
                 {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
               </Text>
-              <Image systemName="chevron.down" size={theme.fontSize18} />
+              <Image systemName="chevron.down" size={theme.fontSize10} />
             </HStack>
           </Button>
         </ContextMenu.Trigger>
@@ -59,3 +60,10 @@ export function TimeZoneSwitch() {
     </Host>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: 34,
+    width: 94,
+  },
+});
