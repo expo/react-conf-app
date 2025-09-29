@@ -20,6 +20,7 @@ import { theme } from "../theme";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
+import { osName } from "expo-device";
 
 SplashScreen.setOptions({
   duration: 300,
