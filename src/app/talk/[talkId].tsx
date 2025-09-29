@@ -320,9 +320,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   talkTitle: {
+    marginBottom: theme.space12,
+    textAlign: "center",
     textDecorationLine: "underline",
     textDecorationStyle: "dashed",
-    textAlign: "center",
-    marginBottom: theme.space12,
   },
 });
