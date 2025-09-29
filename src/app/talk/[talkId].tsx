@@ -185,23 +185,17 @@ export default function TalkDetail() {
       >
         <>
           {isLiquidGlassAvailable() ? (
-            <View style={[{ height: 600 }]}>
-              <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-                <Canvas
-                  style={{
-                    width: width,
-                    height: 600,
-                    transform: [{ scale: 2 }],
-                  }}
-                >
+            <View style={styles.glassContainer}>
+              <Animated.View style={[opacityStyle, styles.absolute]}>
+                <Canvas style={{ width: width, ...styles.canvasWithTransform }}>
                   <Fill>
                     <Shader source={source} uniforms={uniforms} />
                   </Fill>
                 </Canvas>
               </Animated.View>
-              <View style={{ height: 600 }}>
-                <Animated.View style={[opacityStyle, { position: "absolute" }]}>
-                  <Canvas style={{ width: width, height: 600 }}>
+              <View style={styles.glassContainer}>
+                <Animated.View style={[opacityStyle, styles.absolute]}>
+                  <Canvas style={{ width: width, ...styles.canvas }}>
                     <Fill>
                       <Shader source={source} uniforms={uniforms} />
                     </Fill>
@@ -231,11 +225,7 @@ export default function TalkDetail() {
               darkColor={
                 isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
               }
-              style={[
-                styles.header,
-                headerStyle,
-                { backgroundColor: "transparent" },
-              ]}
+              style={[styles.header, headerStyle]}
             >
               <ThemedText
                 fontWeight="bold"
@@ -323,18 +313,40 @@ function Section({ title, value }: { title: string; value: string | null }) {
   );
 }
 
+const OVERLAY_HEIGHT = 600;
+
 const styles = StyleSheet.create({
+  absolute: {
+    position: "absolute",
+  },
+  canvas: {
+    height: OVERLAY_HEIGHT,
+  },
+  canvasWithTransform: {
+    height: OVERLAY_HEIGHT,
+    transform: [{ scale: 2 }],
+  },
   container: {
     flex: 1,
   },
-  header: {
-    minHeight: 150,
-    paddingTop: 50,
+  content: {
     paddingHorizontal: theme.space16,
+    paddingTop: theme.space16,
   },
   contentContainer: {
-    borderBottomRightRadius: theme.borderRadius20,
     borderBottomLeftRadius: theme.borderRadius20,
+    borderBottomRightRadius: theme.borderRadius20,
+  },
+  glassContainer: {
+    height: OVERLAY_HEIGHT,
+  },
+  header: {
+    minHeight: 150,
+    paddingHorizontal: theme.space16,
+    paddingTop: 50,
+  },
+  sectionContainer: {
+    marginBottom: theme.space24,
   },
   speaker: {
     flexDirection: "row",
@@ -345,14 +357,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   talkTitle: {
-    textAlign: "center",
     paddingTop: theme.space24,
-  },
-  sectionContainer: {
-    marginBottom: theme.space24,
-  },
-  content: {
-    paddingTop: theme.space16,
-    paddingHorizontal: theme.space16,
+    textAlign: "center",
   },
 });

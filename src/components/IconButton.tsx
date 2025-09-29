@@ -40,8 +40,8 @@ export function IconButton({
 
 const styles = StyleSheet.create({
   button: {
-    padding: theme.space12,
     borderRadius: theme.borderRadius6,
     marginHorizontal: theme.space8,
+    padding: theme.space12,
   },
 });

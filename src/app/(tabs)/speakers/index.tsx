@@ -68,7 +68,7 @@ export default function Speakers() {
                 <SpeakerDetails speaker={item} key={item.id} />
               </Pressable>
             </Link.Trigger>
-            <Link.Preview style={{ width: width, height: 350 }} />
+            <Link.Preview style={{ ...styles.preview, width: width }} />
             <Link.Menu title={`Talks by ${item.fullName}`}>
               {item.sessions
                 .map((sessionId) => {
@@ -115,7 +115,7 @@ export default function Speakers() {
         { minHeight: height - (bottom + top + 130) },
       ]}
       ItemSeparatorComponent={() => (
-        <ThemedView style={{ height: 1 }} color={theme.color.border} />
+        <ThemedView style={styles.separator} color={theme.color.border} />
       )}
       extraData={isBookmarked || searchText}
       renderItem={renderItem}
@@ -138,11 +138,17 @@ export default function Speakers() {
 
 export const styles = StyleSheet.create({
   contentContainer: {
-    paddingHorizontal: theme.space16,
     paddingBottom: Platform.select({ android: 100, default: 0 }),
+    paddingHorizontal: theme.space16,
   },
   noResultsContainer: {
     padding: theme.space24,
+  },
+  preview: {
+    height: 350,
+  },
+  separator: {
+    height: 1,
   },
   speakerContainer: {
     paddingVertical: theme.space16,

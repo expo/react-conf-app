@@ -2,7 +2,7 @@ import * as Haptics from "expo-haptics";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, {
+import {
   Easing,
   Extrapolation,
   interpolate,
@@ -12,7 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { HolographicGradient } from "./HolographicGradient";
 import { scheduleOnRN } from "react-native-worklets";
-import { ThemedText } from "../Themed";
+import { ThemedText, ThemedView } from "../Themed";
 import { theme } from "@/theme";
 import * as Application from "expo-application";
 
@@ -116,18 +116,13 @@ function GestureContainer({
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View
-        style={[
-          {
-            height,
-            width,
-            backgroundColor: "transparent",
-          },
-          rStyle,
-        ]}
+      <ThemedView
+        style={[{ height, width }, rStyle]}
+        color={theme.color.transparent}
+        animated
       >
         {children}
-      </Animated.View>
+      </ThemedView>
     </GestureDetector>
   );
 }
@@ -151,14 +146,14 @@ export function PoweredByExpo() {
   });
 
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container} color={theme.color.transparent}>
       <GestureContainer
         width={CONTAINER_SIZE}
         height={CONTAINER_SIZE}
         maxAngle={15}
         onFlip={handleFlip}
       >
-        <View style={styles.layeredView}>
+        <ThemedView style={styles.layeredView} color={theme.color.transparent}>
           <View style={styles.cardSide}>
             <View style={styles.shaderBackground}>
               <HolographicGradient />
@@ -168,7 +163,11 @@ export function PoweredByExpo() {
               style={styles.logoOverlay}
             />
           </View>
-          <Animated.View style={[styles.flippedOverlay, overlayAnimatedStyle]}>
+          <ThemedView
+            color={theme.color.transparent}
+            style={[styles.flippedOverlay, overlayAnimatedStyle]}
+            animated
+          >
             <View style={styles.flippedContent}>
               <ThemedText
                 fontSize={16}
@@ -182,66 +181,64 @@ export function PoweredByExpo() {
                 {Application.nativeBuildVersion})
               </ThemedText>
             </View>
-          </Animated.View>
-        </View>
+          </ThemedView>
+        </ThemedView>
       </GestureContainer>
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  cardSide: {
+    alignItems: "center",
+    height: CONTAINER_SIZE,
+    justifyContent: "center",
+    position: "absolute",
+    width: CONTAINER_SIZE,
+  },
   container: {
+    alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "transparent",
     paddingVertical: theme.space16,
   },
-  layeredView: {
-    width: CONTAINER_SIZE,
-    height: CONTAINER_SIZE,
-    justifyContent: "center",
+  flippedContent: {
     alignItems: "center",
-    position: "relative",
-    backgroundColor: "transparent",
-  },
-  shaderBackground: {
-    position: "absolute",
-    width: SHADER_SIZE,
-    height: SHADER_SIZE,
-    borderRadius: BORDER_RADIUS,
-    overflow: "hidden",
-    top: SHADER_OFFSET,
-    left: SHADER_OFFSET,
-    borderWidth: 2,
-    borderColor: theme.colorBlack,
-  },
-  logoOverlay: {
-    position: "absolute",
-    width: LOGO_SIZE,
-    height: LOGO_SIZE,
-    resizeMode: "contain",
-    top: LOGO_OFFSET,
-    left: LOGO_OFFSET,
-  },
-  cardSide: {
-    position: "absolute",
-    width: CONTAINER_SIZE,
-    height: CONTAINER_SIZE,
+    backgroundColor: theme.colorBlack,
+    borderRadius: 30,
+    height: FLIPPED_CONTENT_SIZE,
     justifyContent: "center",
-    alignItems: "center",
+    width: FLIPPED_CONTENT_SIZE,
   },
   flippedOverlay: {
     ...StyleSheet.absoluteFillObject,
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
   },
-  flippedContent: {
-    backgroundColor: theme.colorBlack,
-    height: FLIPPED_CONTENT_SIZE,
-    width: FLIPPED_CONTENT_SIZE,
-    borderRadius: 30,
-    justifyContent: "center",
+  layeredView: {
     alignItems: "center",
+    height: CONTAINER_SIZE,
+    justifyContent: "center",
+    position: "relative",
+    width: CONTAINER_SIZE,
+  },
+  logoOverlay: {
+    height: LOGO_SIZE,
+    left: LOGO_OFFSET,
+    position: "absolute",
+    resizeMode: "contain",
+    top: LOGO_OFFSET,
+    width: LOGO_SIZE,
+  },
+  shaderBackground: {
+    borderColor: theme.colorBlack,
+    borderRadius: BORDER_RADIUS,
+    borderWidth: 2,
+    height: SHADER_SIZE,
+    left: SHADER_OFFSET,
+    overflow: "hidden",
+    position: "absolute",
+    top: SHADER_OFFSET,
+    width: SHADER_SIZE,
   },
 });

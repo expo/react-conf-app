@@ -72,11 +72,11 @@ export default function Bookmarks() {
 }
 
 const styles = StyleSheet.create({
-  flatListContainer: {
-    paddingTop: theme.space16,
-    paddingBottom: Platform.select({ android: 100, default: 0 }),
-  },
   bookmarks: {
     paddingHorizontal: theme.space24,
+  },
+  flatListContainer: {
+    paddingBottom: Platform.select({ android: 100, default: 0 }),
+    paddingTop: theme.space16,
   },
 });
