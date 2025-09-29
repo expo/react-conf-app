@@ -29,14 +29,14 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
 }
 
 const styles = StyleSheet.create({
-  glassView: {
-    width: "auto",
-    height: 31,
-    borderRadius: theme.borderRadius80,
-    marginTop: theme.space16,
-    marginHorizontal: theme.space16,
-  },
   dayPicker: {
     height: 31, // fixed height to prevent jumping
+  },
+  glassView: {
+    borderRadius: theme.borderRadius80,
+    height: 31,
+    marginHorizontal: theme.space16,
+    marginTop: theme.space16,
+    width: "auto",
   },
 });

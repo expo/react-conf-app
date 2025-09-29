@@ -128,13 +128,12 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: theme.space24,
   },
-  title: {
-    paddingHorizontal: theme.space16,
-    paddingBottom: theme.space16,
-  },
   content: {
-    paddingHorizontal: theme.space16,
     paddingBottom: theme.space16,
+    paddingHorizontal: theme.space16,
+  },
+  image: {
+    height: 50,
   },
   imageContainer: {
     backgroundColor: theme.colorWhite,
@@ -144,10 +143,11 @@ const styles = StyleSheet.create({
   level: {
     paddingVertical: theme.space16,
   },
-  image: {
-    height: 50,
-  },
   sponsors: {
     gap: theme.space16,
+  },
+  title: {
+    paddingBottom: theme.space16,
+    paddingHorizontal: theme.space16,
   },
 });

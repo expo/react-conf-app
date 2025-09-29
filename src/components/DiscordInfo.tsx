@@ -30,15 +30,15 @@ export function DiscordInfo() {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space16,
-    marginBottom: theme.space16,
-    borderRadius: theme.borderRadius32,
-    padding: theme.space24,
     alignItems: "center",
+    borderRadius: theme.borderRadius32,
     gap: theme.space16,
+    marginBottom: theme.space16,
+    marginHorizontal: theme.space16,
+    padding: theme.space24,
   },
   text: {
-    textAlign: "center",
     marginBottom: theme.space8,
+    textAlign: "center",
   },
 });

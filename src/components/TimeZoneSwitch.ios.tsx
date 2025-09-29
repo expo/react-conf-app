@@ -63,7 +63,7 @@ export function TimeZoneSwitch() {
 
 const styles = StyleSheet.create({
   container: {
-    width: 94,
     height: 34,
+    width: 94,
   },
 });

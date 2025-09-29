@@ -316,17 +316,37 @@ function Section({ title, value }: { title: string; value: string | null }) {
 const OVERLAY_HEIGHT = 600;
 
 const styles = StyleSheet.create({
+  absolute: {
+    position: "absolute",
+  },
+  canvas: {
+    height: OVERLAY_HEIGHT,
+  },
+  canvasWithTransform: {
+    height: OVERLAY_HEIGHT,
+    transform: [{ scale: 2 }],
+  },
   container: {
     flex: 1,
   },
-  header: {
-    minHeight: 150,
-    paddingTop: 50,
+  content: {
     paddingHorizontal: theme.space16,
+    paddingTop: theme.space16,
   },
   contentContainer: {
-    borderBottomRightRadius: theme.borderRadius20,
     borderBottomLeftRadius: theme.borderRadius20,
+    borderBottomRightRadius: theme.borderRadius20,
+  },
+  glassContainer: {
+    height: OVERLAY_HEIGHT,
+  },
+  header: {
+    minHeight: 150,
+    paddingHorizontal: theme.space16,
+    paddingTop: 50,
+  },
+  sectionContainer: {
+    marginBottom: theme.space24,
   },
   speaker: {
     flexDirection: "row",
@@ -337,27 +357,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   talkTitle: {
-    textAlign: "center",
     paddingTop: theme.space24,
-  },
-  sectionContainer: {
-    marginBottom: theme.space24,
-  },
-  content: {
-    paddingTop: theme.space16,
-    paddingHorizontal: theme.space16,
-  },
-  glassContainer: {
-    height: OVERLAY_HEIGHT,
-  },
-  absolute: {
-    position: "absolute",
-  },
-  canvasWithTransform: {
-    height: OVERLAY_HEIGHT,
-    transform: [{ scale: 2 }],
-  },
-  canvas: {
-    height: OVERLAY_HEIGHT,
+    textAlign: "center",
   },
 });

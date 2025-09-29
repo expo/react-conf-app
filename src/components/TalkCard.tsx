@@ -107,29 +107,29 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: theme.space16,
-    marginBottom: theme.space16,
     borderRadius: theme.borderRadius10,
+    marginBottom: theme.space16,
+    marginHorizontal: theme.space16,
   },
   content: {
     borderRadius: theme.borderRadius32,
-    padding: theme.space24,
     gap: theme.space24,
-  },
-  titleAndBookmark: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: theme.space8,
-    alignItems: "center",
-  },
-  time: {
-    paddingVertical: theme.space16,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    paddingHorizontal: theme.space16,
-    borderRadius: theme.borderRadius10,
+    padding: theme.space24,
   },
   flex1: {
     flex: 1,
+  },
+  time: {
+    borderRadius: theme.borderRadius10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: theme.space16,
+    paddingVertical: theme.space16,
+  },
+  titleAndBookmark: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: theme.space8,
+    justifyContent: "space-between",
   },
 });

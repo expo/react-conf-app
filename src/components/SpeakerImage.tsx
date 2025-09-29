@@ -72,47 +72,47 @@ export function SpeakerImage({
 }
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    marginRight: theme.space12,
-    borderRadius: 100,
-    overflow: "hidden",
-  },
-  profileImage: {
-    width: 50,
-    height: 70,
-    ...StyleSheet.absoluteFillObject,
-  },
-  imageSizeSmall: {
-    width: 32,
-    height: 32,
-  },
-  imageSizeMedium: {
-    width: 60,
-    height: 60,
-  },
-  imageSizeLarge: {
-    width: 96,
-    height: 96,
-  },
-  imageSizeExtraLarge: {
-    width: 200,
-    height: 200,
-  },
   fallbackImage: {
+    alignItems: "center",
     backgroundColor: theme.color.reactBlue.dark,
     justifyContent: "center",
-    alignItems: "center",
   },
-  reactLogoSizeMedium: {
-    width: 30,
-    height: 30,
+  imageContainer: {
+    borderRadius: 100,
+    marginRight: theme.space12,
+    overflow: "hidden",
   },
-  reactLogoSizeLarge: {
+  imageSizeExtraLarge: {
+    height: 200,
+    width: 200,
+  },
+  imageSizeLarge: {
+    height: 96,
+    width: 96,
+  },
+  imageSizeMedium: {
+    height: 60,
+    width: 60,
+  },
+  imageSizeSmall: {
+    height: 32,
+    width: 32,
+  },
+  profileImage: {
+    height: 70,
     width: 50,
-    height: 50,
+    ...StyleSheet.absoluteFillObject,
   },
   reactLogoSizeExtraLarge: {
-    width: 100,
     height: 100,
+    width: 100,
+  },
+  reactLogoSizeLarge: {
+    height: 50,
+    width: 50,
+  },
+  reactLogoSizeMedium: {
+    height: 30,
+    width: 30,
   },
 });

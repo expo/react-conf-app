@@ -31,10 +31,10 @@ export function TimeZoneSwitch() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
     alignSelf: "flex-end",
-    height: 32,
     borderRadius: theme.borderRadius40,
+    height: 32,
+    justifyContent: "center",
     paddingHorizontal: theme.space16,
   },
 });

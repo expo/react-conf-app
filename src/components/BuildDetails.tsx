@@ -35,9 +35,9 @@ export function BuildDetails() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
     alignItems: "center",
-    paddingTop: theme.space12,
+    justifyContent: "center",
     paddingBottom: theme.space8,
+    paddingTop: theme.space12,
   },
 });

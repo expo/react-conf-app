@@ -53,14 +53,14 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
 }
 
 const styles = StyleSheet.create({
-  picker: {
-    alignSelf: "center",
-    paddingVertical: theme.space24,
-    height: 40,
-  },
   overlay: {
     height: 50,
-    width: "100%",
     position: "absolute",
+    width: "100%",
+  },
+  picker: {
+    alignSelf: "center",
+    height: 40,
+    paddingVertical: theme.space24,
   },
 });
