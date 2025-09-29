@@ -10,7 +10,6 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { ActivityCard } from "@/components/ActivityCard";
 import { NotFound } from "@/components/NotFound";
@@ -24,6 +23,7 @@ import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
 import { getInitialDay } from "@/utils/formatDate";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   CurrentlyLive,
   type CurrentlyLiveSession,
@@ -38,8 +38,8 @@ export default function Schedule() {
   useScrollToTop(scrollRef as any);
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
-  const insets = useSafeAreaInsets();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const translationY = useSharedValue(0);
   const animatedTranslateY = useSharedValue(0);
@@ -54,15 +54,8 @@ export default function Schedule() {
 
     animatedTranslateY.value = interpolate(
       event.contentOffset.y,
-      [-160, -93, 0],
-      [0, -40, 40],
-      Extrapolation.CLAMP,
-    );
-
-    animatedPaddingTop.value = interpolate(
-      event.contentOffset.y,
-      [-160, -93, 0],
-      [0, insets.top, insets.top],
+      [-110, 0],
+      [0, 110],
       Extrapolation.CLAMP,
     );
 
@@ -100,12 +93,18 @@ export default function Schedule() {
     refreshSchedule({ ttlMs: 60_000 });
   });
 
-  const handleSelectDay = useCallback((day: ConferenceDay) => {
-    setSelectedDay(day);
-    if (isScrolledDown.current) {
-      scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
-    }
-  }, []);
+  const handleSelectDay = useCallback(
+    (day: ConferenceDay) => {
+      setSelectedDay(day);
+      if (isScrolledDown.current) {
+        scrollRef.current?.scrollToOffset({
+          offset: -30 - insets.top,
+          animated: true,
+        });
+      }
+    },
+    [insets.top],
+  );
 
   const renderStickyHeader = useMemo(
     () => (
