@@ -32,10 +32,6 @@ export default function TabLayout() {
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
   const hasBookmarks = bookmarks.length > 0;
   const tintColor = useThemeColor(theme.color.reactBlue);
-  const tintColorInvert = useThemeColor({
-    light: theme.color.reactBlue.dark,
-    dark: theme.color.reactBlue.light,
-  });
   const inactiveTintColor = useThemeColor({
     light: theme.colorGrey,
     dark: "#FFFFFF50",
@@ -46,7 +42,7 @@ export default function TabLayout() {
   });
 
   const labelSelectedStyle =
-    Platform.OS === "ios" ? { color: tintColorInvert } : undefined;
+    Platform.OS === "ios" ? { color: tintColor } : undefined;
 
   return (
     <NativeTabs
