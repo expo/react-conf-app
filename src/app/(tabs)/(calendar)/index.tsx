@@ -23,6 +23,7 @@ import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
 import { getInitialDay } from "@/utils/formatDate";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
 
@@ -34,6 +35,7 @@ export default function Schedule() {
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const translationY = useSharedValue(0);
   const animatedTranslateY = useSharedValue(0);
@@ -90,7 +92,10 @@ export default function Schedule() {
   const handleSelectDay = useCallback((day: ConferenceDay) => {
     setSelectedDay(day);
     if (isScrolledDown.current) {
-      scrollRef.current?.scrollToOffset({ offset: -30, animated: true });
+      scrollRef.current?.scrollToOffset({
+        offset: -30 - insets.top,
+        animated: true,
+      });
     }
   }, []);
 
