@@ -65,7 +65,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
           </View>
           {isBookmarked && (
             <ThemedView
-              style={[styles.time]}
+              style={styles.time}
               color={{
                 dark: "#3b3a3a",
                 light: "#dedede",

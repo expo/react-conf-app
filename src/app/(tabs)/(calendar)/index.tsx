@@ -105,7 +105,7 @@ export default function Schedule() {
 
   const renderStickyHeader = useMemo(
     () => (
-      <Animated.View style={[stickyHeaderStyle]}>
+      <Animated.View style={stickyHeaderStyle}>
         <DayPicker selectedDay={selectedDay} onSelectDay={handleSelectDay} />
       </Animated.View>
     ),

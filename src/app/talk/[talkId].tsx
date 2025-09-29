@@ -185,7 +185,7 @@ export default function TalkDetail() {
       >
         <>
           {isLiquidGlassAvailable() ? (
-            <View style={[{ height: 600 }]}>
+            <View style={{ height: 600 }}>
               <Animated.View style={[opacityStyle, { position: "absolute" }]}>
                 <Canvas
                   style={{

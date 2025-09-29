@@ -22,13 +22,11 @@ module.exports = defineConfig([
       "react-native/no-unused-styles": "error",
       "comma-dangle": ["error", "always-multiline"],
 
-      // TODO: (Kadi) separate PR to enable these
+      "react-native/split-platform-components": "error",
+      "react-native/no-single-element-style-arrays": "error",
       // "react-native/sort-styles": "error",
-      // "react-native/split-platform-components": "error",
       // "react-native/no-inline-styles": "error",
       // "react-native/no-color-literals": "error",
-      // "react-native/no-raw-text": "error",
-      // "react-native/no-single-element-style-arrays": "error",
     },
     settings: {
       "import/resolver": {
