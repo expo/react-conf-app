@@ -22,6 +22,7 @@ import { theme } from "../theme";
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { useQuickActionCallback } from "@/utils/useQuickActionCallback";
+import { useDeviceType } from "@/hooks/useDeviceType";
 
 SplashScreen.setOptions({
   duration: 300,
@@ -46,6 +47,8 @@ export default function Layout() {
   const { refreshData, lastRefreshed } = useReactConfStore();
 
   const tabBarBackgroundColor = useThemeColor(theme.color.background);
+  const { isTablet } = useDeviceType();
+  const sheetAllowedDetents = isTablet ? [1] : [0.6, 0.9];
 
   // Keep the root view background color in sync with the current theme
   useEffect(() => {
@@ -134,7 +137,7 @@ export default function Layout() {
                       : "modal"
                     : "modal",
                 sheetGrabberVisible: true,
-                sheetAllowedDetents: [0.6, 0.9],
+                sheetAllowedDetents,
                 sheetInitialDetentIndex: 0,
                 contentStyle: {
                   backgroundColor: isLiquidGlassAvailable()
