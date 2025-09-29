@@ -134,7 +134,7 @@ export default function Layout() {
                       : "modal"
                     : "modal",
                 sheetGrabberVisible: true,
-                sheetAllowedDetents: [0.6],
+                sheetAllowedDetents: [0.6, 0.9],
                 sheetInitialDetentIndex: 0,
                 contentStyle: {
                   backgroundColor: isLiquidGlassAvailable()

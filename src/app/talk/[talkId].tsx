@@ -6,24 +6,26 @@ import * as Haptics from "expo-haptics";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  useAnimatedScrollHandler,
-  interpolate,
-  Extrapolation,
   Easing,
   useAnimatedReaction,
   useDerivedValue,
   withTiming,
+  useAnimatedScrollHandler,
 } from "react-native-reanimated";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import { Canvas, Fill, Shader, Skia, vec } from "@shopify/react-native-skia";
 
 import { NotFound } from "@/components/NotFound";
 import { SpeakerImage } from "@/components/SpeakerImage";
-import { ThemedText, ThemedView } from "@/components/Themed";
+import { ThemedText, ThemedView, useThemeColor } from "@/components/Themed";
 import { useReactConfStore } from "@/store/reactConfStore";
 import { theme } from "@/theme";
 import { Session, Speaker } from "@/types";
-import { formatSessionTime } from "@/utils/formatDate";
+import {
+  DAY_ONE_DATE,
+  DAY_TWO_DATE,
+  formatSessionTime,
+} from "@/utils/formatDate";
 import { HeaderButton } from "@/components/HeaderButtons/HeaderButton";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { scheduleOnRN } from "react-native-worklets";
@@ -74,7 +76,9 @@ export default function TalkDetail() {
   const talkId = params.talkId || undefined;
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
+  const drawerHeight = height * 0.9;
+  const highlightColor = useThemeColor(theme.color.reactBlue);
 
   const router = useRouter();
 
@@ -82,43 +86,7 @@ export default function TalkDetail() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  const translationY = useSharedValue(0);
   const overscrollAmount = useSharedValue(0);
-  const scrollHandler = useAnimatedScrollHandler((event) => {
-    translationY.value = event.contentOffset.y;
-    const { contentOffset, contentSize, layoutMeasurement } = event;
-    const scrollPastBottom = Math.max(
-      0,
-      contentOffset.y + layoutMeasurement.height - contentSize.height - 20,
-    );
-    overscrollAmount.value = scrollPastBottom;
-  });
-  const headerStyle = useAnimatedStyle(() => {
-    if (Platform.OS !== "ios") {
-      return {};
-    }
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            translationY.value,
-            [-120, 0, 150],
-            [-90, 0, 120],
-            Extrapolation.CLAMP,
-          ),
-        },
-        {
-          scale: interpolate(
-            translationY.value,
-            [-120, 0],
-            [1, 0.8],
-            Extrapolation.CLAMP,
-          ),
-        },
-      ],
-      opacity: interpolate(translationY.value, [0, 100], [1, 0]),
-    };
-  });
 
   const { talk, isDayOne } = findTalk(talkId, { dayOne, dayTwo });
 
@@ -126,6 +94,15 @@ export default function TalkDetail() {
 
   const sheetAnim = useSharedValue(0);
   const hasTriggeredHaptic = useSharedValue(false);
+
+  const scrollHandler = useAnimatedScrollHandler((event) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event;
+    const scrollPastBottom = Math.max(
+      0,
+      contentOffset.y + layoutMeasurement.height - contentSize.height - 20,
+    );
+    overscrollAmount.value = scrollPastBottom;
+  });
 
   useAnimatedReaction(
     () => overscrollAmount.value,
@@ -149,7 +126,7 @@ export default function TalkDetail() {
   const uniforms = useDerivedValue(
     () => ({
       sheetAnim: sheetAnim.value,
-      size: vec(width, 500),
+      size: vec(width, drawerHeight),
     }),
     [sheetAnim],
   );
@@ -185,17 +162,23 @@ export default function TalkDetail() {
       >
         <>
           {isLiquidGlassAvailable() ? (
-            <View style={styles.glassContainer}>
+            <View style={{ height: drawerHeight }}>
               <Animated.View style={[opacityStyle, styles.absolute]}>
-                <Canvas style={{ width: width, ...styles.canvasWithTransform }}>
+                <Canvas
+                  style={{
+                    width: width,
+                    height: drawerHeight,
+                    transform: [{ scale: 2 }],
+                  }}
+                >
                   <Fill>
                     <Shader source={source} uniforms={uniforms} />
                   </Fill>
                 </Canvas>
               </Animated.View>
-              <View style={styles.glassContainer}>
+              <View style={{ height: drawerHeight }}>
                 <Animated.View style={[opacityStyle, styles.absolute]}>
-                  <Canvas style={{ width: width, ...styles.canvas }}>
+                  <Canvas style={{ width: width, height: drawerHeight }}>
                     <Fill>
                       <Shader source={source} uniforms={uniforms} />
                     </Fill>
@@ -205,36 +188,30 @@ export default function TalkDetail() {
             </View>
           ) : null}
           <AnimatedScrollView
+            onScroll={scrollHandler}
             style={styles.container}
             contentInsetAdjustmentBehavior="automatic"
             showsVerticalScrollIndicator={false}
-            onScroll={scrollHandler}
-            scrollEventThrottle={8}
             contentContainerStyle={[
               styles.contentContainer,
               {
+                minHeight: drawerHeight,
                 paddingBottom: insets.bottom + theme.space24,
               },
             ]}
           >
-            <ThemedView
-              animated
-              lightColor={
-                isDayOne ? theme.color.reactBlue.light : theme.colorLightGreen
-              }
-              darkColor={
-                isDayOne ? "rgba(88,196,220, 0.5)" : "rgba(155,223,177, 0.5)"
-              }
-              style={[styles.header, headerStyle]}
-            >
+            <View style={styles.header}>
               <ThemedText
                 fontWeight="bold"
                 fontSize={32}
-                style={styles.talkTitle}
+                style={[
+                  styles.talkTitle,
+                  { textDecorationColor: highlightColor },
+                ]}
               >
                 {talk?.title}
               </ThemedText>
-            </ThemedView>
+            </View>
             <ThemedView
               color={
                 isLiquidGlassAvailable()
@@ -262,8 +239,8 @@ export default function TalkDetail() {
                 title="Date"
                 value={
                   isDayOne
-                    ? "May 15, 2024 (Conference Day 1)"
-                    : "May 15, 2024 (Conference Day 2)"
+                    ? `${DAY_ONE_DATE} (Conference Day 1)`
+                    : `${DAY_TWO_DATE} (Conference Day 2)`
                 }
               />
               <Section
@@ -313,37 +290,23 @@ function Section({ title, value }: { title: string; value: string | null }) {
   );
 }
 
-const OVERLAY_HEIGHT = 600;
-
 const styles = StyleSheet.create({
   absolute: {
     position: "absolute",
-  },
-  canvas: {
-    height: OVERLAY_HEIGHT,
-  },
-  canvasWithTransform: {
-    height: OVERLAY_HEIGHT,
-    transform: [{ scale: 2 }],
   },
   container: {
     flex: 1,
   },
   content: {
-    paddingHorizontal: theme.space16,
+    paddingHorizontal: theme.space24,
     paddingTop: theme.space16,
   },
   contentContainer: {
     borderBottomLeftRadius: theme.borderRadius20,
     borderBottomRightRadius: theme.borderRadius20,
   },
-  glassContainer: {
-    height: OVERLAY_HEIGHT,
-  },
   header: {
-    minHeight: 150,
-    paddingHorizontal: theme.space16,
-    paddingTop: 50,
+    paddingHorizontal: theme.space24,
   },
   sectionContainer: {
     marginBottom: theme.space24,
@@ -357,7 +320,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   talkTitle: {
-    paddingTop: theme.space24,
+    marginBottom: theme.space12,
     textAlign: "center",
+    textDecorationLine: "underline",
+    textDecorationStyle: "dashed",
   },
 });
