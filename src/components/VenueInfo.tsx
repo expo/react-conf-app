@@ -1,6 +1,6 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Image } from "expo-image";
-import { StyleSheet, View, useWindowDimensions } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import * as Linking from "expo-linking";
 import { LinearGradient } from "expo-linear-gradient";
@@ -30,7 +30,7 @@ export function VenueInfo() {
         <View style={styles.imageContainer}>
           <Image
             source={require("@/assets/images/hotel.png")}
-            style={{ width: "100%", aspectRatio: 1 }}
+            style={styles.image}
           />
         </View>
         <LinearGradient
@@ -77,6 +77,10 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.space16,
     paddingBottom: theme.space16,
     paddingTop: theme.space24,
+  },
+  image: {
+    aspectRatio: 1,
+    width: "100%",
   },
   imageContainer: {
     borderTopLeftRadius: theme.borderRadius32,
