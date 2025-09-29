@@ -1,0 +1,27 @@
+name: Lint and Type Check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: 📦 Install dependencies
+        run: bun install
+
+      - name: 🔍 Run linter
+        run: bun run lint
+
+      - name: 🔍 Run TypeScript type check
+        run: bun tsc --noEmit
