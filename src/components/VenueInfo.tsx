@@ -1,5 +1,5 @@
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Image } from "expo-image";
+import { Image, ImageStyle } from "expo-image";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import * as Linking from "expo-linking";
@@ -16,8 +16,15 @@ const BOTTOM_OFFSET = 50;
 
 export function VenueInfo() {
   const { width } = useWindowDimensions();
-
   const hotelImageSize = width - theme.space24;
+
+  const imageStyle: ImageStyle =
+    osName === "iPadOS"
+      ? {
+          width: hotelImageSize,
+          height: hotelImageSize / 2,
+        }
+      : { width: "100%", aspectRatio: 1 };
 
   const onOpenVenue = () => {
     Linking.openURL(
@@ -35,10 +42,7 @@ export function VenueInfo() {
         <View style={styles.imageContainer}>
           <Image
             source={require("@/assets/images/hotel.png")}
-            style={{
-              width: hotelImageSize,
-              height: osName === "iPadOS" ? hotelImageSize / 2 : hotelImageSize,
-            }}
+            style={imageStyle}
           />
         </View>
         <LinearGradient
