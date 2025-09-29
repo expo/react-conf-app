@@ -116,16 +116,7 @@ function GestureContainer({
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View
-        style={[
-          {
-            height,
-            width,
-            backgroundColor: "transparent",
-          },
-          rStyle,
-        ]}
-      >
+      <Animated.View style={[styles.transparent, { height, width }, rStyle]}>
         {children}
       </Animated.View>
     </GestureDetector>
@@ -243,5 +234,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
+  },
+  transparent: {
+    backgroundColor: "transparent",
   },
 });

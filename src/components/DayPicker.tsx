@@ -1,6 +1,6 @@
 import { useThemeColor } from "./Themed";
 import { theme } from "@/theme";
-import { useWindowDimensions, View } from "react-native";
+import { useWindowDimensions, View, StyleSheet } from "react-native";
 import { ConferenceDay } from "@/consts";
 import { Picker } from "@expo/ui/jetpack-compose";
 
@@ -41,22 +41,26 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
         }}
         variant="segmented"
         style={{
-          height: 40,
+          ...styles.picker,
           width: width - theme.space24 * 2,
-          alignSelf: "center",
-          paddingVertical: theme.space24,
         }}
       />
 
       {/* Used to prevent onPress events from being triggered in components behind the picker */}
-      <View
-        style={{
-          height: 50,
-          width: "100%",
-          position: "absolute",
-        }}
-        pointerEvents="none"
-      />
+      <View style={styles.overlay} pointerEvents="none" />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  picker: {
+    alignSelf: "center",
+    paddingVertical: theme.space24,
+    height: 40,
+  },
+  overlay: {
+    height: 50,
+    width: "100%",
+    position: "absolute",
+  },
+});

@@ -58,7 +58,11 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
           style={styles.content}
         >
           <View style={styles.titleAndBookmark}>
-            <ThemedText fontSize={18} fontWeight="semiBold" style={{ flex: 1 }}>
+            <ThemedText
+              fontSize={18}
+              fontWeight="semiBold"
+              style={styles.flex1}
+            >
               {session.title}
             </ThemedText>
             <Bookmark session={session} size="small" />
@@ -124,5 +128,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: theme.space16,
     borderRadius: theme.borderRadius10,
+  },
+  flex1: {
+    flex: 1,
   },
 });

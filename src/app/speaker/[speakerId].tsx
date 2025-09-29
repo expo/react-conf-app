@@ -86,12 +86,10 @@ export default function SpeakerDetail() {
               ) : null}
 
               <View
-                style={{
-                  width: "100%",
-                  borderBottomWidth: StyleSheet.hairlineWidth,
-                  borderBottomColor: secondaryColor,
-                  marginVertical: theme.space24,
-                }}
+                style={[
+                  styles.separator,
+                  { borderBottomColor: secondaryColor },
+                ]}
               />
             </View>
             {speaker.links.length ? <Socials speaker={speaker} /> : null}
@@ -211,5 +209,10 @@ const styles = StyleSheet.create({
     marginBottom: theme.space24,
     flexDirection: "row",
     justifyContent: "center",
+  },
+  separator: {
+    width: "100%",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginVertical: theme.space24,
   },
 });

@@ -32,11 +32,11 @@ export function LiveStreamInfo() {
         </ThemedText>
       </View>
       <ThemedText
-        style={{
-          marginBottom: theme.space24,
-          textAlign: "center",
-          color: borderColor,
+        color={{
+          light: theme.color.textSecondary.light,
+          dark: theme.colorWhite,
         }}
+        style={styles.text}
       >
         Join React Conf from anywhere with our free live stream access. Watch
         all the talks remotely.
@@ -69,5 +69,9 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: theme.borderRadius32,
+  },
+  text: {
+    marginBottom: theme.space24,
+    textAlign: "center",
   },
 });
