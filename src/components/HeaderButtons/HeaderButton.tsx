@@ -32,7 +32,7 @@ export function HeaderButton({ imageProps, buttonProps }: HeaderButtonProps) {
       <MaterialCommunityIcons
         // Todo: fix this type
         name={(imageProps?.systemName as any) || "cross"}
-        size={24}
+        size={theme.fontSize24}
         color={imageProps?.color || theme.colorGrey}
       />
     </AnimatedPressable>

@@ -6,8 +6,9 @@ import {
   ImageProps,
 } from "@expo/ui/swift-ui";
 import { frame } from "@expo/ui/swift-ui/modifiers";
+import { theme } from "@/theme";
 
-const SIZE = 34;
+const SIZE = theme.fontSize34;
 
 export interface HeaderButtonProps {
   imageProps?: ImageProps;
@@ -22,7 +23,7 @@ export function HeaderButton({ imageProps, buttonProps }: HeaderButtonProps) {
           {...imageProps}
           systemName={imageProps?.systemName || "xmark"}
           color={imageProps?.color || "primary"}
-          size={imageProps?.size || 24}
+          size={imageProps?.size || theme.fontSize24}
           modifiers={[
             frame({ height: SIZE }),
             ...(imageProps?.modifiers || []),

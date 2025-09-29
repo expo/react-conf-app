@@ -149,7 +149,7 @@ function Socials({ speaker }: { speaker: Speaker }) {
               return (
                 <Ionicons
                   name="reader"
-                  size={18}
+                  size={theme.fontSize18}
                   color={iconColor}
                   style={styles.icon}
                 />
@@ -159,7 +159,7 @@ function Socials({ speaker }: { speaker: Speaker }) {
               return (
                 <Feather
                   name="link"
-                  size={18}
+                  size={theme.fontSize18}
                   color={iconColor}
                   style={styles.icon}
                 />
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
     paddingTop: theme.space24,
   },
   icon: {
-    height: 20,
-    width: 20,
+    height: theme.fontSize20,
+    width: theme.fontSize20,
   },
   separator: {
     borderBottomWidth: StyleSheet.hairlineWidth,

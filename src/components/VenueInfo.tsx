@@ -65,7 +65,7 @@ export function VenueInfo() {
           <Pressable style={styles.venueAddress} onPress={onOpenVenue}>
             <MaterialCommunityIcons
               name="map-marker-radius"
-              size={18}
+              size={theme.fontSize18}
               color={iconColor}
             />
             <ThemedText

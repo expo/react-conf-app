@@ -18,7 +18,7 @@ export function DiscordInfo() {
 
   return (
     <ThemedView style={styles.container} color={theme.color.backgroundElement}>
-      <MaterialIcons name="discord" size={42} color={iconColor} />
+      <MaterialIcons name="discord" size={theme.fontSize42} color={iconColor} />
       <ThemedText style={styles.text} color={theme.color.textSecondary}>
         Chat with other folks at the conference via the dedicated Discord
         server. Fun activities? Ridesharing?
