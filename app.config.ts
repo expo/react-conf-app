@@ -1,4 +1,3 @@
-import "tsx/cjs";
 import { ExpoConfig } from "expo/config";
 // Update this value to something unique in order to be able to build for a
 // physical iOS device.
@@ -109,7 +108,6 @@ const config: ExpoConfig = {
         imageWidth: 190,
       },
     ],
-    ["./plugins/withiPadPortraitOnly.ts"],
   ],
   updates: {
     url: EAS_UPDATE_URL,
