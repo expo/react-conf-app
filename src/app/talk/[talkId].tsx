@@ -322,5 +322,7 @@ const styles = StyleSheet.create({
   talkTitle: {
     textDecorationLine: "underline",
     textDecorationStyle: "dashed",
+    textAlign: "center",
+    marginBottom: theme.space12,
   },
 });
