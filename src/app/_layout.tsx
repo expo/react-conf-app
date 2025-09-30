@@ -115,7 +115,7 @@ export default function Layout() {
                       : "modal"
                     : "modal",
                 sheetGrabberVisible: true,
-                sheetAllowedDetents: [0.6, 0.9],
+                sheetAllowedDetents: [0.8],
                 sheetInitialDetentIndex: 0,
                 contentStyle: {
                   backgroundColor: isLiquidGlassAvailable()
@@ -160,26 +160,6 @@ export default function Layout() {
                   ),
                   default: undefined,
                 }),
-              }}
-            />
-            <Stack.Screen
-              name="modal"
-              options={{
-                presentation: "modal",
-
-                title: "Modal",
-                headerTitleAlign: "center",
-                headerTitle: (props) => (
-                  <ThemedText fontSize={theme.fontSize24} fontWeight="bold">
-                    {props.children}
-                  </ThemedText>
-                ),
-                ...(colorScheme === "dark"
-                  ? {
-                      headerStyle: { backgroundColor: theme.colorBlack },
-                      headerTitleStyle: { color: "white" },
-                    }
-                  : {}),
               }}
             />
           </Stack>
