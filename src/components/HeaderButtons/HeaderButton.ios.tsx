@@ -23,7 +23,7 @@ export function HeaderButton({
   style,
 }: HeaderButtonProps) {
   return (
-    <Host matchContents style={[{ height: SIZE, width: SIZE }, style]}>
+    <Host matchContents style={style}>
       <Button {...buttonProps} variant={buttonProps?.variant || "glass"}>
         <Image
           {...imageProps}

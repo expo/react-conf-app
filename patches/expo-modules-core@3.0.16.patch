@@ -207,7 +207,7 @@ index cb64efd25912fda87b2f205349ba1216a2562528..2727860f6ec383dca8cd5870a1e69bdc
 +    // synchronous update is only available in React Native 0.82 and above
 +    _state->updateState(expo::ExpoViewState::withStyleDimensions(widthValue, heightValue), EventQueue::UpdateMode::unstable_Immediate);
 +#else
-+    _state->updateState(expo::ExpoViewState::withStyleDimensions(widthValue, heightValue));
++    _state->updateState(expo::ExpoViewState::withStyleDimensions(widthValue, heightValue), true);
 +#endif
 +  }
 +}

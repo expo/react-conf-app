@@ -29,9 +29,7 @@ export function DayPicker({ selectedDay, onSelectDay }: DayPickerProps) {
 }
 
 const styles = StyleSheet.create({
-  dayPicker: {
-    height: 31, // fixed height to prevent jumping
-  },
+  dayPicker: {},
   glassView: {
     borderRadius: theme.borderRadius80,
     height: 31,
