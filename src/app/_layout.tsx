@@ -162,26 +162,6 @@ export default function Layout() {
                 }),
               }}
             />
-            <Stack.Screen
-              name="modal"
-              options={{
-                presentation: "modal",
-
-                title: "Modal",
-                headerTitleAlign: "center",
-                headerTitle: (props) => (
-                  <ThemedText fontSize={theme.fontSize24} fontWeight="bold">
-                    {props.children}
-                  </ThemedText>
-                ),
-                ...(colorScheme === "dark"
-                  ? {
-                      headerStyle: { backgroundColor: theme.colorBlack },
-                      headerTitleStyle: { color: "white" },
-                    }
-                  : {}),
-              }}
-            />
           </Stack>
         </ThemeProvider>
       </ActionSheetProvider>
