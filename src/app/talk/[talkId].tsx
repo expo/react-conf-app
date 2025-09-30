@@ -169,7 +169,7 @@ export default function TalkDetail() {
         style={styles.container}
         color={
           isLiquidGlassAvailable()
-            ? { light: "transparent", dark: "transparent" }
+            ? theme.color.transparent
             : theme.color.background
         }
       >
@@ -227,7 +227,7 @@ export default function TalkDetail() {
           <ThemedView
             color={
               isLiquidGlassAvailable()
-                ? { light: "transparent", dark: "transparent" }
+                ? theme.color.transparent
                 : theme.color.background
             }
             style={styles.content}
