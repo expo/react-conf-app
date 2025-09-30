@@ -67,14 +67,17 @@ export const theme = {
   fontSize34: fontScale(34),
   fontSize42: fontScale(42),
 
-  fontFamilyLight: "FreightSansProLight-Regular",
-  fontFamilyLightItalic: "FreightSansProLight-Italic",
-  fontFamily: "FreightSansProBook-Regular",
-  fontFamilyItalic: "FreightSansProBook-Italic",
-  fontFamilySemiBold: "FreightSansProSemiBold-Regular",
-  fontFamilySemiBoldItalic: "FreightSansProSemiBold-Italic",
-  fontFamilyBold: "FreightSansProBold-Regular",
-  fontFamilyBoldItalic: "FreightSansProBold-Italic",
+  fontFamilyLight: "Montserrat-Light",
+  fontFamilyLightItalic: "Montserrat-LightItalic",
+
+  fontFamily: "Montserrat-Medium",
+  fontFamilyItalic: "Montserrat-MediumItalic",
+
+  fontFamilySemiBold: "Montserrat-SemiBold",
+  fontFamilySemiBoldItalic: "Montserrat-SemiBoldItalic",
+
+  fontFamilyBold: "Montserrat-Bold",
+  fontFamilyBoldItalic: "Montserrat-BoldItalic",
 
   borderRadius4: 4,
   borderRadius6: 6,
