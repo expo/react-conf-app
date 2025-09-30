@@ -16,7 +16,7 @@ async function fetchAndSync(url, filePath) {
 
 (async () => {
   await fetchAndSync(
-    "https://sessionize.com/api/v2/ctta9bhe/view/All",
-    "./data/allSessions.json",
+    "https://sessionize.com/api/v2/7l5wob2t/view/All",
+    "./src/data/allSessions.json",
   );
 })();

@@ -2,7 +2,7 @@ import { Image } from "expo-image";
 import { StyleSheet, View, ViewStyle } from "react-native";
 
 import { theme } from "@/theme";
-import { ThemedView } from "./Themed";
+import { ThemedView, useThemeColor } from "./Themed";
 
 export function SpeakerImage({
   profilePicture,
@@ -15,6 +15,7 @@ export function SpeakerImage({
   style?: ViewStyle;
   animated?: boolean;
 }) {
+  const borderColor = useThemeColor(theme.color.border);
   const imageSize = (() => {
     switch (size) {
       case "small":
@@ -56,7 +57,7 @@ export function SpeakerImage({
     <ThemedView
       lightColor="rgba(255,255,255,0.15)"
       darkColor="rgba(0,0,0,0.15)"
-      style={[imageSize, styles.imageContainer, style]}
+      style={[imageSize, styles.imageContainer, style, { borderColor }]}
     >
       {profilePicture ? (
         <Image
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 100,
+    borderWidth: 1,
     marginRight: theme.space12,
     overflow: "hidden",
   },
@@ -95,8 +97,8 @@ const styles = StyleSheet.create({
     width: 60,
   },
   imageSizeSmall: {
-    height: 32,
-    width: 32,
+    height: 42,
+    width: 42,
   },
   profileImage: {
     height: 70,

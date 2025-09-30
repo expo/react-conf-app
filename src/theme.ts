@@ -28,7 +28,7 @@ export const theme = {
       dark: "rgba(0,0,0,0)",
     },
     text: { light: "#121212", dark: "#FFFFFF" },
-    textSecondary: { light: "#808080", dark: "#CCCCCC" },
+    textSecondary: { light: "#606060", dark: "#CCCCCC" },
     background: { light: "#FFFFFF", dark: "#000000" },
     backgroundSecondary: {
       light: "#f1f1f1",
@@ -49,6 +49,7 @@ export const theme = {
 
   lightActiveContent: "rgba(0,0,0, 0.1)",
 
+  space2: spaceScale(2),
   space4: spaceScale(4),
   space8: spaceScale(8),
   space12: spaceScale(12),

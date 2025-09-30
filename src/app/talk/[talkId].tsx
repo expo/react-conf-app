@@ -278,7 +278,11 @@ function SpeakerDetails({ speaker }: { speaker: Speaker }) {
         <ThemedText fontSize={theme.fontSize18} fontWeight="bold">
           {speaker.fullName}
         </ThemedText>
-        <ThemedText fontSize={theme.fontSize16} fontWeight="medium">
+        <ThemedText
+          fontSize={theme.fontSize16}
+          fontWeight="medium"
+          color={theme.color.textSecondary}
+        >
           {speaker.tagLine}
         </ThemedText>
       </View>
@@ -293,10 +297,14 @@ function Section({ title, value }: { title: string; value: string | null }) {
 
   return (
     <View style={styles.sectionContainer}>
-      <ThemedText fontSize={theme.fontSize18} fontWeight="bold">
+      <ThemedText fontSize={theme.fontSize18} fontWeight="semiBold">
         {title}
       </ThemedText>
-      <ThemedText fontSize={theme.fontSize18} fontWeight="medium">
+      <ThemedText
+        fontSize={theme.fontSize16}
+        fontWeight="medium"
+        color={theme.color.textSecondary}
+      >
         {value}
       </ThemedText>
     </View>
@@ -322,6 +330,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space24,
   },
   sectionContainer: {
+    gap: theme.space4,
     marginBottom: theme.space24,
   },
   speaker: {
