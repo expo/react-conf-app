@@ -176,9 +176,10 @@ export function PoweredByExpo() {
                   light: theme.colorWhite,
                   dark: theme.colorWhite,
                 }}
+                style={styles.versionText}
               >
                 v{Application.nativeApplicationVersion} (
-                {Application.nativeBuildVersion})
+                {Application.nativeBuildVersion}23)
               </ThemedText>
             </View>
           </ThemedView>
@@ -240,5 +241,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: SHADER_OFFSET,
     width: SHADER_SIZE,
+  },
+  versionText: {
+    textAlign: "center",
   },
 });
