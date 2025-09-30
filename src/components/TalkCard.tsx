@@ -13,6 +13,7 @@ import { SpeakerDetails } from "./SpeakerDetails";
 import { ConferenceDay } from "@/consts";
 import * as Haptics from "expo-haptics";
 import { useMemo } from "react";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 type Props = {
   session: Session;
@@ -52,79 +53,81 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
       });
 
   return (
-    <ThemedView style={styles.container}>
-      {!isBookmarked && (
-        <ThemedText
-          fontSize={theme.fontSize18}
-          fontWeight="medium"
-          color={theme.color.textSecondary}
-          marginBottom={theme.space8}
-          style={{ marginLeft: theme.space24 }}
+    <Animated.View entering={FadeIn} exiting={FadeOut}>
+      <ThemedView style={styles.container}>
+        {!isBookmarked && (
+          <ThemedText
+            fontSize={theme.fontSize18}
+            fontWeight="medium"
+            color={theme.color.textSecondary}
+            marginBottom={theme.space8}
+            style={{ marginLeft: theme.space24 }}
+          >
+            {formatSessionTime(session, shouldUseLocalTz)}
+          </ThemedText>
+        )}
+        <ThemedView
+          color={theme.color.backgroundSecondary}
+          style={styles.content}
         >
-          {formatSessionTime(session, shouldUseLocalTz)}
-        </ThemedText>
-      )}
-      <ThemedView
-        color={theme.color.backgroundSecondary}
-        style={styles.content}
-      >
-        <GestureDetector gesture={gestureTalkTap}>
-          <View
-            style={{
-              marginHorizontal: -theme.space16,
-              paddingHorizontal: theme.space16,
-              marginVertical: -theme.space8,
-              paddingVertical: theme.space8,
-            }}
-          >
-            <View style={styles.titleAndBookmark}>
-              <ThemedText
-                fontSize={theme.fontSize18}
-                fontWeight="semiBold"
-                style={styles.flex1}
-              >
-                {session.title}
-              </ThemedText>
-              <Bookmark session={session} size="small" />
-            </View>
-            {isBookmarked && (
-              <ThemedView
-                style={styles.time}
-                color={{
-                  dark: "#3b3a3a",
-                  light: "#dedede",
-                }}
-              >
-                <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
-                  {formatSessionTime(session, shouldUseLocalTz)}
-                </ThemedText>
-                <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
-                  {day === ConferenceDay.One ? "Day 1" : "Day 2"}
-                </ThemedText>
-              </ThemedView>
-            )}
-          </View>
-        </GestureDetector>
-        {session.speakers.map((speaker) => (
-          <GestureDetector
-            gesture={createSpeakerTapGesture(speaker)}
-            key={speaker.id}
-          >
+          <GestureDetector gesture={gestureTalkTap}>
             <View
               style={{
                 marginHorizontal: -theme.space16,
                 paddingHorizontal: theme.space16,
                 marginVertical: -theme.space8,
                 paddingVertical: theme.space8,
-                borderRadius: theme.borderRadius32,
               }}
             >
-              <SpeakerDetails speaker={speaker} />
+              <View style={styles.titleAndBookmark}>
+                <ThemedText
+                  fontSize={theme.fontSize18}
+                  fontWeight="semiBold"
+                  style={styles.flex1}
+                >
+                  {session.title}
+                </ThemedText>
+                <Bookmark session={session} size="small" />
+              </View>
+              {isBookmarked && (
+                <ThemedView
+                  style={styles.time}
+                  color={{
+                    dark: "#3b3a3a",
+                    light: "#dedede",
+                  }}
+                >
+                  <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
+                    {formatSessionTime(session, shouldUseLocalTz)}
+                  </ThemedText>
+                  <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
+                    {day === ConferenceDay.One ? "Day 1" : "Day 2"}
+                  </ThemedText>
+                </ThemedView>
+              )}
             </View>
           </GestureDetector>
-        ))}
+          {session.speakers.map((speaker) => (
+            <GestureDetector
+              gesture={createSpeakerTapGesture(speaker)}
+              key={speaker.id}
+            >
+              <View
+                style={{
+                  marginHorizontal: -theme.space16,
+                  paddingHorizontal: theme.space16,
+                  marginVertical: -theme.space8,
+                  paddingVertical: theme.space8,
+                  borderRadius: theme.borderRadius32,
+                }}
+              >
+                <SpeakerDetails speaker={speaker} />
+              </View>
+            </GestureDetector>
+          ))}
+        </ThemedView>
       </ThemedView>
-    </ThemedView>
+    </Animated.View>
   );
 }
 
