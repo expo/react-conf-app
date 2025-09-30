@@ -1,5 +1,6 @@
 import { Image } from "expo-image";
 import { StyleSheet, View, ViewStyle } from "react-native";
+import { useState } from "react";
 
 import { theme } from "@/theme";
 import { ThemedView, useThemeColor } from "./Themed";
@@ -16,6 +17,7 @@ export function SpeakerImage({
   animated?: boolean;
 }) {
   const borderColor = useThemeColor(theme.color.border);
+  const [isLoading, setIsLoading] = useState(false);
   const imageSize = (() => {
     switch (size) {
       case "small":
@@ -48,7 +50,6 @@ export function SpeakerImage({
       <Image
         source={require("@/assets/images/reactlogo-white.png")}
         style={reactLogoSize}
-        cachePolicy={"disk"}
       />
     </View>
   );
@@ -63,7 +64,9 @@ export function SpeakerImage({
         <Image
           source={{ uri: profilePicture }}
           style={imageStyles}
-          transition={animated ? 300 : 0}
+          transition={animated && isLoading ? 300 : 0}
+          onLoadStart={() => setIsLoading(true)}
+          onLoadEnd={() => setIsLoading(false)}
         />
       ) : (
         placeholder

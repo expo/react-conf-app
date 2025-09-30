@@ -1,6 +1,6 @@
 {
   "fill" : {
-    "automatic-gradient" : "display-p3:0.52941,0.75294,0.83922,1.00000"
+    "automatic-gradient" : "display-p3:0.21961,0.48627,0.63137,1.00000"
   },
   "groups" : [
     {
@@ -15,7 +15,7 @@
             {
               "appearance" : "dark",
               "value" : {
-                "solid" : "display-p3:0.42745,0.70588,0.78824,1.00000"
+                "solid" : "display-p3:0.45882,0.76078,0.85098,1.00000"
               }
             }
           ],

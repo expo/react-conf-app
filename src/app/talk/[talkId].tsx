@@ -78,7 +78,7 @@ export default function TalkDetail() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const { width, height } = useWindowDimensions();
-  const drawerHeight = height * 0.9;
+  const drawerHeight = height * 0.8;
   const highlightColor = useThemeColor(theme.color.reactBlue);
 
   const router = useRouter();
@@ -169,102 +169,100 @@ export default function TalkDetail() {
         style={styles.container}
         color={
           isLiquidGlassAvailable()
-            ? { light: "transparent", dark: "transparent" }
+            ? theme.color.transparent
             : theme.color.background
         }
       >
-        <>
-          {isLiquidGlassAvailable() && osName !== "iPadOS" ? (
+        {isLiquidGlassAvailable() && osName !== "iPadOS" ? (
+          <View style={{ height: drawerHeight }}>
+            <Animated.View style={[opacityStyle, styles.absolute]}>
+              <Canvas
+                style={{
+                  width: width,
+                  height: drawerHeight,
+                  transform: [{ scale: 2 }],
+                }}
+              >
+                <Fill>
+                  <Shader source={source} uniforms={uniforms} />
+                </Fill>
+              </Canvas>
+            </Animated.View>
             <View style={{ height: drawerHeight }}>
               <Animated.View style={[opacityStyle, styles.absolute]}>
-                <Canvas
-                  style={{
-                    width: width,
-                    height: drawerHeight,
-                    transform: [{ scale: 2 }],
-                  }}
-                >
+                <Canvas style={{ width: width, height: drawerHeight }}>
                   <Fill>
                     <Shader source={source} uniforms={uniforms} />
                   </Fill>
                 </Canvas>
               </Animated.View>
-              <View style={{ height: drawerHeight }}>
-                <Animated.View style={[opacityStyle, styles.absolute]}>
-                  <Canvas style={{ width: width, height: drawerHeight }}>
-                    <Fill>
-                      <Shader source={source} uniforms={uniforms} />
-                    </Fill>
-                  </Canvas>
-                </Animated.View>
-              </View>
             </View>
-          ) : null}
-          <AnimatedScrollView
-            onScroll={scrollHandler}
-            style={styles.container}
-            contentInsetAdjustmentBehavior="automatic"
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={[
-              styles.contentContainer,
-              {
-                minHeight: drawerHeight,
-                paddingBottom: insets.bottom + theme.space24,
-              },
-            ]}
-          >
-            <View style={styles.header}>
-              <ThemedText
-                fontWeight="bold"
-                fontSize={theme.fontSize32}
-                style={[
-                  styles.talkTitle,
-                  { textDecorationColor: highlightColor },
-                ]}
-              >
-                {talk?.title}
-              </ThemedText>
-            </View>
-            <ThemedView
-              color={
-                isLiquidGlassAvailable()
-                  ? { light: "transparent", dark: "transparent" }
-                  : theme.color.background
-              }
-              style={styles.content}
+          </View>
+        ) : null}
+        <AnimatedScrollView
+          onScroll={scrollHandler}
+          style={styles.container}
+          contentInsetAdjustmentBehavior="automatic"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[
+            styles.contentContainer,
+            {
+              minHeight: drawerHeight,
+              paddingBottom: insets.bottom + theme.space24,
+            },
+          ]}
+        >
+          <View style={styles.header} collapsable={false}>
+            <ThemedText
+              fontWeight="bold"
+              fontSize={theme.fontSize32}
+              style={[
+                styles.talkTitle,
+                { textDecorationColor: highlightColor },
+              ]}
             >
-              {talk.speakers.map((speaker) => (
-                <Link
-                  push
-                  key={speaker.id}
-                  href={{
-                    pathname: "/speaker/[speaker]",
-                    params: { speaker: speaker.id },
-                  }}
-                  asChild
-                >
-                  <Pressable>
-                    <SpeakerDetails speaker={speaker} />
-                  </Pressable>
-                </Link>
-              ))}
-              <Section
-                title="Date"
-                value={
-                  isDayOne
-                    ? `${DAY_ONE_DATE} (Conference Day 1)`
-                    : `${DAY_TWO_DATE} (Conference Day 2)`
-                }
-              />
-              <Section
-                title="Time"
-                value={formatSessionTime(talk, shouldUseLocalTz)}
-              />
-              <Section title="Venue" value={talk.room} />
-              <Section title="Description" value={talk.description} />
-            </ThemedView>
-          </AnimatedScrollView>
-        </>
+              {talk?.title}
+            </ThemedText>
+          </View>
+          <ThemedView
+            color={
+              isLiquidGlassAvailable()
+                ? theme.color.transparent
+                : theme.color.background
+            }
+            style={styles.content}
+          >
+            {talk.speakers.map((speaker) => (
+              <Link
+                push
+                key={speaker.id}
+                href={{
+                  pathname: "/speaker/[speaker]",
+                  params: { speaker: speaker.id },
+                }}
+                asChild
+              >
+                <Pressable>
+                  <SpeakerDetails speaker={speaker} />
+                </Pressable>
+              </Link>
+            ))}
+            <Section
+              title="Date"
+              value={
+                isDayOne
+                  ? `${DAY_ONE_DATE} (Conference Day 1)`
+                  : `${DAY_TWO_DATE} (Conference Day 2)`
+              }
+            />
+            <Section
+              title="Time"
+              value={formatSessionTime(talk, shouldUseLocalTz)}
+            />
+            <Section title="Venue" value={talk.room} />
+            <Section title="Description" value={talk.description} />
+          </ThemedView>
+        </AnimatedScrollView>
       </ThemedView>
     </>
   );
