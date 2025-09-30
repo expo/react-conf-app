@@ -49,7 +49,6 @@ export function SpeakerImage({
       <Image
         source={require("@/assets/images/reactlogo-white.png")}
         style={reactLogoSize}
-        cachePolicy={"disk"}
       />
     </View>
   );
@@ -64,7 +63,6 @@ export function SpeakerImage({
         <Image
           source={{ uri: profilePicture }}
           style={imageStyles}
-          cachePolicy="disk"
           transition={animated && isLoading ? 300 : 0}
           onLoadStart={() => setIsLoading(true)}
           onLoadEnd={() => setIsLoading(false)}
