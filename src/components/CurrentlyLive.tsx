@@ -81,7 +81,7 @@ export function CurrentlyLive({
           <View style={styles.dotContainer}>
             <View style={styles.dot} />
             <ThemedText
-              fontSize={theme.fontSize12}
+              fontSize={theme.fontSize10}
               fontWeight="semiBold"
               color={theme.color.textSecondary}
               style={styles.text}
@@ -90,7 +90,7 @@ export function CurrentlyLive({
             </ThemedText>
           </View>
           <ThemedText
-            fontSize={theme.fontSize14}
+            fontSize={theme.fontSize12}
             fontWeight="semiBold"
             numberOfLines={2}
             style={styles.centeredText}
