@@ -1,0 +1,24 @@
+diff --git a/node_modules/expo-router/.bun-tag-6929c2a568c71c30 b/.bun-tag-6929c2a568c71c30
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+diff --git a/build/native-tabs/NativeBottomTabs/NativeTabTrigger.js b/build/native-tabs/NativeBottomTabs/NativeTabTrigger.js
+index 76d8a5fc23866378e69249ed86ceeb1ab47bebbe..cddf9fcae1834cab09718f9a2146e20aaafa9f7d 100644
+--- a/build/native-tabs/NativeBottomTabs/NativeTabTrigger.js
++++ b/build/native-tabs/NativeBottomTabs/NativeTabTrigger.js
+@@ -7,6 +7,7 @@ exports.appendIconOptions = appendIconOptions;
+ exports.isNativeTabTrigger = isNativeTabTrigger;
+ const native_1 = require("@react-navigation/native");
+ const react_1 = require("react");
++const react_native_1 = require("react-native");
+ const NativeTabsTriggerTabBar_1 = require("./NativeTabsTriggerTabBar");
+ const utils_1 = require("./utils");
+ const PreviewRouteContext_1 = require("../../link/preview/PreviewRouteContext");
+@@ -182,7 +183,7 @@ function convertSrcOrComponentToSrc(src) {
+         if ((0, react_1.isValidElement)(src)) {
+             if (src.type === elements_1.VectorIcon) {
+                 const props = src.props;
+-                return { src: props.family.getImageSource(props.name, 24, 'white') };
++                return { src: props.family.getImageSource(props.name, 24 * react_native_1.PixelRatio.get(), 'white') };
+             }
+             else {
+                 console.warn('Only VectorIcon is supported as a React element in Icon.src');
