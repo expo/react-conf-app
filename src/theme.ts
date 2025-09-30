@@ -1,11 +1,10 @@
-import { Platform } from "react-native";
 import * as Device from "expo-device";
 
 const SPACE_SCALE = 1.33;
 const FONT_SCALE = 1.2;
 
 const isIpad = Device.osName === "iPadOS";
-const spaceScale = (value: number) =>
+export const spaceScale = (value: number) =>
   isIpad ? Math.round(value * SPACE_SCALE) : value;
 const fontScale = (size: number) =>
   isIpad ? Math.round(size * FONT_SCALE) : size;

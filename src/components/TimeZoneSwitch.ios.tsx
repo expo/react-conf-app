@@ -1,6 +1,6 @@
 import { useReactConfStore } from "@/store/reactConfStore";
 import { getCurrentTimezone } from "@/utils/formatDate";
-
+import * as Device from "expo-device";
 import {
   Button,
   ContextMenu,
@@ -17,6 +17,7 @@ import { theme } from "@/theme";
 import { StyleSheet, useColorScheme } from "react-native";
 
 const options = ["PDT (Venue)", `${getCurrentTimezone()} (Local)`];
+const isIpad = Device.osName === "iPadOS";
 
 export function TimeZoneSwitch() {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
@@ -49,7 +50,10 @@ export function TimeZoneSwitch() {
             variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
             color={isLiquidGlassAvailable() ? "primary" : "gray"}
           >
-            <HStack modifiers={[frame({ width: 50 })]} spacing={theme.space8}>
+            <HStack
+              modifiers={[frame({ width: isIpad ? 60 : 50 })]}
+              spacing={theme.space8}
+            >
               <Text
                 weight="semibold"
                 size={theme.fontSize10}
