@@ -85,18 +85,17 @@ const config: ExpoConfig = {
       "expo-font",
       {
         fonts: [
-          "./assets/fonts/FreightSansProBlack-Italic.ttf",
-          "./assets/fonts/FreightSansProBlack-Regular.ttf",
-          "./assets/fonts/FreightSansProBold-Italic.ttf",
-          "./assets/fonts/FreightSansProBold-Regular.ttf",
-          "./assets/fonts/FreightSansProBook-Italic.ttf",
-          "./assets/fonts/FreightSansProBook-Regular.ttf",
-          "./assets/fonts/FreightSansProLight-Italic.ttf",
-          "./assets/fonts/FreightSansProLight-Regular.ttf",
-          "./assets/fonts/FreightSansProMedium-Italic.ttf",
-          "./assets/fonts/FreightSansProMedium-Regular.ttf",
-          "./assets/fonts/FreightSansProSemiBold-Italic.ttf",
-          "./assets/fonts/FreightSansProSemiBold-Regular.ttf",
+          "./assets/fonts/Montserrat-Light.ttf",
+          "./assets/fonts/Montserrat-LightItalic.ttf",
+
+          "./assets/fonts/Montserrat-Medium.ttf",
+          "./assets/fonts/Montserrat-MediumItalic.ttf",
+
+          "./assets/fonts/Montserrat-Bold.ttf",
+          "./assets/fonts/Montserrat-BoldItalic.ttf",
+
+          "./assets/fonts/Montserrat-SemiBold.ttf",
+          "./assets/fonts/Montserrat-SemiBoldItalic.ttf",
         ],
       },
     ],

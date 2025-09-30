@@ -19,7 +19,7 @@ import * as Application from "expo-application";
 const CONTAINER_SIZE = 160;
 const SHADER_SIZE = 140;
 const LOGO_SIZE = 120;
-const FLIPPED_CONTENT_SIZE = 80;
+const FLIPPED_CONTENT_SIZE = 60;
 
 const SHADER_OFFSET = (CONTAINER_SIZE - SHADER_SIZE) / 2;
 const LOGO_OFFSET = (CONTAINER_SIZE - LOGO_SIZE) / 2;
@@ -170,7 +170,7 @@ export function PoweredByExpo() {
           >
             <View style={styles.flippedContent}>
               <ThemedText
-                fontSize={theme.fontSize16}
+                fontSize={theme.fontSize14}
                 fontWeight="semiBold"
                 color={{
                   light: theme.colorWhite,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   flippedContent: {
     alignItems: "center",
     backgroundColor: theme.colorBlack,
-    borderRadius: 30,
+    borderRadius: FLIPPED_CONTENT_SIZE / 2,
     height: FLIPPED_CONTENT_SIZE,
     justifyContent: "center",
     width: FLIPPED_CONTENT_SIZE,

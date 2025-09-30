@@ -14,9 +14,7 @@ export function SpeakerDetails({ speaker }: { speaker: Speaker }) {
         size="small"
       />
       <View style={styles.speakerDetails}>
-        <ThemedText fontSize={theme.fontSize16} fontWeight="semiBold">
-          {speaker.fullName}
-        </ThemedText>
+        <ThemedText fontSize={theme.fontSize16}>{speaker.fullName}</ThemedText>
         {speaker.tagLine ? (
           <ThemedText
             fontSize={theme.fontSize14}
@@ -38,6 +36,7 @@ const styles = StyleSheet.create({
   },
   speakerDetails: {
     flex: 1,
+    gap: theme.space2,
     justifyContent: "center",
   },
 });

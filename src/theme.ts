@@ -28,7 +28,7 @@ export const theme = {
       dark: "rgba(0,0,0,0)",
     },
     text: { light: "#121212", dark: "#FFFFFF" },
-    textSecondary: { light: "#808080", dark: "#CCCCCC" },
+    textSecondary: { light: "#606060", dark: "#CCCCCC" },
     background: { light: "#FFFFFF", dark: "#000000" },
     backgroundSecondary: {
       light: "#f1f1f1",
@@ -49,6 +49,7 @@ export const theme = {
 
   lightActiveContent: "rgba(0,0,0, 0.1)",
 
+  space2: spaceScale(2),
   space4: spaceScale(4),
   space8: spaceScale(8),
   space12: spaceScale(12),
@@ -67,14 +68,17 @@ export const theme = {
   fontSize34: fontScale(34),
   fontSize42: fontScale(42),
 
-  fontFamilyLight: "FreightSansProLight-Regular",
-  fontFamilyLightItalic: "FreightSansProLight-Italic",
-  fontFamily: "FreightSansProBook-Regular",
-  fontFamilyItalic: "FreightSansProBook-Italic",
-  fontFamilySemiBold: "FreightSansProSemiBold-Regular",
-  fontFamilySemiBoldItalic: "FreightSansProSemiBold-Italic",
-  fontFamilyBold: "FreightSansProBold-Regular",
-  fontFamilyBoldItalic: "FreightSansProBold-Italic",
+  fontFamilyLight: "Montserrat-Light",
+  fontFamilyLightItalic: "Montserrat-LightItalic",
+
+  fontFamily: "Montserrat-Medium",
+  fontFamilyItalic: "Montserrat-MediumItalic",
+
+  fontFamilySemiBold: "Montserrat-SemiBold",
+  fontFamilySemiBoldItalic: "Montserrat-SemiBoldItalic",
+
+  fontFamilyBold: "Montserrat-Bold",
+  fontFamilyBoldItalic: "Montserrat-BoldItalic",
 
   borderRadius4: 4,
   borderRadius6: 6,
@@ -88,17 +92,6 @@ export const theme = {
   borderRadius80: 80,
 
   dropShadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: "#adb5bd",
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        shadowOpacity: 0.4,
-        shadowRadius: 2,
-      },
-      default: {},
-    }),
+    boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.1)",
   },
 };

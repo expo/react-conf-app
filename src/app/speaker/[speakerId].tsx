@@ -29,10 +29,8 @@ export default function SpeakerDetail() {
   const isPreview = useIsPreview();
   const router = useRouter();
 
-  const secondaryColor = useThemeColor({
-    light: theme.color.textSecondary.light,
-    dark: theme.color.textSecondary.dark,
-  });
+  const secondaryColor = useThemeColor(theme.color.textSecondary);
+  const borderColor = useThemeColor(theme.color.border);
   const backgroundColorSecondary = useThemeColor(
     theme.color.backgroundSecondary,
   );
@@ -93,10 +91,7 @@ export default function SpeakerDetail() {
               ) : null}
 
               <View
-                style={[
-                  styles.separator,
-                  { borderBottomColor: secondaryColor },
-                ]}
+                style={[styles.separator, { borderBottomColor: borderColor }]}
               />
             </View>
             {speaker.links.length ? <Socials speaker={speaker} /> : null}

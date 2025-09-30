@@ -4,6 +4,7 @@ import { ThemedView, useThemeColor } from "./Themed";
 import { Pressable } from "react-native-gesture-handler";
 
 import { theme } from "@/theme";
+import * as Haptics from "expo-haptics";
 
 export function IconButton({
   onPress,
@@ -21,8 +22,13 @@ export function IconButton({
   const backgroundColorActive = useThemeColor(theme.color.reactBlue);
   const shadow = useThemeColor({ light: theme.dropShadow, dark: undefined });
 
+  const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    onPress();
+  };
+
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={handlePress}>
       <ThemedView
         style={[
           styles.button,
