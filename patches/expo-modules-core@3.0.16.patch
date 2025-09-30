@@ -1,19 +1,117 @@
+diff --git a/common/cpp/fabric/ExpoViewComponentDescriptor.cpp b/common/cpp/fabric/ExpoViewComponentDescriptor.cpp
+index f1f25f01e2f93ebec43e59d756f1c751ed926585..dbfca2c369838f7c46ac253c2c12c13cf843c90f 100644
+--- a/common/cpp/fabric/ExpoViewComponentDescriptor.cpp
++++ b/common/cpp/fabric/ExpoViewComponentDescriptor.cpp
+@@ -44,6 +44,34 @@ void ExpoViewComponentDescriptor::adopt(facebook::react::ShadowNode &shadowNode)
+ 
+     snode->setSize({width, height});
+   }
++  
++  // handle layout style prop update
++  auto styleWidth = state._styleWidth;
++  auto styleHeight = state._styleHeight;
++
++  if (!isnan(styleWidth) || !isnan(styleHeight)) {
++    auto const &props = *std::static_pointer_cast<const facebook::react::ViewProps>(snode->getProps());
++    
++    auto& style = const_cast<facebook::yoga::Style&>(props.yogaStyle);
++    bool changedStyle = false;
++    
++    if (!isnan(styleWidth)) {
++      style.setDimension(facebook::yoga::Dimension::Width, facebook::yoga::StyleSizeLength::points(styleWidth));
++      changedStyle = true;
++    }
++    
++    if (!isnan(styleHeight)) {
++      style.setDimension(facebook::yoga::Dimension::Height, facebook::yoga::StyleSizeLength::points(styleHeight));
++      changedStyle = true;
++    }
++    
++    // Update yoga props and dirty layout if we changed the style
++    if (changedStyle) {
++      auto* expoNode = const_cast<ExpoViewShadowNode*>(snode);
++      expoNode->updateYogaProps();
++      expoNode->dirtyLayout();
++    }
++  }
+   ConcreteComponentDescriptor::adopt(shadowNode);
+ }
+ 
+diff --git a/common/cpp/fabric/ExpoViewState.h b/common/cpp/fabric/ExpoViewState.h
+index f63fb653fe78bf0e086a654501c803abc2d8f478..7b9dda91ea18384911f8687c1e2f0bcc29519d47 100644
+--- a/common/cpp/fabric/ExpoViewState.h
++++ b/common/cpp/fabric/ExpoViewState.h
+@@ -28,11 +28,28 @@ public:
+       _height = std::numeric_limits<float>::quiet_NaN();
+     }
+   };
++  
++  static ExpoViewState withStyleDimensions(float styleWidth, float styleHeight) {
++    ExpoViewState state;
++    if (styleWidth >= 0) {
++      state._styleWidth = styleWidth;
++    } else {
++      state._styleWidth = std::numeric_limits<float>::quiet_NaN();
++    }
++    if (styleHeight >= 0) {
++      state._styleHeight = styleHeight;
++    } else {
++      state._styleHeight = std::numeric_limits<float>::quiet_NaN();
++    }
++    return state;
++  }
+ 
+ #ifdef ANDROID
+   ExpoViewState(ExpoViewState const &previousState, folly::dynamic data)
+   : _width((float)data["width"].getDouble()),
+-    _height((float)data["height"].getDouble()){};
++    _height((float)data["height"].getDouble()),
++    _styleWidth(data.count("styleWidth") ? (float)data["styleWidth"].getDouble() : std::numeric_limits<float>::quiet_NaN()),
++    _styleHeight(data.count("styleHeight") ? (float)data["styleHeight"].getDouble() : std::numeric_limits<float>::quiet_NaN()){};
+   folly::dynamic getDynamic() const {
+     return {};
+   };
+@@ -44,6 +61,8 @@ public:
+   
+   float _width = std::numeric_limits<float>::quiet_NaN();
+   float _height = std::numeric_limits<float>::quiet_NaN();
++  float _styleWidth = std::numeric_limits<float>::quiet_NaN();
++  float _styleHeight = std::numeric_limits<float>::quiet_NaN();
+ 
+ };
+ 
 diff --git a/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift b/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift
-index e814b2f441b2b40a82a39e72128afd39938b2456..1a0c8311604e22aa44e1f3fc405ca0c440db5f97 100644
+index e814b2f441b2b40a82a39e72128afd39938b2456..c400303697f3ee539a0966f6e5565312f6bf49d7 100644
 --- a/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift
 +++ b/ios/Core/Views/SwiftUI/SwiftUIHostingView.swift
-@@ -179,26 +179,15 @@ extension ExpoSwiftUI {
-     }
- #endif // RCT_NEW_ARCH_ENABLED
+@@ -81,6 +81,13 @@ extension ExpoSwiftUI {
+         self.setViewSize(size)
+         #endif
+       }
++      
++      shadowNodeProxy.setStyleSize = { width, height in
++        #if RCT_NEW_ARCH_ENABLED
++        self.setStyleSize(width, height: height)
++        #endif
++      }
++      
+       shadowNodeProxy.objectWillChange.send()
  
--    /**
--     Setups layout constraints of the hosting controller view to match the layout set by React.
--     */
--    private func setupHostingViewConstraints() {
--      // NSView is not optional in NSViewController in macOS
-+// MARK: - UIView lifecycle
+       #if os(iOS) || os(tvOS)
+@@ -136,6 +143,12 @@ extension ExpoSwiftUI {
+       return true
+     }
+ 
 +    public override func layoutSubviews() {
 +      super.layoutSubviews()
++      // TODO: Use updateLayoutMetrics from RN. Add support in ExpoFabricView.
++      setupHostingViewConstraints()
++    }
++
+ #if RCT_NEW_ARCH_ENABLED
+     /**
+      Fabric calls this function when mounting (attaching) a child component view.
+@@ -187,14 +200,13 @@ extension ExpoSwiftUI {
        guard let view = hostingController.view as UIView? else {
          return
        }
@@ -25,19 +123,95 @@ index e814b2f441b2b40a82a39e72128afd39938b2456..1a0c8311604e22aa44e1f3fc405ca0c4
 -        view.leftAnchor.constraint(equalTo: leftAnchor),
 -        view.rightAnchor.constraint(equalTo: rightAnchor)
 -      ])
-+      view.frame = self.bounds
++      let frame = self.bounds;
++      view.frame = frame;
++        #if os(iOS) || os(tvOS)
++        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
++        #elseif os(macOS)
++        view.autoresizingMask = [.width, .height]
++        #endif
      }
  
--    // MARK: - UIView lifecycle
--
-     public override func didMoveToWindow() {
-       super.didMoveToWindow()
+     // MARK: - UIView lifecycle
+diff --git a/ios/Core/Views/SwiftUI/SwiftUIShadowNodeProxy.swift b/ios/Core/Views/SwiftUI/SwiftUIShadowNodeProxy.swift
+index 9efeaecd1b5ea93164a7a17c357f944be70f378e..4d93b83f6fcd90e3c30ee38865355adc1551c0b0 100644
+--- a/ios/Core/Views/SwiftUI/SwiftUIShadowNodeProxy.swift
++++ b/ios/Core/Views/SwiftUI/SwiftUIShadowNodeProxy.swift
+@@ -10,5 +10,6 @@ extension ExpoSwiftUI {
+     static let SHADOW_NODE_MOCK_PROXY = ShadowNodeProxy()
  
-@@ -216,7 +205,6 @@ extension ExpoSwiftUI {
-         #if os(iOS) || os(tvOS)
-         hostingController.didMove(toParent: parentController)
-         #endif
--        setupHostingViewConstraints()
-       } else {
-         hostingController.view.removeFromSuperview()
-         hostingController.removeFromParent()
+     public var setViewSize: ((CGSize) -> Void)?
++    public var setStyleSize: ((NSNumber?, NSNumber?) -> Void)?
+   }
+ }
+diff --git a/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.h b/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.h
+index f9f6dd0ad1ebb035cba3689e140576252dfa41bd..280ae9137b2b9dd09c94b309153f2f7b1c3963b5 100644
+--- a/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.h
++++ b/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.h
+@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
+ 
+ - (void)setShadowNodeSize:(float) width height:(float) height;
+ 
++- (void)setStyleSize:(nullable NSNumber *)width height:(nullable NSNumber *)height;
++
+ - (BOOL)supportsPropWithName:(nonnull NSString *)name;
+ 
+ /*
+diff --git a/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.mm b/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.mm
+index 076bd7508f5258dac0e58da896e7763a7e249192..bb068c77c20d5775373d8a6b6cfcd8e4b12c1dff 100644
+--- a/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.mm
++++ b/ios/Core/Views/SwiftUI/SwiftUIVirtualViewObjC.mm
+@@ -357,6 +357,15 @@ - (void)setShadowNodeSize:(float)width height:(float)height
+   }
+ }
+ 
++- (void)setStyleSize:(nullable NSNumber *)width height:(nullable NSNumber *)height
++{
++  if (_state) {
++    float widthValue = width ? [width floatValue] : std::numeric_limits<float>::quiet_NaN();
++    float heightValue = height ? [height floatValue] : std::numeric_limits<float>::quiet_NaN();
++    _state->updateState(expo::ExpoViewState::withStyleDimensions(widthValue, heightValue));
++  }
++}
++
+ - (BOOL)supportsPropWithName:(nonnull NSString *)name
+ {
+   // Implemented in `SwiftUIVirtualView.swift`
+diff --git a/ios/Fabric/ExpoFabricViewObjC.h b/ios/Fabric/ExpoFabricViewObjC.h
+index e7085730f40c177efbeb3ee788f8a04a734313db..f61aa7176542e44dd93fd3d9283a32ac45a8b15f 100644
+--- a/ios/Fabric/ExpoFabricViewObjC.h
++++ b/ios/Fabric/ExpoFabricViewObjC.h
+@@ -40,6 +40,8 @@
+ 
+ - (void)setShadowNodeSize:(float)width height:(float)height;
+ 
++- (void)setStyleSize:(nullable NSNumber *)width height:(nullable NSNumber *)height;
++
+ - (BOOL)supportsPropWithName:(nonnull NSString *)name;
+ 
+ // MARK: - Derived from RCTComponentViewProtocol
+diff --git a/ios/Fabric/ExpoFabricViewObjC.mm b/ios/Fabric/ExpoFabricViewObjC.mm
+index cb64efd25912fda87b2f205349ba1216a2562528..2727860f6ec383dca8cd5870a1e69bdc6bf0fe7a 100644
+--- a/ios/Fabric/ExpoFabricViewObjC.mm
++++ b/ios/Fabric/ExpoFabricViewObjC.mm
+@@ -179,6 +179,20 @@ - (BOOL)supportsPropWithName:(nonnull NSString *)name
+   return NO;
+ }
+ 
++- (void)setStyleSize:(nullable NSNumber *)width height:(nullable NSNumber *)height
++{
++  if (_state) {
++    float widthValue = width ? [width floatValue] : std::numeric_limits<float>::quiet_NaN();
++    float heightValue = height ? [height floatValue] : std::numeric_limits<float>::quiet_NaN();
++#if REACT_NATIVE_TARGET_VERSION >= 82
++    // synchronous update is only available in React Native 0.82 and above
++    _state->updateState(expo::ExpoViewState::withStyleDimensions(widthValue, heightValue), EventQueue::UpdateMode::unstable_Immediate);
++#else
++    _state->updateState(expo::ExpoViewState::withStyleDimensions(widthValue, heightValue));
++#endif
++  }
++}
++
+ @end
+ 
+ #endif // RCT_NEW_ARCH_ENABLED

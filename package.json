@@ -83,7 +83,8 @@
     ]
   },
   "patchedDependencies": {
+    "react-native-screens@4.16.0": "patches/react-native-screens@4.16.0.patch",
     "expo-modules-core@3.0.16": "patches/expo-modules-core@3.0.16.patch",
-    "react-native-screens@4.16.0": "patches/react-native-screens@4.16.0.patch"
+    "@expo/ui@0.2.0-beta.3": "patches/@expo%2Fui@0.2.0-beta.3.patch"
   }
 }
