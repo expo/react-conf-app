@@ -8,10 +8,11 @@ import { Session, Speaker } from "@/types";
 import { formatSessionTime } from "../utils/formatDate";
 
 import { useReactConfStore } from "@/store/reactConfStore";
-import { Pressable } from "react-native-gesture-handler";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { SpeakerDetails } from "./SpeakerDetails";
 import { ConferenceDay } from "@/consts";
 import * as Haptics from "expo-haptics";
+import { useMemo } from "react";
 
 type Props = {
   session: Session;
@@ -23,21 +24,32 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
   const router = useRouter();
 
-  const handlePress = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push({
-      pathname: "/talk/[talk]",
-      params: { talk: session.id },
-    });
-  };
+  const gestureTalkTap = useMemo(
+    () =>
+      Gesture.Tap()
+        .maxDistance(10)
+        .runOnJS(true)
+        .onEnd(() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push({
+            pathname: "/talk/[talk]",
+            params: { talk: session.id },
+          });
+        }),
+    [router, session.id],
+  );
 
-  const handleSpeakerPress = (speaker: Speaker) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    router.push({
-      pathname: "/speaker/[speaker]",
-      params: { speaker: speaker.id },
-    });
-  };
+  const createSpeakerTapGesture = (speaker: Speaker) =>
+    Gesture.Tap()
+      .maxDistance(10)
+      .runOnJS(true)
+      .onEnd(() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        router.push({
+          pathname: "/speaker/[speaker]",
+          params: { speaker: speaker.id },
+        });
+      });
 
   return (
     <ThemedView style={styles.container}>
@@ -56,57 +68,60 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
         color={theme.color.backgroundSecondary}
         style={styles.content}
       >
-        <Pressable
-          onPress={handlePress}
-          style={{
-            marginHorizontal: -theme.space16,
-            paddingHorizontal: theme.space16,
-            marginVertical: -theme.space8,
-            paddingVertical: theme.space8,
-          }}
-        >
-          <View style={styles.titleAndBookmark}>
-            <ThemedText
-              fontSize={theme.fontSize18}
-              fontWeight="semiBold"
-              style={styles.flex1}
-            >
-              {session.title}
-            </ThemedText>
-            <Bookmark session={session} size="small" />
-          </View>
-          {isBookmarked && (
-            <ThemedView
-              style={styles.time}
-              color={{
-                dark: "#3b3a3a",
-                light: "#dedede",
-              }}
-            >
-              <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
-                {formatSessionTime(session, shouldUseLocalTz)}
-              </ThemedText>
-              <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
-                {day === ConferenceDay.One ? "Day 1" : "Day 2"}
-              </ThemedText>
-            </ThemedView>
-          )}
-        </Pressable>
-        {session.speakers.map((speaker) => (
-          <Pressable
-            onPress={() => handleSpeakerPress(speaker)}
-            key={speaker.id}
-            style={({ pressed }) => ({
+        <GestureDetector gesture={gestureTalkTap}>
+          <View
+            style={{
               marginHorizontal: -theme.space16,
               paddingHorizontal: theme.space16,
               marginVertical: -theme.space8,
               paddingVertical: theme.space8,
-              borderRadius: theme.borderRadius32,
-              opacity: pressed ? 0.6 : 1,
-            })}
+            }}
           >
-            <SpeakerDetails speaker={speaker} key={speaker.id} />
-          </Pressable>
+            <View style={styles.titleAndBookmark}>
+              <ThemedText
+                fontSize={theme.fontSize18}
+                fontWeight="semiBold"
+                style={styles.flex1}
+              >
+                {session.title}
+              </ThemedText>
+              <Bookmark session={session} size="small" />
+            </View>
+            {isBookmarked && (
+              <ThemedView
+                style={styles.time}
+                color={{
+                  dark: "#3b3a3a",
+                  light: "#dedede",
+                }}
+              >
+                <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
+                  {formatSessionTime(session, shouldUseLocalTz)}
+                </ThemedText>
+                <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
+                  {day === ConferenceDay.One ? "Day 1" : "Day 2"}
+                </ThemedText>
+              </ThemedView>
+            )}
+          </View>
+        </GestureDetector>
+        {session.speakers.map((speaker) => (
+          <GestureDetector
+            gesture={createSpeakerTapGesture(speaker)}
+            key={speaker.id}
+          >
+            <View
+              style={{
+                marginHorizontal: -theme.space16,
+                paddingHorizontal: theme.space16,
+                marginVertical: -theme.space8,
+                paddingVertical: theme.space8,
+                borderRadius: theme.borderRadius32,
+              }}
+            >
+              <SpeakerDetails speaker={speaker} />
+            </View>
+          </GestureDetector>
         ))}
       </ThemedView>
     </ThemedView>
