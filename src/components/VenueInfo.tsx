@@ -37,7 +37,7 @@ export function VenueInfo() {
   const backgroundColor = useThemeColor(theme.color.backgroundElement);
 
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={onOpenVenue}>
       <View>
         <View style={styles.imageContainer}>
           <Image
@@ -57,7 +57,7 @@ export function VenueInfo() {
           color={theme.color.backgroundElement}
         >
           <ThemedText
-            fontSize={theme.fontSize16}
+            fontSize={theme.fontSize14}
             color={theme.color.textSecondary}
           >
             Venue
@@ -70,22 +70,22 @@ export function VenueInfo() {
               Las Vegas Resort & Spa
             </ThemedText>
           </View>
-          <Pressable style={styles.venueAddress} onPress={onOpenVenue}>
+          <View style={styles.venueAddress}>
             <MaterialCommunityIcons
               name="map-marker-radius"
-              size={theme.fontSize18}
+              size={theme.fontSize16}
               color={iconColor}
             />
             <ThemedText
               color={theme.color.textSecondary}
-              fontSize={theme.fontSize14}
+              fontSize={theme.fontSize12}
             >
               {venueAddress}
             </ThemedText>
-          </Pressable>
+          </View>
         </ThemedView>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   venueName: {
+    alignItems: "center",
     marginBottom: theme.space16,
   },
 });

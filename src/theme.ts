@@ -92,17 +92,6 @@ export const theme = {
   borderRadius80: 80,
 
   dropShadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: "#adb5bd",
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        shadowOpacity: 0.4,
-        shadowRadius: 2,
-      },
-      default: {},
-    }),
+    boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.1)",
   },
 };

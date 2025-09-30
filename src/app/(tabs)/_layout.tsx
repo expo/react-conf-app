@@ -129,7 +129,7 @@ export default function TabLayout() {
       </NativeTabs.Trigger>
       <NativeTabs.Trigger name="info">
         {Platform.select({
-          ios: <Icon sf="map" />,
+          ios: <Icon sf="map" selectedColor={tintColor} />,
           android: (
             <Icon
               src={

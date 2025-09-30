@@ -57,7 +57,7 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
       <ThemedView style={styles.container}>
         {!isBookmarked && (
           <ThemedText
-            fontSize={theme.fontSize18}
+            fontSize={theme.fontSize14}
             fontWeight="medium"
             color={theme.color.textSecondary}
             marginBottom={theme.space8}
@@ -90,20 +90,22 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
                 <Bookmark session={session} size="small" />
               </View>
               {isBookmarked && (
-                <ThemedView
-                  style={styles.time}
-                  color={{
-                    dark: "#3b3a3a",
-                    light: "#dedede",
-                  }}
-                >
-                  <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
-                    {formatSessionTime(session, shouldUseLocalTz)}
+                <View style={styles.time}>
+                  <ThemedText
+                    fontSize={theme.fontSize14}
+                    fontWeight="medium"
+                    color={theme.color.textSecondary}
+                  >
+                    {formatSessionTime(session, shouldUseLocalTz)},
                   </ThemedText>
-                  <ThemedText fontSize={theme.fontSize14} fontWeight="medium">
+                  <ThemedText
+                    fontSize={theme.fontSize14}
+                    fontWeight="medium"
+                    color={theme.color.textSecondary}
+                  >
                     {day === ConferenceDay.One ? "Day 1" : "Day 2"}
                   </ThemedText>
-                </ThemedView>
+                </View>
               )}
             </View>
           </GestureDetector>
@@ -148,9 +150,7 @@ const styles = StyleSheet.create({
   time: {
     borderRadius: theme.borderRadius10,
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: theme.space16,
-    paddingVertical: theme.space16,
+    gap: theme.space8,
   },
   titleAndBookmark: {
     alignItems: "center",

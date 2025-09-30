@@ -273,11 +273,11 @@ function SpeakerDetails({ speaker }: { speaker: Speaker }) {
     <View style={styles.speaker}>
       <SpeakerImage profilePicture={speaker.profilePicture} />
       <View style={styles.speakerDetails}>
-        <ThemedText fontSize={theme.fontSize18} fontWeight="bold">
+        <ThemedText fontSize={theme.fontSize18} fontWeight="semiBold">
           {speaker.fullName}
         </ThemedText>
         <ThemedText
-          fontSize={theme.fontSize16}
+          fontSize={theme.fontSize14}
           fontWeight="medium"
           color={theme.color.textSecondary}
         >
@@ -317,6 +317,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
+    gap: theme.space8,
     paddingHorizontal: theme.space24,
     paddingTop: theme.space16,
   },
@@ -333,6 +334,7 @@ const styles = StyleSheet.create({
   },
   speaker: {
     flexDirection: "row",
+    gap: theme.space8,
     marginBottom: theme.space12,
   },
   speakerDetails: {
@@ -342,7 +344,5 @@ const styles = StyleSheet.create({
   talkTitle: {
     marginBottom: theme.space12,
     textAlign: "center",
-    textDecorationLine: "underline",
-    textDecorationStyle: "dashed",
   },
 });
