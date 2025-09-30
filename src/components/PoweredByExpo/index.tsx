@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
-    paddingVertical: theme.space16,
+    zIndex: 1,
   },
   flippedContent: {
     alignItems: "center",
