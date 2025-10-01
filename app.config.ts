@@ -61,7 +61,7 @@ const config: ExpoConfig = {
     adaptiveIcon: {
       foregroundImage: "./assets/app-icons/icon-android.png",
       monochromeImage: "./assets/app-icons/icon-monochrome-android.png",
-      backgroundColor: "#23272F",
+      backgroundColor: "#087EA4",
     },
     userInterfaceStyle: "automatic",
     package: getAppId(),
