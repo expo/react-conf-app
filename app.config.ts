@@ -66,6 +66,7 @@ const config: ExpoConfig = {
     userInterfaceStyle: "automatic",
     package: getAppId(),
     edgeToEdgeEnabled: true,
+    softwareKeyboardLayoutMode: "pan",
   },
   web: {
     favicon: "./assets/favicon.png",
