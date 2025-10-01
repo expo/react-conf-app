@@ -83,11 +83,10 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
                 <ThemedText
                   fontSize={theme.fontSize18}
                   fontWeight="semiBold"
-                  style={styles.flex1}
+                  style={styles.title}
                 >
                   {session.title}
                 </ThemedText>
-                <Bookmark session={session} size="small" />
               </View>
               {isBookmarked && (
                 <View style={styles.time}>
@@ -109,6 +108,9 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
               )}
             </View>
           </GestureDetector>
+          <View style={styles.bookmarkContainer}>
+            <Bookmark session={session} size="small" />
+          </View>
           {session.speakers.map((speaker) => (
             <GestureDetector
               gesture={createSpeakerTapGesture(speaker)}
@@ -134,6 +136,11 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
 }
 
 const styles = StyleSheet.create({
+  bookmarkContainer: {
+    position: "absolute",
+    right: theme.space24,
+    top: theme.space24,
+  },
   container: {
     borderRadius: theme.borderRadius10,
     marginBottom: theme.space24,
@@ -144,13 +151,14 @@ const styles = StyleSheet.create({
     gap: theme.space24,
     padding: theme.space24,
   },
-  flex1: {
-    flex: 1,
-  },
   time: {
     borderRadius: theme.borderRadius10,
     flexDirection: "row",
     gap: theme.space8,
+  },
+  title: {
+    flex: 1,
+    marginRight: 40,
   },
   titleAndBookmark: {
     alignItems: "center",

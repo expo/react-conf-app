@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: theme.borderRadius20,
   },
   header: {
+    marginTop: Platform.select({ ios: 0, android: 30 }),
     paddingHorizontal: theme.space24,
   },
   sectionContainer: {
