@@ -12,7 +12,7 @@ import {
 } from "@expo/ui/swift-ui";
 import * as Haptics from "expo-haptics";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
-import { frame } from "@expo/ui/swift-ui/modifiers";
+import { buttonStyle, frame } from "@expo/ui/swift-ui/modifiers";
 import { theme } from "@/theme";
 import { StyleSheet, useColorScheme } from "react-native";
 
@@ -35,7 +35,11 @@ export function TimeZoneSwitch() {
 
   return (
     <Host style={styles.container}>
-      <ContextMenu>
+      <ContextMenu
+        modifiers={[
+          buttonStyle(isLiquidGlassAvailable() ? "glass" : "bordered"),
+        ]}
+      >
         <ContextMenu.Items>
           <Picker
             selectedIndex={selectedIndex}
@@ -46,30 +50,29 @@ export function TimeZoneSwitch() {
           />
         </ContextMenu.Items>
         <ContextMenu.Trigger>
-          <Button
-            variant={isLiquidGlassAvailable() ? "glass" : "bordered"}
-            color={isLiquidGlassAvailable() ? "primary" : "gray"}
+          <HStack
+            modifiers={[frame({ width: isIpad ? 60 : 50 })]}
+            spacing={theme.space8}
           >
-            <HStack
-              modifiers={[frame({ width: isIpad ? 60 : 50 })]}
-              spacing={theme.space8}
+            <Text
+              weight="semibold"
+              size={theme.fontSize10}
+              color={
+                isLiquidGlassAvailable()
+                  ? "primary"
+                  : isDarkMode
+                    ? "white"
+                    : "black"
+              }
             >
-              <Text
-                weight="semibold"
-                size={theme.fontSize10}
-                color={
-                  isLiquidGlassAvailable()
-                    ? "primary"
-                    : isDarkMode
-                      ? "white"
-                      : "black"
-                }
-              >
-                {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
-              </Text>
-              <Image systemName="chevron.down" size={theme.fontSize10} />
-            </HStack>
-          </Button>
+              {shouldUseLocalTz ? getCurrentTimezone().slice(0, 3) : "PDT"}
+            </Text>
+            <Image
+              systemName="chevron.down"
+              size={theme.fontSize10}
+              color={isLiquidGlassAvailable() ? "primary" : "gray"}
+            />
+          </HStack>
         </ContextMenu.Trigger>
       </ContextMenu>
     </Host>
