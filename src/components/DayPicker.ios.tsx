@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   glassView: {
     borderRadius: theme.borderRadius80,
-    height: 31,
+    height: 32,
     marginHorizontal: theme.space16,
     marginTop: theme.space16,
     width: "auto",
