@@ -1,0 +1,652 @@
+diff --git a/node_modules/@expo/ui/.bun-tag-173c635e005a48c0 b/.bun-tag-173c635e005a48c0
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+diff --git a/build/swift-ui/ContextMenu/types.d.ts b/build/swift-ui/ContextMenu/types.d.ts
+index 604cc13cdb980ae06c29c41f75816ddeb99b7732..0002202431b7b4bb4d11f6e49994498fb5f8e8a5 100644
+--- a/build/swift-ui/ContextMenu/types.d.ts
++++ b/build/swift-ui/ContextMenu/types.d.ts
+@@ -4,6 +4,7 @@ import { type ButtonProps } from '../Button';
+ import { type PickerProps } from '../Picker';
+ import { type SwitchProps } from '../Switch';
+ import { type SubmenuProps } from './Submenu';
++import { type CommonViewModifierProps } from '../types';
+ export type EventHandlers = Record<string, Record<string, (event: NativeSyntheticEvent<any>) => void>>;
+ export type ContextMenuElementBase = {
+     contextMenuElementID: string;
+@@ -31,6 +32,6 @@ export type ContextMenuProps = {
+      * The children will be wrapped in a pressable element, which triggers opening of the context menu.
+      */
+     children: ReactNode;
+-};
++} & CommonViewModifierProps;
+ export {};
+ //# sourceMappingURL=types.d.ts.map
+\ No newline at end of file
+diff --git a/build/swift-ui/modifiers/index.d.ts b/build/swift-ui/modifiers/index.d.ts
+index 37911a95c08d9b36bf2ff594ec9288cf99761324..79db675147cb681313806e147a4cdf9263f77b93 100644
+--- a/build/swift-ui/modifiers/index.d.ts
++++ b/build/swift-ui/modifiers/index.d.ts
+@@ -280,6 +280,10 @@ export declare const colorInvert: (inverted?: boolean) => ModifierConfig;
+  * @param amount - Grayscale amount (0 to 1)
+  */
+ export declare const grayscale: (amount: number) => ModifierConfig;
++/**Add a comment on line R302Add diff commentMarkdown input:  edit mode selected.WritePreviewAdd a suggestionHeadingBoldItalicQuoteCodeLinkUnordered listNumbered listTask listMentionReferenceSaved repliesAdd FilesPaste, drop, or click to add filesCancelCommentStart a reviewReturn to code
++ * Sets the button style for button views.
++ */
++export declare const buttonStyle: (style: "automatic" | "bordered" | "borderedProminent" | "borderless" | "glass" | "glassProminent" | "plain") => ModifierConfig;
+ /**
+  * Sets accessibility label for the view.
+  * @param label - The accessibility label
+@@ -357,7 +361,7 @@ export declare const glassEffectId: (id: string, namespaceId: string) => Modifie
+  * Union type of all built-in modifier return types.
+  * This provides type safety for the modifiers array.
+  */
+-export type BuiltInModifier = ReturnType<typeof background> | ReturnType<typeof cornerRadius> | ReturnType<typeof shadow> | ReturnType<typeof frame> | ReturnType<typeof padding> | ReturnType<typeof fixedSize> | ReturnType<typeof onTapGesture> | ReturnType<typeof onLongPressGesture> | ReturnType<typeof opacity> | ReturnType<typeof clipShape> | ReturnType<typeof border> | ReturnType<typeof scaleEffect> | ReturnType<typeof rotationEffect> | ReturnType<typeof offset> | ReturnType<typeof foregroundColor> | ReturnType<typeof foregroundStyle> | ReturnType<typeof tint> | ReturnType<typeof hidden> | ReturnType<typeof zIndex> | ReturnType<typeof blur> | ReturnType<typeof brightness> | ReturnType<typeof contrast> | ReturnType<typeof saturation> | ReturnType<typeof hueRotation> | ReturnType<typeof colorInvert> | ReturnType<typeof grayscale> | ReturnType<typeof accessibilityLabel> | ReturnType<typeof accessibilityHint> | ReturnType<typeof accessibilityValue> | ReturnType<typeof layoutPriority> | ReturnType<typeof mask> | ReturnType<typeof overlay> | ReturnType<typeof backgroundOverlay> | ReturnType<typeof aspectRatio> | ReturnType<typeof clipped> | ReturnType<typeof glassEffect> | ReturnType<typeof glassEffectId> | ReturnType<typeof animation>;
++export type BuiltInModifier = ReturnType<typeof background> | ReturnType<typeof cornerRadius> | ReturnType<typeof shadow> | ReturnType<typeof frame> | ReturnType<typeof padding> | ReturnType<typeof fixedSize> | ReturnType<typeof onTapGesture> | ReturnType<typeof onLongPressGesture> | ReturnType<typeof opacity> | ReturnType<typeof clipShape> | ReturnType<typeof border> | ReturnType<typeof scaleEffect> | ReturnType<typeof rotationEffect> | ReturnType<typeof offset> | ReturnType<typeof foregroundColor> | ReturnType<typeof foregroundStyle> | ReturnType<typeof tint> | ReturnType<typeof hidden> | ReturnType<typeof zIndex> | ReturnType<typeof blur> | ReturnType<typeof brightness> | ReturnType<typeof contrast> | ReturnType<typeof saturation> | ReturnType<typeof hueRotation> | ReturnType<typeof colorInvert> | ReturnType<typeof grayscale> | ReturnType<typeof buttonStyle> | ReturnType<typeof accessibilityLabel> | ReturnType<typeof accessibilityHint> | ReturnType<typeof accessibilityValue> | ReturnType<typeof layoutPriority> | ReturnType<typeof mask> | ReturnType<typeof overlay> | ReturnType<typeof backgroundOverlay> | ReturnType<typeof aspectRatio> | ReturnType<typeof clipped> | ReturnType<typeof glassEffect> | ReturnType<typeof glassEffectId> | ReturnType<typeof animation>;
+ /**
+  * Main ViewModifier type that supports both built-in and 3rd party modifiers.
+  * 3rd party modifiers should return ModifierConfig objects with their own type strings.
+diff --git a/ios/Modifiers/ViewModifierRegistry.swift b/ios/Modifiers/ViewModifierRegistry.swift
+index 6f7ae06663f3fe066b919d376d0f0937c1f63280..23ae7cce5c73a5290a18b50af7dc83750fc8ac71 100644
+--- a/ios/Modifiers/ViewModifierRegistry.swift
++++ b/ios/Modifiers/ViewModifierRegistry.swift
+@@ -776,6 +776,46 @@ internal struct MatchedGeometryEffectModifier: ViewModifier, Record {
+   }
+ }
+ 
++internal struct ButtonStyleModifier: ViewModifier, Record {
++  @Field var style: String = "automatic"
++
++  func body(content: Content) -> some View {
++    switch style {
++    case "bordered":
++      content.buttonStyle(.bordered)
++    case "borderedProminent":
++      content.buttonStyle(.borderedProminent)
++    case "borderless":
++      content.buttonStyle(.borderless)
++    case "glass":
++      if #available(iOS 26.0, macOS 26.0, tvOS 26.0, *) {
++        #if compiler(>=6.2) // Xcode 26
++        content.buttonStyle(.glass)
++        #else
++        content.buttonStyle(.automatic)
++        #endif
++      } else {
++        content.buttonStyle(.automatic)
++      }
++    case "glassProminent":
++      if #available(iOS 26.0, macOS 26.0, tvOS 26.0, *) {
++        #if compiler(>=6.2) // Xcode 26
++        content.buttonStyle(.glassProminent)
++        #else
++        content.buttonStyle(.automatic)
++        #endif
++      } else {
++        content.buttonStyle(.automatic)
++      }
++    case "plain":
++      content.buttonStyle(.plain)
++    default:
++      content.buttonStyle(.automatic)
++    }
++  }
++}
++
++
+ // MARK: - Built-in Modifier Registration
+ 
+ // swiftlint:disable:next no_grouping_extension
+@@ -932,5 +972,9 @@ extension ViewModifierRegistry {
+     register("matchedGeometryEffect") { params, appContext, _ in
+       return try MatchedGeometryEffectModifier.init(from: params, appContext: appContext)
+     }
++
++    register("buttonStyle") { params, appContext, _ in
++      return try ButtonStyleModifier(from: params, appContext: appContext)
++    }
+   }
+ }
+diff --git a/src/swift-ui/ContextMenu/types.ts b/src/swift-ui/ContextMenu/types.ts
+index d7e8e42dc1301b334d929c01d3e4985f60a0bb37..d1b839220ef06b4912e1bf7b4326728aba6b3acd 100644
+--- a/src/swift-ui/ContextMenu/types.ts
++++ b/src/swift-ui/ContextMenu/types.ts
+@@ -1,10 +1,11 @@
+-import { ReactElement, ReactNode } from 'react';
+-import { NativeSyntheticEvent } from 'react-native';
++import { ReactElement, ReactNode } from "react";
++import { NativeSyntheticEvent } from "react-native";
++import { type CommonViewModifierProps } from "../types";
+ 
+-import { type ButtonProps } from '../Button';
+-import { type PickerProps } from '../Picker';
+-import { type SwitchProps } from '../Switch';
+-import { type SubmenuProps } from './Submenu';
++import { type ButtonProps } from "../Button";
++import { type PickerProps } from "../Picker";
++import { type SwitchProps } from "../Switch";
++import { type SubmenuProps } from "./Submenu";
+ 
+ export type EventHandlers = Record<
+   string,
+@@ -28,7 +29,7 @@ export type ContextMenuContentProps = {
+  * - `singlePress`: The context menu is opened with a single tap. Does not isolate the content.
+  * - `longPress`: The context menu is opened with a long press. On iOS additionally Highlights the content by blurring the background.
+  */
+-export type ActivationMethod = 'singlePress' | 'longPress';
++export type ActivationMethod = "singlePress" | "longPress";
+ 
+ /**
+  * Props of the `ContextMenu` component.
+@@ -44,4 +45,4 @@ export type ContextMenuProps = {
+    * The children will be wrapped in a pressable element, which triggers opening of the context menu.
+    */
+   children: ReactNode;
+-};
++} & CommonViewModifierProps;
+diff --git a/src/swift-ui/modifiers/index.ts b/src/swift-ui/modifiers/index.ts
+index 99be65c078d246be541dff5a355b9694942ab84d..f823cfeffc57a72e86cc9cb9180d681a91f84f31 100644
+--- a/src/swift-ui/modifiers/index.ts
++++ b/src/swift-ui/modifiers/index.ts
+@@ -3,10 +3,10 @@
+  * This system allows both built-in and 3rd party modifiers to use the same API.
+  */
+ 
+-import { ColorValue } from 'react-native';
++import { ColorValue } from "react-native";
+ 
+-import { animation } from './animation/index';
+-import { createModifier, ModifierConfig } from './createModifier';
++import { animation } from "./animation/index";
++import { createModifier, ModifierConfig } from "./createModifier";
+ 
+ /**
+  * Creates a modifier with an event listener.
+@@ -14,30 +14,30 @@ import { createModifier, ModifierConfig } from './createModifier';
+ function createModifierWithEventListener(
+   type: string,
+   eventListener: (args: any) => void,
+-  params: Record<string, any> = {}
++  params: Record<string, any> = {},
+ ): ModifierConfig {
+   return { $type: type, ...params, eventListener };
+ }
+ 
+ type NamedColor =
+-  | 'primary'
+-  | 'secondary'
+-  | 'red'
+-  | 'orange'
+-  | 'yellow'
+-  | 'green'
+-  | 'blue'
+-  | 'purple'
+-  | 'pink'
+-  | 'white'
+-  | 'gray'
+-  | 'black'
+-  | 'clear'
+-  | 'mint'
+-  | 'teal'
+-  | 'cyan'
+-  | 'indigo'
+-  | 'brown';
++  | "primary"
++  | "secondary"
++  | "red"
++  | "orange"
++  | "yellow"
++  | "green"
++  | "blue"
++  | "purple"
++  | "pink"
++  | "white"
++  | "gray"
++  | "black"
++  | "clear"
++  | "mint"
++  | "teal"
++  | "cyan"
++  | "indigo"
++  | "brown";
+ 
+ type Color = string | ColorValue | NamedColor;
+ 
+@@ -49,25 +49,31 @@ type Color = string | ColorValue | NamedColor;
+  * Sets the background of a view.
+  * @param color - The background color (hex string, e.g., '#FF0000')
+  */
+-export const background = (color: Color) => createModifier('background', { color });
++export const background = (color: Color) =>
++  createModifier("background", { color });
+ 
+ /**
+  * Applies corner radius to a view.
+  * @param radius - The corner radius value
+  */
+-export const cornerRadius = (radius: number) => createModifier('cornerRadius', { radius });
++export const cornerRadius = (radius: number) =>
++  createModifier("cornerRadius", { radius });
+ 
+ /**
+  * Adds a shadow to a view.
+  */
+-export const shadow = (params: { radius: number; x?: number; y?: number; color?: Color }) =>
+-  createModifier('shadow', params);
++export const shadow = (params: {
++  radius: number;
++  x?: number;
++  y?: number;
++  color?: Color;
++}) => createModifier("shadow", params);
+ 
+ /**
+  * Adds a matched geometry effect to a view.
+  */
+ export const matchedGeometryEffect = (id: string, namespaceId: string) =>
+-  createModifier('matchedGeometryEffect', { id, namespaceId });
++  createModifier("matchedGeometryEffect", { id, namespaceId });
+ 
+ /**
+  * Sets the frame properties of a view.
+@@ -82,16 +88,16 @@ export const frame = (params: {
+   idealWidth?: number;
+   idealHeight?: number;
+   alignment?:
+-    | 'center'
+-    | 'leading'
+-    | 'trailing'
+-    | 'top'
+-    | 'bottom'
+-    | 'topLeading'
+-    | 'topTrailing'
+-    | 'bottomLeading'
+-    | 'bottomTrailing';
+-}) => createModifier('frame', params);
++    | "center"
++    | "leading"
++    | "trailing"
++    | "top"
++    | "bottom"
++    | "topLeading"
++    | "topTrailing"
++    | "bottomLeading"
++    | "bottomTrailing";
++}) => createModifier("frame", params);
+ 
+ /**
+  * Sets padding on a view.
+@@ -105,28 +111,32 @@ export const padding = (params: {
+   horizontal?: number;
+   vertical?: number;
+   all?: number;
+-}) => createModifier('padding', params);
++}) => createModifier("padding", params);
+ 
+ /**
+  * Controls fixed size behavior.
+  * @param enabled - Whether the view should use its natural size
+  */
+-export const fixedSize = (enabled: boolean = true) => createModifier('fixedSize', { enabled });
++export const fixedSize = (enabled: boolean = true) =>
++  createModifier("fixedSize", { enabled });
+ 
+ /**
+  * Adds a tap gesture recognizer.
+  * @param handler - Function to call when tapped
+  */
+ export const onTapGesture = (handler: () => void) =>
+-  createModifierWithEventListener('onTapGesture', handler);
++  createModifierWithEventListener("onTapGesture", handler);
+ 
+ /**
+  * Adds a long press gesture recognizer.
+  * @param handler - Function to call when long pressed
+  * @param minimumDuration - Minimum duration for long press (default: 0.5s)
+  */
+-export const onLongPressGesture = (handler: () => void, minimumDuration?: number) =>
+-  createModifierWithEventListener('onLongPressGesture', handler, {
++export const onLongPressGesture = (
++  handler: () => void,
++  minimumDuration?: number,
++) =>
++  createModifierWithEventListener("onLongPressGesture", handler, {
+     minimumDuration: minimumDuration ?? 0.5,
+   });
+ 
+@@ -137,7 +147,7 @@ export const onLongPressGesture = (handler: () => void, minimumDuration?: number
+  * Sets the opacity of a view.
+  * @param value - Opacity value between 0 and 1
+  */
+-export const opacity = (value: number) => createModifier('opacity', { value });
++export const opacity = (value: number) => createModifier("opacity", { value });
+ 
+ /**
+  * Clips the view to a specific shape.
+@@ -145,39 +155,43 @@ export const opacity = (value: number) => createModifier('opacity', { value });
+  * @param cornerRadius - Corner radius for rounded rectangle (default: 8)
+  */
+ export const clipShape = (
+-  shape: 'rectangle' | 'circle' | 'roundedRectangle',
+-  cornerRadius?: number
+-) => createModifier('clipShape', { shape, cornerRadius });
++  shape: "rectangle" | "circle" | "roundedRectangle",
++  cornerRadius?: number,
++) => createModifier("clipShape", { shape, cornerRadius });
+ 
+ /**
+  * Adds a border to a view.
+  */
+ export const border = (params: { color: Color; width?: number }) =>
+-  createModifier('border', params);
++  createModifier("border", params);
+ 
+ /**
+  * Applies scaling transformation.
+  * @param scale - Scale factor (1.0 = normal size)
+  */
+-export const scaleEffect = (scale: number) => createModifier('scaleEffect', { scale });
++export const scaleEffect = (scale: number) =>
++  createModifier("scaleEffect", { scale });
+ 
+ /**
+  * Applies rotation transformation.
+  * @param angle - Rotation angle in degrees
+  */
+-export const rotationEffect = (angle: number) => createModifier('rotationEffect', { angle });
++export const rotationEffect = (angle: number) =>
++  createModifier("rotationEffect", { angle });
+ 
+ /**
+  * Applies an offset (translation) to a view.
+  */
+-export const offset = (params: { x?: number; y?: number }) => createModifier('offset', params);
++export const offset = (params: { x?: number; y?: number }) =>
++  createModifier("offset", params);
+ 
+ /**
+  * Sets the foreground color/tint of a view.
+  * @param color - The foreground color (hex string)
+  * @deprecated Use foregroundStyle instead
+  */
+-export const foregroundColor = (color: Color) => createModifier('foregroundColor', { color });
++export const foregroundColor = (color: Color) =>
++  createModifier("foregroundColor", { color });
+ 
+ /**
+  * Sets the foreground style of a view with comprehensive styling options.
+@@ -264,130 +278,157 @@ export const foregroundColor = (color: Color) => createModifier('foregroundColor
+ export const foregroundStyle = (
+   style:
+     | string // Simple color (hex string, color name, or Apple system color name)
+-    | { type: 'color'; color: string }
++    | { type: "color"; color: string }
+     | {
+-        type: 'hierarchical';
+-        style: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
++        type: "hierarchical";
++        style: "primary" | "secondary" | "tertiary" | "quaternary" | "quinary";
+       }
+     | {
+-        type: 'linearGradient';
++        type: "linearGradient";
+         colors: string[];
+         startPoint: { x: number; y: number };
+         endPoint: { x: number; y: number };
+       }
+     | {
+-        type: 'radialGradient';
++        type: "radialGradient";
+         colors: string[];
+         center: { x: number; y: number };
+         startRadius: number;
+         endRadius: number;
+       }
+     | {
+-        type: 'angularGradient';
++        type: "angularGradient";
+         colors: string[];
+         center: { x: number; y: number };
+-      }
++      },
+ ) => {
+-  if (typeof style === 'string') {
+-    return createModifier('foregroundStyle', { styleType: 'color', color: style });
++  if (typeof style === "string") {
++    return createModifier("foregroundStyle", {
++      styleType: "color",
++      color: style,
++    });
+   }
+-  return createModifier('foregroundStyle', { styleType: style.type, ...style });
++  return createModifier("foregroundStyle", { styleType: style.type, ...style });
+ };
+ 
+ /**
+  * Sets the tint color of a view.
+  * @param color - The tint color (hex string)
+  */
+-export const tint = (color: Color) => createModifier('tint', { color });
++export const tint = (color: Color) => createModifier("tint", { color });
+ 
+ /**
+  * Hides or shows a view.
+  * @param hidden - Whether the view should be hidden
+  */
+-export const hidden = (hidden: boolean = true) => createModifier('hidden', { hidden });
++export const hidden = (hidden: boolean = true) =>
++  createModifier("hidden", { hidden });
+ 
+ /**
+  * Sets the z-index (display order) of a view.
+  * @param index - The z-index value
+  */
+-export const zIndex = (index: number) => createModifier('zIndex', { index });
++export const zIndex = (index: number) => createModifier("zIndex", { index });
+ 
+ /**
+  * Applies blur to a view.
+  * @param radius - The blur radius
+  */
+-export const blur = (radius: number) => createModifier('blur', { radius });
++export const blur = (radius: number) => createModifier("blur", { radius });
+ 
+ /**
+  * Adjusts the brightness of a view.
+  * @param amount - Brightness adjustment (-1 to 1)
+  */
+-export const brightness = (amount: number) => createModifier('brightness', { amount });
++export const brightness = (amount: number) =>
++  createModifier("brightness", { amount });
+ 
+ /**
+  * Adjusts the contrast of a view.
+  * @param amount - Contrast multiplier (0 to infinity, 1 = normal)
+  */
+-export const contrast = (amount: number) => createModifier('contrast', { amount });
++export const contrast = (amount: number) =>
++  createModifier("contrast", { amount });
+ 
+ /**
+  * Adjusts the saturation of a view.
+  * @param amount - Saturation multiplier (0 to infinity, 1 = normal)
+  */
+-export const saturation = (amount: number) => createModifier('saturation', { amount });
++export const saturation = (amount: number) =>
++  createModifier("saturation", { amount });
+ 
+ /**
+  * Applies a hue rotation to a view.
+  * @param angle - Hue rotation angle in degrees
+  */
+-export const hueRotation = (angle: number) => createModifier('hueRotation', { angle });
++export const hueRotation = (angle: number) =>
++  createModifier("hueRotation", { angle });
+ 
+ /**
+  * Inverts the colors of a view.
+  * @param inverted - Whether to invert colors
+  */
+ export const colorInvert = (inverted: boolean = true) =>
+-  createModifier('colorInvert', { inverted });
++  createModifier("colorInvert", { inverted });
+ 
+ /**
+  * Makes a view grayscale.
+  * @param amount - Grayscale amount (0 to 1)
+  */
+-export const grayscale = (amount: number) => createModifier('grayscale', { amount });
++export const grayscale = (amount: number) =>
++  createModifier("grayscale", { amount });
++
++/**
++ * Sets the button style for button views.
++ */
++export const buttonStyle = (
++  style:
++    | "automatic"
++    | "bordered"
++    | "borderedProminent"
++    | "borderless"
++    | "glass"
++    | "glassProminent"
++    | "plain",
++) => createModifier("buttonStyle", { style });
+ 
+ /**
+  * Sets accessibility label for the view.
+  * @param label - The accessibility label
+  */
+ export const accessibilityLabel = (label: string) =>
+-  createModifier('accessibilityLabel', { label });
++  createModifier("accessibilityLabel", { label });
+ 
+ /**
+  * Sets accessibility hint for the view.
+  * @param hint - The accessibility hint
+  */
+-export const accessibilityHint = (hint: string) => createModifier('accessibilityHint', { hint });
++export const accessibilityHint = (hint: string) =>
++  createModifier("accessibilityHint", { hint });
+ 
+ /**
+  * Sets accessibility value for the view.
+  * @param value - The accessibility value
+  */
+ export const accessibilityValue = (value: string) =>
+-  createModifier('accessibilityValue', { value });
++  createModifier("accessibilityValue", { value });
+ 
+ /**
+  * Sets layout priority for the view.
+  * @param priority - Layout priority value
+  */
+-export const layoutPriority = (priority: number) => createModifier('layoutPriority', { priority });
++export const layoutPriority = (priority: number) =>
++  createModifier("layoutPriority", { priority });
+ 
+ /**
+  * Applies a mask to the view.
+  * @param shape - The masking shape
+  * @param cornerRadius - Corner radius for rounded rectangle (default: 8)
+  */
+-export const mask = (shape: 'rectangle' | 'circle' | 'roundedRectangle', cornerRadius?: number) =>
+-  createModifier('mask', { shape, cornerRadius });
++export const mask = (
++  shape: "rectangle" | "circle" | "roundedRectangle",
++  cornerRadius?: number,
++) => createModifier("mask", { shape, cornerRadius });
+ 
+ /**
+  * Overlays another view on top.
+@@ -396,8 +437,8 @@ export const mask = (shape: 'rectangle' | 'circle' | 'roundedRectangle', cornerR
+  */
+ export const overlay = (params: {
+   color?: Color;
+-  alignment?: 'center' | 'top' | 'bottom' | 'leading' | 'trailing';
+-}) => createModifier('overlay', params);
++  alignment?: "center" | "top" | "bottom" | "leading" | "trailing";
++}) => createModifier("overlay", params);
+ 
+ /**
+  * Adds a background behind the view.
+@@ -406,40 +447,43 @@ export const overlay = (params: {
+  */
+ export const backgroundOverlay = (params: {
+   color?: Color;
+-  alignment?: 'center' | 'top' | 'bottom' | 'leading' | 'trailing';
+-}) => createModifier('backgroundOverlay', params);
++  alignment?: "center" | "top" | "bottom" | "leading" | "trailing";
++}) => createModifier("backgroundOverlay", params);
+ 
+ /**
+  * Sets aspect ratio constraint.
+  * @param ratio - Width/height aspect ratio
+  * @param contentMode - How content fits the aspect ratio
+  */
+-export const aspectRatio = (params: { ratio: number; contentMode?: 'fit' | 'fill' }) =>
+-  createModifier('aspectRatio', params);
++export const aspectRatio = (params: {
++  ratio: number;
++  contentMode?: "fit" | "fill";
++}) => createModifier("aspectRatio", params);
+ 
+ /**
+  * Clips content to bounds.
+  * @param clipped - Whether to clip content
+  */
+-export const clipped = (clipped: boolean = true) => createModifier('clipped', { clipped });
++export const clipped = (clipped: boolean = true) =>
++  createModifier("clipped", { clipped });
+ 
+ /**
+  * Applies a glass effect to a view.
+  */
+ export const glassEffect = (params?: {
+   glass?: {
+-    variant: 'regular' | 'clear' | 'identity';
++    variant: "regular" | "clear" | "identity";
+     interactive?: boolean;
+     tint?: Color;
+   };
+-  shape?: 'circle' | 'capsule' | 'rectangle' | 'ellipse';
+-}) => createModifier('glassEffect', params);
++  shape?: "circle" | "capsule" | "rectangle" | "ellipse";
++}) => createModifier("glassEffect", params);
+ 
+ /**
+  * Associates an identity value to Liquid Glass effects defined within a `GlassEffectContainer`.
+  */
+ export const glassEffectId = (id: string, namespaceId: string) =>
+-  createModifier('glassEffectId', {
++  createModifier("glassEffectId", {
+     id,
+     namespaceId,
+   });
+@@ -479,6 +523,7 @@ export type BuiltInModifier =
+   | ReturnType<typeof hueRotation>
+   | ReturnType<typeof colorInvert>
+   | ReturnType<typeof grayscale>
++  | ReturnType<typeof buttonStyle>
+   | ReturnType<typeof accessibilityLabel>
+   | ReturnType<typeof accessibilityHint>
+   | ReturnType<typeof accessibilityValue>
+@@ -519,7 +564,11 @@ export { createModifier };
+  * Type guard to check if a value is a valid modifier.
+  */
+ export const isModifier = (value: any): value is ModifierConfig => {
+-  return typeof value === 'object' && value !== null && typeof value.$type === 'string';
++  return (
++    typeof value === "object" &&
++    value !== null &&
++    typeof value.$type === "string"
++  );
+ };
+ 
+ /**
+@@ -529,4 +578,4 @@ export const filterModifiers = (modifiers: unknown[]): ModifierConfig[] => {
+   return modifiers.filter(isModifier);
+ };
+ 
+-export * from './animation/index';
++export * from "./animation/index";
