@@ -28,7 +28,7 @@ import {
   type CurrentlyLiveSession,
 } from "@/components/CurrentlyLive";
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
+const AnimatedFlatList = Animated.FlatList;
 
 const HEADER_SCROLL_OFFSET = isLiquidGlassAvailable() ? 110 : 90;
 
@@ -50,8 +50,6 @@ export default function Schedule() {
       [0, HEADER_SCROLL_OFFSET],
       Extrapolation.CLAMP,
     );
-
-    isScrolledDown.value = event.contentOffset.y > 10;
   });
 
   const stickyHeaderStyle = useAnimatedStyle(() => {
