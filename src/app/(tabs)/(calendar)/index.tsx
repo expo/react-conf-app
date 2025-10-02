@@ -41,7 +41,6 @@ export default function Schedule() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
   const animatedTranslateY = useSharedValue(0);
-  const animatedPaddingTop = useSharedValue(0);
   const isScrolledDown = useSharedValue(false);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
@@ -62,7 +61,6 @@ export default function Schedule() {
 
     return {
       transform: [{ translateY: animatedTranslateY.value }],
-      paddingTop: animatedPaddingTop.value,
       backgroundColor: isLiquidGlass ? "transparent" : backgroundColor,
     };
   });
