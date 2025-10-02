@@ -40,14 +40,11 @@ export default function Schedule() {
   const isLiquidGlass = isLiquidGlassAvailable();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
-  const translationY = useSharedValue(0);
   const animatedTranslateY = useSharedValue(0);
   const animatedPaddingTop = useSharedValue(0);
   const isScrolledDown = useSharedValue(false);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
-    translationY.value = event.contentOffset.y;
-
     animatedTranslateY.value = interpolate(
       event.contentOffset.y,
       [-HEADER_SCROLL_OFFSET, 0],
