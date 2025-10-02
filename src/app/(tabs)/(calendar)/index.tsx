@@ -50,6 +50,8 @@ export default function Schedule() {
       [0, HEADER_SCROLL_OFFSET],
       Extrapolation.CLAMP,
     );
+
+    isScrolledDown.value = event.contentOffset.y > 10;
   });
 
   const stickyHeaderStyle = useAnimatedStyle(() => {
