@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
   interpolate,
   Extrapolation,
+  useAnimatedReaction,
 } from "react-native-reanimated";
 
 import { ActivityCard } from "@/components/ActivityCard";
@@ -47,8 +48,8 @@ export default function Schedule() {
   const animatedTranslateY = useSharedValue(0);
   const animatedPaddingTop = useSharedValue(0);
 
-  const updateIsScrolledDown = useCallback((offsetY: number) => {
-    isScrolledDown.current = offsetY > 10;
+  const updateIsScrolledDown = useCallback((isScrolled: boolean) => {
+    isScrolledDown.current = isScrolled;
   }, []);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
@@ -60,9 +61,16 @@ export default function Schedule() {
       [0, HEADER_SCROLL_OFFSET],
       Extrapolation.CLAMP,
     );
-
-    scheduleOnRN(updateIsScrolledDown, event.contentOffset.y);
   });
+
+  useAnimatedReaction(
+    () => translationY.value > 10,
+    (isScrolled, wasScrolled) => {
+      if (isScrolled !== wasScrolled) {
+        scheduleOnRN(updateIsScrolledDown, isScrolled);
+      }
+    },
+  );
 
   const stickyHeaderStyle = useAnimatedStyle(() => {
     if (Platform.OS !== "ios") {
