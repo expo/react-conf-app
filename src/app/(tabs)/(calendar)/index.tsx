@@ -168,7 +168,6 @@ export default function Schedule() {
         contentInsetAdjustmentBehavior="automatic"
         scrollToOverflowEnabled
         onScroll={scrollHandler}
-        scrollEventThrottle={16}
         data={data}
         ListHeaderComponent={renderStickyHeader}
         stickyHeaderIndices={[0]}
