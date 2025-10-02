@@ -21,7 +21,6 @@ import { useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
 import { Session } from "@/types";
 import { isLiquidGlassAvailable } from "expo-glass-effect";
-import { scheduleOnRN } from "react-native-worklets";
 import { getInitialDay } from "@/utils/formatDate";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -36,20 +35,15 @@ const HEADER_SCROLL_OFFSET = isLiquidGlassAvailable() ? 110 : 90;
 export default function Schedule() {
   const [selectedDay, setSelectedDay] = useState(getInitialDay());
   const scrollRef = useRef<FlatList>(null);
-  const isScrolledDown = useRef(false);
   useScrollToTop(scrollRef as any);
   const backgroundColor = useThemeColor(theme.color.background);
   const isLiquidGlass = isLiquidGlassAvailable();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
-
   const translationY = useSharedValue(0);
   const animatedTranslateY = useSharedValue(0);
   const animatedPaddingTop = useSharedValue(0);
-
-  const updateIsScrolledDown = useCallback((offsetY: number) => {
-    isScrolledDown.current = offsetY > 10;
-  }, []);
+  const isScrolledDown = useSharedValue(false);
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     translationY.value = event.contentOffset.y;
@@ -61,7 +55,7 @@ export default function Schedule() {
       Extrapolation.CLAMP,
     );
 
-    scheduleOnRN(updateIsScrolledDown, event.contentOffset.y);
+    isScrolledDown.value = event.contentOffset.y > 10;
   });
 
   const stickyHeaderStyle = useAnimatedStyle(() => {
@@ -98,14 +92,14 @@ export default function Schedule() {
   const handleSelectDay = useCallback(
     (day: ConferenceDay) => {
       setSelectedDay(day);
-      if (isScrolledDown.current) {
+      if (isScrolledDown.value) {
         scrollRef.current?.scrollToOffset({
           offset: -30 - insets.top,
           animated: true,
         });
       }
     },
-    [insets.top],
+    [insets.top, isScrolledDown],
   );
 
   const renderStickyHeader = useMemo(
@@ -139,10 +133,10 @@ export default function Schedule() {
         viewOffset: Platform.select({
           android: 50,
           default: isLiquidGlass
-            ? isScrolledDown.current
+            ? isScrolledDown.value
               ? 155
               : 87
-            : isScrolledDown.current
+            : isScrolledDown.value
               ? 125
               : 120,
         }),
