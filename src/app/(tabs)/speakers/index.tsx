@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
     padding: theme.space24,
   },
   preview: {
-    height: 350,
+    height: 420,
   },
   separator: {
     height: 1,

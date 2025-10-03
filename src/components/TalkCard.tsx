@@ -1,5 +1,5 @@
-import { useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
 
 import { Bookmark } from "./Bookmark";
 import { ThemedText, ThemedView } from "./Themed";
@@ -23,6 +23,7 @@ type Props = {
 
 export function TalkCard({ session, day, isBookmarked = false }: Props) {
   const shouldUseLocalTz = useReactConfStore((state) => state.shouldUseLocalTz);
+  const { width } = useWindowDimensions();
   const router = useRouter();
 
   const gestureTalkTap = useMemo(
@@ -54,23 +55,23 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
 
   return (
     <Animated.View entering={FadeIn} exiting={FadeOut}>
-      <ThemedView style={styles.container}>
-        {!isBookmarked && (
-          <ThemedText
-            fontSize={theme.fontSize14}
-            fontWeight="medium"
-            color={theme.color.textSecondary}
-            marginBottom={theme.space8}
-            style={{ marginLeft: theme.space24 }}
+      <GestureDetector gesture={gestureTalkTap}>
+        <ThemedView style={styles.container}>
+          {!isBookmarked && (
+            <ThemedText
+              fontSize={theme.fontSize14}
+              fontWeight="medium"
+              color={theme.color.textSecondary}
+              marginBottom={theme.space8}
+              style={{ marginLeft: theme.space24 }}
+            >
+              {formatSessionTime(session, shouldUseLocalTz)}
+            </ThemedText>
+          )}
+          <ThemedView
+            color={theme.color.backgroundSecondary}
+            style={styles.content}
           >
-            {formatSessionTime(session, shouldUseLocalTz)}
-          </ThemedText>
-        )}
-        <ThemedView
-          color={theme.color.backgroundSecondary}
-          style={styles.content}
-        >
-          <GestureDetector gesture={gestureTalkTap}>
             <View
               style={{
                 marginHorizontal: -theme.space16,
@@ -107,30 +108,41 @@ export function TalkCard({ session, day, isBookmarked = false }: Props) {
                 </View>
               )}
             </View>
-          </GestureDetector>
-          <View style={styles.bookmarkContainer}>
-            <Bookmark session={session} size="small" />
-          </View>
-          {session.speakers.map((speaker) => (
-            <GestureDetector
-              gesture={createSpeakerTapGesture(speaker)}
-              key={speaker.id}
-            >
-              <View
-                style={{
-                  marginHorizontal: -theme.space16,
-                  paddingHorizontal: theme.space16,
-                  marginVertical: -theme.space8,
-                  paddingVertical: theme.space8,
-                  borderRadius: theme.borderRadius32,
-                }}
+            <View style={styles.bookmarkContainer}>
+              <Bookmark session={session} size="small" />
+            </View>
+            {session.speakers.map((speaker) => (
+              <GestureDetector
+                key={speaker.id}
+                gesture={createSpeakerTapGesture(speaker)}
               >
-                <SpeakerDetails speaker={speaker} />
-              </View>
-            </GestureDetector>
-          ))}
+                <Link
+                  href={{
+                    pathname: "/speaker/[speaker]",
+                    params: { speaker: speaker.id },
+                  }}
+                  asChild
+                >
+                  <Link.Trigger>
+                    <View
+                      style={{
+                        marginHorizontal: -theme.space16,
+                        paddingHorizontal: theme.space16,
+                        marginVertical: -theme.space8,
+                        paddingVertical: theme.space8,
+                        borderRadius: theme.borderRadius32,
+                      }}
+                    >
+                      <SpeakerDetails speaker={speaker} />
+                    </View>
+                  </Link.Trigger>
+                  <Link.Preview style={{ ...styles.preview, width }} />
+                </Link>
+              </GestureDetector>
+            ))}
+          </ThemedView>
         </ThemedView>
-      </ThemedView>
+      </GestureDetector>
     </Animated.View>
   );
 }
@@ -150,6 +162,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.borderRadius32,
     gap: theme.space24,
     padding: theme.space24,
+  },
+  preview: {
+    height: 420,
   },
   time: {
     borderRadius: theme.borderRadius10,
