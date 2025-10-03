@@ -209,6 +209,7 @@ export default function TalkDetail() {
             {
               minHeight: drawerHeight,
               paddingBottom: insets.bottom + theme.space24,
+              paddingTop: theme.space24,
             },
           ]}
         >
