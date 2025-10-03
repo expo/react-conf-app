@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import { Platform, Pressable, StyleSheet, View } from "react-native";
 
 import { ThemedText, useThemeColor } from "@/components/Themed";
 import { theme } from "@/theme";
@@ -13,6 +13,7 @@ import Animated, {
   FadeOut,
   LinearTransition,
 } from "react-native-reanimated";
+import { Link } from "expo-router";
 
 export default function Bookmarks() {
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
@@ -53,17 +54,26 @@ export default function Bookmarks() {
       ListEmptyComponent={
         <Animated.View entering={FadeIn} exiting={FadeOut}>
           <View style={styles.bookmarks}>
-            <ThemedText
-              fontWeight="bold"
-              fontSize={theme.fontSize20}
-              style={{ marginBottom: theme.space8 }}
-            >
+            <ThemedText fontWeight="bold" fontSize={theme.fontSize20}>
               No sessions bookmarked
             </ThemedText>
-            <ThemedText fontSize={theme.fontSize18}>
+            <ThemedText
+              fontSize={theme.fontSize18}
+              color={theme.color.textSecondary}
+            >
               Tap on the bookmark icon on a session to add it to your bookmarks,
               and it will be displayed here.
             </ThemedText>
+            <Link href="/(tabs)/(calendar)" asChild>
+              <Pressable>
+                <ThemedText
+                  color={theme.color.reactBlue}
+                  style={{ marginTop: theme.space2 }}
+                >
+                  View all sessions
+                </ThemedText>
+              </Pressable>
+            </Link>
           </View>
         </Animated.View>
       }
@@ -73,7 +83,8 @@ export default function Bookmarks() {
 
 const styles = StyleSheet.create({
   bookmarks: {
-    paddingHorizontal: theme.space24,
+    gap: theme.space16,
+    paddingHorizontal: theme.space16,
   },
   flatListContainer: {
     paddingBottom: Platform.select({ android: 100, default: 0 }),
