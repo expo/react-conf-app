@@ -209,7 +209,10 @@ export default function TalkDetail() {
             {
               minHeight: drawerHeight,
               paddingBottom: insets.bottom + theme.space24,
-              paddingTop: Platform.OS === "ios" ? theme.space24 : undefined,
+              paddingTop: Platform.select({
+                ios: theme.space24,
+                default: undefined,
+              }),
             },
           ]}
         >
