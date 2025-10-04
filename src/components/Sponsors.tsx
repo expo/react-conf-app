@@ -57,6 +57,14 @@ const sponsors = {
     image: require("@/assets/sponsors/organizer-callstack.svg"),
     url: "https://www.callstack.com/",
   },
+  renderAtl: {
+    image: require("@/assets/sponsors/silver-render-atl.png"),
+    url: " https://www.renderatl.com/",
+  },
+  infiniteRed: {
+    image: require("@/assets/sponsors/silver-infinite-red.svg"),
+    url: "https://infinite.red/",
+  },
 };
 
 type Sponsor = (typeof sponsors)[keyof typeof sponsors];
@@ -98,6 +106,8 @@ export function Sponsors() {
         <View style={styles.sponsors}>
           <SponsorCard sponsor={sponsors.oldMission} />
           <SponsorCard sponsor={sponsors.arcjet} />
+          <SponsorCard sponsor={sponsors.renderAtl} />
+          <SponsorCard sponsor={sponsors.infiniteRed} />
         </View>
         <ThemedText color={theme.color.textSecondary} style={styles.level}>
           Organizers
