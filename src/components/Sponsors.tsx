@@ -59,7 +59,7 @@ const sponsors = {
   },
   renderAtl: {
     image: require("@/assets/sponsors/silver-render-atl.png"),
-    url: " https://www.renderatl.com/",
+    url: "https://www.renderatl.com/",
   },
   infiniteRed: {
     image: require("@/assets/sponsors/silver-infinite-red.svg"),
