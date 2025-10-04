@@ -41,7 +41,7 @@ const getAppId = () => {
 const config: ExpoConfig = {
   name: getName(),
   slug: "react-conf-app",
-  version: "1.1.1",
+  version: "1.1.2",
   orientation: "portrait",
   icon: "./assets/app-icons/icon-default.png",
   userInterfaceStyle: "automatic",
