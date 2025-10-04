@@ -143,12 +143,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space16,
   },
   image: {
-    height: 50,
+    height: 58,
   },
   imageContainer: {
     backgroundColor: theme.colorWhite,
     borderRadius: theme.borderRadius12,
-    padding: theme.space16,
+    padding: theme.space8,
   },
   level: {
     paddingVertical: theme.space16,
