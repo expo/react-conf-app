@@ -28,7 +28,7 @@ import {
   type CurrentlyLiveSession,
 } from "@/components/CurrentlyLive";
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as FlatList;
+const AnimatedFlatList = Animated.FlatList;
 
 const HEADER_SCROLL_OFFSET = isLiquidGlassAvailable() ? 110 : 90;
 

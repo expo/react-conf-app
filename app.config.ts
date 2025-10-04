@@ -79,7 +79,17 @@ const config: ExpoConfig = {
   owner: EAS_APP_OWNER,
   plugins: [
     "expo-asset",
-    "expo-build-properties",
+    [
+      "expo-build-properties",
+      {
+        android: {
+          reactNativeReleaseLevel: "experimental",
+        },
+        ios: {
+          reactNativeReleaseLevel: "experimental",
+        },
+      },
+    ],
     "expo-web-browser",
     "expo-router",
     [

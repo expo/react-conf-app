@@ -87,5 +87,10 @@
     "react-native-screens@4.16.0": "patches/react-native-screens@4.16.0.patch",
     "expo-router@6.0.6": "patches/expo-router@6.0.6.patch",
     "@expo/ui@0.2.0-beta.3": "patches/@expo%2Fui@0.2.0-beta.3.patch"
+  },
+  "reanimated": {
+    "staticFeatureFlags": {
+      "DISABLE_COMMIT_PAUSING_MECHANISM": true
+    }
   }
 }
