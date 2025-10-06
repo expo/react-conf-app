@@ -7,6 +7,7 @@ import { differenceInMinutes } from "date-fns";
 import { usePathname, useRouter } from "expo-router";
 import { Stack } from "expo-router/stack";
 import { StatusBar } from "expo-status-bar";
+import * as NavigationBar from "expo-navigation-bar";
 import { useEffect } from "react";
 import { Platform, StyleSheet, useColorScheme } from "react-native";
 import { setBackgroundColorAsync } from "expo-system-ui";
@@ -45,6 +46,14 @@ export default function Layout() {
   const { refreshData, lastRefreshed } = useReactConfStore();
 
   const tabBarBackgroundColor = useThemeColor(theme.color.background);
+
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      NavigationBar.setButtonStyleAsync(
+        colorScheme === "light" ? "dark" : "light",
+      );
+    }
+  }, [colorScheme]);
 
   // Keep the root view background color in sync with the current theme
   useEffect(() => {
