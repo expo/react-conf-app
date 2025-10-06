@@ -118,6 +118,14 @@ const config: ExpoConfig = {
         imageWidth: 190,
       },
     ],
+    [
+      "@zoontek/react-native-navigation-bar",
+      {
+        android: {
+          enforceNavigationBarContrast: false,
+        },
+      },
+    ],
   ],
   updates: {
     url: EAS_UPDATE_URL,
