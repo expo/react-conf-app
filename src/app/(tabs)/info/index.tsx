@@ -10,10 +10,13 @@ import { theme } from "@/theme";
 import { ScrollView } from "react-native-gesture-handler";
 import { PoweredByExpo } from "@/components/PoweredByExpo";
 import { Sponsors } from "@/components/Sponsors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Info() {
   const backgroundColor = useThemeColor(theme.color.background);
   const ref = React.useRef(null);
+  const { bottom } = useSafeAreaInsets();
+
   useScrollToTop(ref);
 
   return (
@@ -22,7 +25,7 @@ export default function Info() {
       ref={ref}
       contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={{
-        paddingBottom: Platform.select({ android: 100, default: 0 }),
+        paddingBottom: Platform.select({ android: 100 + bottom, default: 0 }),
       }}
     >
       <VenueInfo />
