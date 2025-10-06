@@ -14,6 +14,7 @@ import Animated, {
   LinearTransition,
 } from "react-native-reanimated";
 import { Link } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Bookmarks() {
   const bookmarks = useBookmarkStore((state) => state.bookmarks);
@@ -21,6 +22,8 @@ export default function Bookmarks() {
   const { dayOne, dayTwo } = useReactConfStore((state) => state.schedule);
 
   const backgroundColor = useThemeColor(theme.color.background);
+
+  const { bottom } = useSafeAreaInsets();
 
   const dayOneFiltered = dayOne.filter(
     (session) => !!bookmarks.find((b) => b.sessionId === session.id),
@@ -43,7 +46,12 @@ export default function Bookmarks() {
     <Animated.FlatList
       contentInsetAdjustmentBehavior="automatic"
       style={{ backgroundColor }}
-      contentContainerStyle={styles.flatListContainer}
+      contentContainerStyle={[
+        styles.flatListContainer,
+        {
+          paddingBottom: Platform.select({ android: 100 + bottom, default: 0 }),
+        },
+      ]}
       data={[
         ...dayOneFiltered.map((talk) => ({ talk, day: ConferenceDay.One })),
         ...dayTwoFiltered.map((talk) => ({ talk, day: ConferenceDay.Two })),
@@ -87,7 +95,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.space16,
   },
   flatListContainer: {
-    paddingBottom: Platform.select({ android: 100, default: 0 }),
     paddingTop: theme.space16,
   },
 });

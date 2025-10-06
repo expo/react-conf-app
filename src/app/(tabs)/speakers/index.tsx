@@ -112,6 +112,9 @@ export default function Speakers() {
       style={{ backgroundColor }}
       contentContainerStyle={[
         styles.contentContainer,
+        {
+          paddingBottom: Platform.select({ android: 100 + bottom, default: 0 }),
+        },
         { minHeight: height - (bottom + top + 130) },
       ]}
       ItemSeparatorComponent={() => (
@@ -138,7 +141,6 @@ export default function Speakers() {
 
 export const styles = StyleSheet.create({
   contentContainer: {
-    paddingBottom: Platform.select({ android: 100, default: 0 }),
     paddingHorizontal: theme.space16,
   },
   noResultsContainer: {

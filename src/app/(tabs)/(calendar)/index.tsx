@@ -158,7 +158,10 @@ export default function Schedule() {
         }
         style={{ backgroundColor }}
         contentContainerStyle={{
-          paddingBottom: Platform.select({ android: 100, default: 0 }),
+          paddingBottom: Platform.select({
+            android: 100 + insets.bottom,
+            default: 0,
+          }),
         }}
         contentInsetAdjustmentBehavior="automatic"
         scrollToOverflowEnabled
