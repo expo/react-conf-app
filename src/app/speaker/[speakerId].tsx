@@ -85,6 +85,7 @@ export default function SpeakerDetail() {
                   fontSize={theme.fontSize16}
                   fontWeight="medium"
                   color={{ light: secondaryColor, dark: secondaryColor }}
+                  style={styles.tagLine}
                 >
                   {speaker.tagLine}
                 </ThemedText>
@@ -216,5 +217,8 @@ const styles = StyleSheet.create({
   },
   speakerImage: {
     marginBottom: theme.space24,
+  },
+  tagLine: {
+    textAlign: "center",
   },
 });
