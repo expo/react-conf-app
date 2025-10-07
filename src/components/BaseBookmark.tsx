@@ -5,14 +5,13 @@ import Animated, {
   withSequence,
   withTiming,
 } from "react-native-reanimated";
-import { Pressable } from "react-native-gesture-handler";
+import { GestureDetector, Gesture } from "react-native-gesture-handler";
 
 import { theme } from "@/theme";
 import { Session } from "@/types";
 import { useBookmark } from "@/hooks/useBookmark";
 import { SymbolView } from "expo-symbols";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+import { StyleSheet } from "react-native";
 
 export function BaseBookmark({
   session,
@@ -36,24 +35,39 @@ export function BaseBookmark({
     await toggleBookmark(session);
   };
 
+  const tapGesture = Gesture.Tap()
+    .onStart(() => {
+      handlePress();
+    })
+    .runOnJS(true);
+
   const bookmarked = isBookmarked(session.id);
   const bookmarkColor = bookmarked
     ? theme.color.reactBlue.light
     : theme.colorGrey;
 
   return (
-    <AnimatedPressable hitSlop={20} onPress={handlePress} style={animatedStyle}>
-      <SymbolView
-        name={bookmarked ? "bookmark.fill" : "bookmark"}
-        tintColor={bookmarkColor}
-        fallback={
-          <MaterialCommunityIcons
-            name={bookmarked ? "bookmark" : "bookmark-outline"}
-            size={theme.fontSize28}
-            color={bookmarkColor}
-          />
-        }
-      />
-    </AnimatedPressable>
+    <GestureDetector gesture={tapGesture}>
+      <Animated.View style={[styles.container, animatedStyle]}>
+        <SymbolView
+          name={bookmarked ? "bookmark.fill" : "bookmark"}
+          tintColor={bookmarkColor}
+          fallback={
+            <MaterialCommunityIcons
+              name={bookmarked ? "bookmark" : "bookmark-outline"}
+              size={theme.fontSize28}
+              color={bookmarkColor}
+            />
+          }
+        />
+      </Animated.View>
+    </GestureDetector>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    margin: -theme.space8,
+    padding: theme.space8,
+  },
+});
