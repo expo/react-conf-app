@@ -10,6 +10,7 @@ export async function registerForPushNotificationsAsync() {
       vibrationPattern: [0, 250, 250, 250],
       showBadge: false,
     });
+    return (await Notifications.getPermissionsAsync()).status;
   }
 
   if (Device.isDevice) {
