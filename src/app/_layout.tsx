@@ -24,7 +24,7 @@ import { useReactConfStore } from "@/store/reactConfStore";
 import { osName } from "expo-device";
 
 SplashScreen.setOptions({
-  duration: 300,
+  duration: 200,
   fade: true,
 });
 
