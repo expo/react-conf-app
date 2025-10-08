@@ -33,7 +33,7 @@ function getCurrentlyLive(
     const startTime = new Date(session.startsAt);
     const endTime = new Date(session.endsAt);
 
-    if (now >= startTime && now <= endTime) {
+    if (now >= startTime && now <= endTime && !session.isServiceSession) {
       return {
         session,
         day: currentDay,
@@ -99,6 +99,7 @@ export function CurrentlyLive({
           </ThemedText>
         </>
       ) : (
+        // Without this, the header will not animate in on iOS 26
         <View />
       )}
     </AnimatedPressable>
